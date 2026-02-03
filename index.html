@@ -7,266 +7,211 @@
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
-    html { scroll-behavior: smooth; }
     body { background: radial-gradient(circle at top, #0b1c3d, #020816); color: #ffffff; }
 
-    /* ===== Header ===== */
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 5000;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
-      padding: 14px 16px;
+    /* ===================== TOPBAR + SIDEBAR ===================== */
+    .topbar{
+      position: sticky; top: 0; z-index: 10000;
+      display:flex; align-items:center; justify-content: space-between;
+      gap: 14px;
+      padding: 14px 18px;
       background: rgba(0,0,0,0.55);
-      border-bottom: 2px solid #1f3c88;
+      border-bottom: 1px solid rgba(77,163,255,0.20);
       backdrop-filter: blur(10px);
     }
-    .brand {
-      display:flex; align-items:center; gap: 12px;
-      min-width: 0;
-    }
-    header img { width: 54px; height: auto; flex: 0 0 auto; }
-    header h1 { font-size: 20px; letter-spacing: 0.6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-    /* Header CTAs */
-    .head-actions{ display:flex; gap:10px; align-items:center; }
-    .head-btn{
-      appearance:none; border:0; cursor:pointer;
-      padding: 10px 14px; border-radius: 999px;
-      font-weight: 900; letter-spacing: .2px;
-      display:inline-flex; align-items:center; gap:8px;
-      color:#fff;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.12);
-    }
-    .head-btn:hover{ background: rgba(255,255,255,0.11); }
-    .head-btn.primary{
-      background: linear-gradient(135deg,#ffd700,#ff9f00);
-      border: 0;
-      color:#000;
-    }
-    .head-btn.primary:hover{ filter: brightness(1.03); }
-
-    /* ===== Hamburger ===== */
-    .hamburger{
+    .top-left{ display:flex; align-items:center; gap: 12px; }
+    .burger{
       width: 44px; height: 44px; border-radius: 12px;
       border: 1px solid rgba(255,255,255,0.12);
       background: rgba(255,255,255,0.06);
-      color:#fff; cursor:pointer;
+      color: #fff; cursor: pointer;
       display:flex; align-items:center; justify-content:center;
-      font-size: 18px;
+      transition: transform .08s ease;
     }
-    .hamburger:active{ transform: scale(0.98); }
+    .burger:active{ transform: scale(0.98); }
+    .brand{ display:flex; align-items:center; gap: 12px; }
+    .brand img{ width: 38px; height: 38px; border-radius: 10px; object-fit: cover; }
+    .brand-title{ font-weight: 900; letter-spacing: .2px; font-size: 18px; color: #ffffff; }
 
-    /* ===== Sidebar ===== */
-    .sidebar-overlay{
-      position: fixed; inset:0;
+    .sidebar-backdrop{
+      position: fixed; inset: 0;
       background: rgba(0,0,0,0.55);
-      display:none;
-      z-index: 9000;
+      display:none; z-index: 9998;
     }
-    .sidebar-overlay.open{ display:block; }
+    .sidebar-backdrop.open{ display:block; }
+
     .sidebar{
-      position: fixed; top:0; left:0;
-      height:100%; width: min(320px, 86vw);
+      position: fixed; top: 0; left: 0; height: 100vh;
+      width: min(320px, 88vw);
       background: rgba(2,8,22,0.98);
-      border-right: 1px solid rgba(77,163,255,0.25);
-      box-shadow: 0 0 30px rgba(0,0,0,0.55);
-      transform: translateX(-100%);
-      transition: transform .22s ease;
+      border-right: 1px solid rgba(77,163,255,0.22);
+      box-shadow: 0 0 32px rgba(0,0,0,0.55);
+      transform: translateX(-105%);
+      transition: transform .28s ease;
       z-index: 9999;
-      display:flex; flex-direction:column;
+      padding: 16px;
+      overflow: auto;
     }
     .sidebar.open{ transform: translateX(0); }
     .side-head{
-      display:flex; align-items:center; justify-content:space-between;
-      padding: 14px 14px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      background: rgba(0,0,0,0.35);
+      display:flex; align-items:center; justify-content: space-between;
+      gap: 10px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.10);
+      margin-bottom: 12px;
     }
-    .side-title{ display:flex; align-items:center; gap:10px; font-weight: 900; }
-    .side-title img{ width:36px; opacity:.95; }
+    .side-head .mini{ display:flex; align-items:center; gap: 10px; }
+    .side-head img{ width: 40px; height: 40px; border-radius: 12px; object-fit: cover; }
+    .side-head b{ font-size: 16px; }
     .side-close{
       width: 40px; height: 40px; border-radius: 12px;
       border: 1px solid rgba(255,255,255,0.12);
       background: rgba(255,255,255,0.06);
-      color:#fff; cursor:pointer; font-size: 18px;
+      color: #cfd9ff; cursor:pointer;
+      font-size: 20px;
     }
-    .side-links{
-      padding: 10px 10px 16px;
-      overflow:auto;
-    }
+
+    .side-links{ display:flex; flex-direction: column; gap: 8px; margin-top: 12px; }
     .side-links a{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:10px;
+      display:flex; align-items:center; gap: 10px;
       padding: 12px 12px;
       border-radius: 14px;
       text-decoration:none;
-      color:#dbe3ff;
-      font-weight: 900;
-      border: 1px solid rgba(255,255,255,0.08);
+      color: #dbe3ff;
+      border: 1px solid rgba(255,255,255,0.10);
       background: rgba(255,255,255,0.04);
-      margin-top: 10px;
+      font-weight: 900;
     }
-    .side-links a:hover{ background: rgba(77,163,255,0.10); border-color: rgba(77,163,255,0.25); }
-    .side-links a small{ opacity:.8; font-weight: 800; }
+    .side-links a:hover{ border-color: rgba(77,163,255,0.30); background: rgba(77,163,255,0.10); }
+    .side-links i{ width: 18px; text-align: center; opacity: .95; }
 
-    /* ===== Sections ===== */
-    section { padding: 54px 16px; max-width: 1200px; margin: auto; scroll-margin-top: 84px; }
-    section h3 { font-size: 28px; margin-bottom: 18px; border-left: 6px solid #4da3ff; padding-left: 12px; }
+    /* ===================== PAGE LAYOUT ===================== */
+    section { padding: 54px 18px; max-width: 1200px; margin: auto; }
+    section h3 { font-size: 30px; margin-bottom: 18px; border-left: 6px solid #4da3ff; padding-left: 12px; }
     ul { margin-left: 20px; line-height: 1.8; color: #dbe3ff; }
 
-    /* ===== Hero + Slider ===== */
-    .hero { padding: 18px 16px 0; max-width: 1200px; margin: auto; }
+    /* ===================== HERO + TIMING CARD ===================== */
     .hero-wrap{
       display:grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 18px;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 22px;
       align-items: stretch;
+      padding-top: 22px;
     }
-    .hero-left{
+    .hero-card{
+      background: rgba(0,0,0,0.25);
+      border: 1px solid rgba(77,163,255,0.22);
+      border-radius: 18px;
+      padding: 20px;
+      position: relative;
+      overflow:hidden;
+    }
+    .hero-card::before{
+      content:""; position:absolute; inset:-2px;
+      background: radial-gradient(circle at top, rgba(77,163,255,0.14), transparent 60%);
+      pointer-events:none;
+    }
+    .hero-title{ font-size: 34px; font-weight: 900; margin-bottom: 10px; }
+    .hero-note{ color: #cfd9ff; line-height: 1.6; font-size: 14px; }
+    .timing-box{
+      margin-top: 16px;
+      padding: 14px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.04);
+      color: #dbe3ff;
+    }
+    .timing-box b{ color:#ffeaa0; display:block; margin-bottom: 8px; }
+    .timing-box .tline{ line-height: 1.65; font-weight: 800; font-size: 13px; }
+    .timing-muted{ margin-top: 8px; color:#cfd9ff; font-size: 12px; line-height: 1.5; opacity: .95; }
+
+    /* ===================== SLIDER ===================== */
+    .slider-card{
+      background: rgba(0,0,0,0.25);
+      border: 1px solid rgba(77,163,255,0.22);
       border-radius: 18px;
       overflow:hidden;
-      border: 1px solid rgba(77,163,255,0.25);
-      background: rgba(0,0,0,0.25);
-      position:relative;
-      min-height: 320px;
+      position: relative;
+      min-height: 280px;
     }
     .slider{
-      position:relative; height:100%;
-      min-height: 320px;
+      position: relative;
+      width: 100%;
+      height: 100%;
+      aspect-ratio: 16/9;
+      max-height: 320px;
+      overflow:hidden;
     }
     .slide{
       position:absolute; inset:0;
       opacity:0;
-      transform: scale(1.03);
-      transition: opacity .55s ease, transform 1.0s ease;
-      background: #000;
+      transition: opacity 900ms ease;
     }
-    .slide.active{
-      opacity:1;
-      transform: scale(1.0);
-    }
+    .slide.active{ opacity:1; }
     .slide img{
       width:100%; height:100%;
       object-fit: cover;
       display:block;
-      filter: contrast(1.02) saturate(1.05);
+      filter: saturate(1.05) contrast(1.02);
+      transform: scale(1.03);
     }
     .slide::after{
       content:"";
       position:absolute; inset:0;
-      background:
-        linear-gradient(90deg, rgba(0,0,0,0.55), rgba(0,0,0,0.05) 55%),
-        linear-gradient(0deg, rgba(0,0,0,0.65), rgba(0,0,0,0.10) 60%);
+      background: linear-gradient(90deg, rgba(0,0,0,0.70), rgba(0,0,0,0.20) 55%, rgba(0,0,0,0.35));
       pointer-events:none;
     }
     .slide-caption{
-      position:absolute; left:16px; right:16px; bottom:16px;
-      display:flex; flex-direction:column; gap:8px;
-      z-index: 3;
+      position:absolute; left: 18px; bottom: 16px; right: 18px;
+      z-index: 2;
+      max-width: 760px;
     }
-    .slide-caption h2{
+    .cap-title{
       font-size: 34px;
-      letter-spacing: .4px;
+      font-weight: 1000;
+      letter-spacing: .2px;
+      text-shadow: 0 10px 24px rgba(0,0,0,0.55);
       line-height: 1.05;
     }
-    .slide-caption p{
-      color:#cfd9ff;
+    .cap-sub{
+      margin-top: 8px;
+      color: #dbe3ff;
+      font-weight: 700;
       line-height: 1.5;
-      max-width: 760px;
-      font-size: 14px;
+      max-width: 720px;
+      text-shadow: 0 10px 24px rgba(0,0,0,0.55);
     }
-    .slide-cta{
-      display:flex; gap:10px; flex-wrap:wrap;
-      margin-top: 4px;
-    }
-
-    .hero-right{
-      border-radius: 18px;
-      border: 1px solid rgba(77,163,255,0.25);
-      background: rgba(0,0,0,0.25);
-      padding: 16px;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      min-height: 320px;
-      position:relative;
-      overflow:hidden;
-    }
-    .hero-right::before{
-      content:"";
-      position:absolute; inset:-2px;
-      background: radial-gradient(circle at top, rgba(77,163,255,0.18), transparent 60%);
-      pointer-events:none;
-      opacity: .9;
-    }
-    .hero-right h2{
-      position:relative;
-      font-size: 28px; line-height: 1.1;
-      margin-bottom: 10px;
-    }
-    .hero-right p{
-      position:relative;
-      color:#cfd9ff; line-height:1.6; font-size: 14px;
-    }
-    .timings-box{
-      position:relative;
-      margin-top: 14px;
-      border-radius: 16px;
-      padding: 12px 12px;
-      border: 1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.05);
-      color:#dbe3ff;
-      font-size: 13px;
-      line-height: 1.6;
-      white-space: pre-line;
-    }
-    .timings-box b{ color:#ffeaa0; }
-    .slider-dots{
-      position:absolute; right: 12px; bottom: 12px;
-      display:flex; gap:8px;
-      z-index: 5;
+    .dots{
+      position:absolute; right: 14px; bottom: 14px;
+      display:flex; gap: 8px; z-index: 3;
     }
     .dot{
-      width: 10px; height: 10px; border-radius: 50%;
+      width: 9px; height: 9px; border-radius: 999px;
       background: rgba(255,255,255,0.35);
-      border: 1px solid rgba(255,255,255,0.20);
-      cursor:pointer;
+      border: 1px solid rgba(255,255,255,0.25);
     }
     .dot.active{ background: #ffd700; border-color: rgba(255,215,0,0.55); }
 
-    /* Buttons */
-    .btn{ text-decoration: none; font-weight: 900; padding: 10px 16px; border-radius: 30px; display: inline-block; white-space: nowrap; border: 0; cursor: pointer; }
-    .btn-gold{ background: linear-gradient(135deg,#ffd700,#ff9f00); color:#000; }
-    .btn-live{ background: linear-gradient(135deg,#ff3b3b,#ff9900); color:#000; }
-    .btn-ghost{
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.12);
-      color: #fff;
-    }
-    .btn-disabled{ background: #444; color: #fff; cursor: not-allowed; opacity: 0.85; pointer-events: none; }
+    /* ===================== GRIDS ===================== */
+    .socials { display: flex; gap: 30px; margin-top: 20px; flex-wrap: wrap; }
+    .socials a { text-decoration: none; color: #fff; font-weight: bold; padding: 12px 25px; border-radius: 30px; background: #1b2f6b; }
 
-    /* Socials */
-    .socials { display: flex; gap: 18px; margin-top: 20px; flex-wrap: wrap; }
-    .socials a { text-decoration: none; color: #fff; font-weight: 900; padding: 12px 22px; border-radius: 30px; display:flex; gap:8px; align-items:center; }
-
-    /* Cards */
-    .cs-grid{ display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-top: 18px; }
+    .cs-grid{ display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-top: 20px; }
     .price-card{ background: rgba(0,0,0,0.25); border: 1px solid rgba(77,163,255,0.25); padding: 18px; border-radius: 18px; position: relative; overflow: hidden; }
     .price-head{ display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
     .price-head h4{ font-size: 20px; margin: 0; }
     .price-meta{ font-size: 14px; color: #cfd9ff; line-height: 1.4; }
     .live-tag{ color: #ff3b3b; font-weight: 900; margin-left: 6px; }
+
     .mode-row{ display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 12px; margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.08); }
-    .mode-name{ font-size: 16px; font-weight: 900; color: #ffffff; white-space: nowrap; display: flex; align-items: center; gap: 10px; }
+    .mode-name{ font-size: 16px; font-weight: 800; color: #ffffff; white-space: nowrap; display: flex; align-items: center; gap: 10px; }
     .mini-pill{ font-size: 11px; font-weight: 900; letter-spacing: .4px; padding: 4px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.06); color: #ffffff; white-space: nowrap; }
     .mini-pill-live{ border-color: rgba(255,59,59,0.35); background: rgba(255,59,59,0.10); color: #ffb3b3; }
 
-    .br-grid{ display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-top: 18px; }
+    .btn{ text-decoration: none; font-weight: 900; padding: 10px 16px; border-radius: 30px; display: inline-block; white-space: nowrap; border: 0; cursor: pointer; }
+    .btn-gold{ background: linear-gradient(135deg,#ffd700,#ff9f00); color:#000; }
+    .btn-live{ background: linear-gradient(135deg,#ff3b3b,#ff9900); color:#000; }
+    .btn-disabled{ background: #444; color: #fff; cursor: not-allowed; opacity: 0.85; pointer-events: none; }
+
+    .br-grid{ display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-top: 20px; }
     .br-card{ background: rgba(0,0,0,0.25); border: 1px solid rgba(77,163,255,0.25); padding: 18px; border-radius: 18px; position: relative; overflow: hidden; }
     .br-head{ display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
     .br-head h4{ font-size: 20px; margin: 0; }
@@ -277,6 +222,7 @@
     .tag{ display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; font-weight: 900; font-size: 12px; letter-spacing: .5px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.06); color: #fff; white-space: nowrap; }
     .tag-live{ border-color: rgba(255,59,59,0.35); background: rgba(255,59,59,0.10); color: #ffb3b3; }
     .tag-mega{ border-color: rgba(255,215,0,0.40); background: rgba(255,215,0,0.12); color: #ffeaa0; }
+
     .prize-box{ margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.08); color: #dbe3ff; line-height: 1.7; font-size: 14px; white-space: pre-line; }
     .prize-title{ font-weight: 900; color: #cfd9ff; margin-bottom: 6px; letter-spacing: .2px; }
 
@@ -286,6 +232,7 @@
       background: radial-gradient(circle at top, rgba(255,215,0,0.20), transparent 60%);
       pointer-events: none; opacity: 0.95;
     }
+
     .coming-glow{
       position: relative; display: inline-flex; align-items: center; gap: 10px;
       margin-top: 12px; padding: 10px 18px; border-radius: 999px;
@@ -326,12 +273,34 @@
       0%, 100% { transform: scale(0.85); opacity: 0.45; }
       50%      { transform: scale(1.15); opacity: 1; }
     }
-    .mega-teaser{ margin-top: 10px; font-size: 13px; color: #cfd9ff; }
 
+    .mega-teaser{ margin-top: 10px; font-size: 13px; color: #cfd9ff; }
     .wa-link{ color: #25D366; font-weight: 900; text-decoration: none; }
     .wa-link:hover{ text-decoration: underline; }
 
-    /* ===== Modal (Registration) ===== */
+    /* ===== Per Kill heading ===== */
+    .subhead{
+      margin-top: 26px;
+      padding: 16px 16px;
+      border-radius: 18px;
+      background: rgba(0,0,0,0.18);
+      border: 1px solid rgba(77,163,255,0.20);
+    }
+    .subhead h4{
+      font-size: 22px;
+      margin: 0;
+      font-weight: 1000;
+      letter-spacing: .2px;
+    }
+    .subhead p{
+      margin-top: 8px;
+      color: #cfd9ff;
+      line-height: 1.6;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    /* ✅ Modal Form */
     .modal{
       position: fixed; inset: 0; display: none;
       background: rgba(0,0,0,0.65);
@@ -369,14 +338,9 @@
       line-height: 1.5;
       margin-bottom: 14px;
     }
-    .grid{
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-    }
+    .grid{ display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
     .field{ display: flex; flex-direction: column; gap: 6px; }
-    .field label{ font-size: 12px; color:#cfd9ff; font-weight: 900; letter-spacing: .3px; }
-
+    .field label{ font-size: 12px; color:#cfd9ff; font-weight: 800; letter-spacing: .3px; }
     .field select{
       appearance: none;
       -webkit-appearance: none;
@@ -385,10 +349,7 @@
       color: #ffffff;
       border: 1px solid rgba(255,255,255,0.18);
     }
-    .field select option{
-      background: #0b1c3d;
-      color: #ffffff;
-    }
+    .field select option{ background: #0b1c3d; color: #ffffff; }
     .field input, .field select, .field textarea{
       padding: 12px 12px;
       border-radius: 12px;
@@ -397,10 +358,7 @@
       color: #fff;
       outline: none;
     }
-    .field input:disabled, .field select:disabled, .field textarea:disabled{
-      opacity: 0.55;
-      cursor: not-allowed;
-    }
+    .field input:disabled, .field select:disabled, .field textarea:disabled{ opacity: 0.55; cursor: not-allowed; }
 
     .yn-wrap{
       border: 1px solid rgba(255,255,255,0.12);
@@ -446,128 +404,65 @@
       box-shadow: 0 0 16px rgba(255,59,59,0.08);
     }
 
-    .help{
-      font-size: 12px;
-      color: #cfd9ff;
-      line-height: 1.5;
-      opacity: 0.95;
-    }
-    .pay-row{
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items: center;
-      margin-top: 6px;
-    }
+    .help{ font-size: 12px; color: #cfd9ff; line-height: 1.5; opacity: 0.95; }
+    .pay-row{ display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 6px; }
     .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding: 6px 10px;
-      border-radius: 999px;
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 6px 10px; border-radius: 999px;
       border: 1px solid rgba(255,255,255,0.12);
       background: rgba(255,255,255,0.06);
-      color: #cfd9ff;
-      font-weight: 900;
-      font-size: 12px;
+      color: #cfd9ff; font-weight: 900; font-size: 12px;
     }
-    .warn{
-      border-color: rgba(255,215,0,0.35);
-      background: rgba(255,215,0,0.10);
-      color: #ffeaa0;
-    }
-    .ok{
-      border-color: rgba(59,255,147,0.25);
-      background: rgba(59,255,147,0.08);
-      color: #b9ffd7;
-    }
-    .actions{
-      display:flex;
-      gap: 10px;
-      justify-content: flex-end;
-      margin-top: 14px;
-      flex-wrap: wrap;
-    }
-    .divider{
-      height: 1px;
-      background: rgba(255,255,255,0.10);
-      margin: 14px 0;
-    }
-    .checkbox{
-      display:flex;
-      gap:10px;
-      align-items:flex-start;
-      color:#dbe3ff;
-      font-size: 13px;
-      line-height: 1.45;
-      margin-top: 4px;
-    }
+    .warn{ border-color: rgba(255,215,0,0.35); background: rgba(255,215,0,0.10); color: #ffeaa0; }
+    .ok{ border-color: rgba(59,255,147,0.25); background: rgba(59,255,147,0.08); color: #b9ffd7; }
+    .actions{ display:flex; gap: 10px; justify-content: flex-end; margin-top: 14px; flex-wrap: wrap; }
+    .btn-ghost{ background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #fff; }
+    .btn:disabled{ opacity: .55; cursor: not-allowed; }
+    .divider{ height: 1px; background: rgba(255,255,255,0.10); margin: 14px 0; }
+    .checkbox{ display:flex; gap:10px; align-items:flex-start; color:#dbe3ff; font-size: 13px; line-height: 1.45; margin-top: 4px; }
     .checkbox input{ margin-top: 3px; }
 
-    /* ===== Dashboard Modal ===== */
-    .dash-card{
-      width: min(900px, 100%);
-      background: rgba(2,8,22,0.96);
-      border: 1px solid rgba(77,163,255,0.30);
+    /* Status/History cards */
+    .mini-card{
+      background: rgba(0,0,0,0.25);
+      border: 1px solid rgba(77,163,255,0.22);
       border-radius: 18px;
-      box-shadow: 0 0 30px rgba(0,0,0,0.45);
-      overflow: hidden;
+      padding: 18px;
     }
-    .tabs{
-      display:flex; gap:10px; padding: 12px 16px;
-      border-bottom: 1px solid rgba(255,255,255,0.10);
-      background: rgba(0,0,0,0.30);
-      flex-wrap: wrap;
+    .mini-card p{ color:#cfd9ff; line-height: 1.6; }
+    .mini-form{
+      display:grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px; margin-top: 12px;
     }
-    .tab{
-      padding: 10px 12px;
-      border-radius: 999px;
+    .mini-form input{
+      padding: 12px 12px;
+      border-radius: 12px;
       border: 1px solid rgba(255,255,255,0.12);
       background: rgba(255,255,255,0.06);
-      color:#dbe3ff;
-      font-weight: 900;
-      cursor:pointer;
+      color: #fff;
+      outline: none;
     }
-    .tab.active{
-      border-color: rgba(77,163,255,0.40);
-      background: rgba(77,163,255,0.18);
-      color:#fff;
-      box-shadow: 0 0 16px rgba(77,163,255,0.10);
+    .mini-form button{
+      padding: 12px 12px; border-radius: 12px; border: 0;
+      font-weight: 1000; cursor:pointer;
+      background: linear-gradient(135deg,#ffd700,#ff9f00); color:#000;
     }
-    .dash-body{ padding: 16px; }
-    .dash-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .dash-note{
+    .out-box{
       margin-top: 12px;
+      padding: 12px 12px;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.05);
-      padding: 12px;
-      color:#cfd9ff;
+      background: rgba(255,255,255,0.04);
+      color: #dbe3ff;
       line-height: 1.6;
-      font-size: 13px;
       white-space: pre-line;
+      min-height: 52px;
     }
-    .result-box{
-      margin-top: 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(77,163,255,0.22);
-      background: rgba(77,163,255,0.08);
-      padding: 12px;
-      color:#dbe3ff;
-      line-height: 1.6;
-      font-size: 13px;
-      white-space: pre-line;
-    }
-    .small-muted{ font-size: 12px; color:#cfd9ff; opacity: .95; }
 
-    /* Footer */
-    footer { text-align: center; padding: 25px; background: #020816; color: #8fa6ff; font-size: 14px; }
-    footer img { width: 50px; opacity: 0.2; margin-top: 10px; }
-
-    /* Responsive */
     @media (max-width: 980px){
       .hero-wrap{ grid-template-columns: 1fr; }
-      header h1{ font-size: 18px; }
+      .slider{ max-height: 360px; }
+      .mini-form{ grid-template-columns: 1fr; }
     }
     @media (max-width: 900px){
       .cs-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -578,9 +473,11 @@
       .br-grid{ grid-template-columns: 1fr; }
       .mode-name{ white-space: normal; }
       .grid{ grid-template-columns: 1fr; }
-      .dash-grid{ grid-template-columns: 1fr; }
-      .slide-caption h2{ font-size: 26px; }
+      .cap-title{ font-size: 28px; }
     }
+
+    footer { text-align: center; padding: 25px; background: #020816; color: #8fa6ff; font-size: 14px; }
+    footer img { width: 50px; opacity: 0.2; margin-top: 10px; }
   </style>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -588,151 +485,117 @@
 
 <body>
 
-<!-- ===== Sidebar ===== -->
-<div class="sidebar-overlay" id="sideOverlay" aria-hidden="true"></div>
+<!-- ===================== SIDEBAR ===================== -->
+<div class="sidebar-backdrop" id="sideBackdrop"></div>
+
 <aside class="sidebar" id="sidebar" aria-hidden="true">
   <div class="side-head">
-    <div class="side-title">
+    <div class="mini">
       <img src="Picsart_26-01-27_21-00-51-531.jpg.jpeg" alt="TRPS Logo">
-      <span>Menu</span>
+      <div>
+        <b>TRPS Champions League</b>
+        <div style="color:#cfd9ff; font-size:12px; margin-top:2px;">Free Fire MAX Tournament</div>
+      </div>
     </div>
     <button class="side-close" id="sideClose" aria-label="Close">×</button>
   </div>
 
-  <div class="side-links">
-    <a href="#home" class="side-link"><span>Home</span> <small><i class="fa-solid fa-chevron-right"></i></small></a>
-    <a href="#battleroyale" class="side-link"><span>Battle Royale</span> <small><i class="fa-solid fa-chevron-right"></i></small></a>
-    <a href="#clashsquad" class="side-link"><span>Clash Squad</span> <small><i class="fa-solid fa-chevron-right"></i></small></a>
-    <a href="#status" class="side-link"><span>Check Status</span> <small><i class="fa-solid fa-chevron-right"></i></small></a>
-    <a href="#history" class="side-link"><span>History</span> <small><i class="fa-solid fa-chevron-right"></i></small></a>
-    <a href="#social" class="side-link"><span>Social</span> <small><i class="fa-solid fa-chevron-right"></i></small></a>
-    <a href="#rules" class="side-link"><span>Rules</span> <small><i class="fa-solid fa-chevron-right"></i></small></a>
-    <a href="#privacy" class="side-link"><span>Privacy</span> <small><i class="fa-solid fa-chevron-right"></i></small></a>
+  <nav class="side-links">
+    <a href="#home" data-scroll><i class="fa-solid fa-house"></i> Home</a>
+    <a href="#battleroyale" data-scroll><i class="fa-solid fa-crosshairs"></i> Battle Royale</a>
+    <a href="#clashsquad" data-scroll><i class="fa-solid fa-users"></i> Clash Squad</a>
+    <a href="#checkstatus" data-scroll><i class="fa-solid fa-circle-check"></i> Check Status</a>
+    <a href="#history" data-scroll><i class="fa-solid fa-clock-rotate-left"></i> History</a>
+    <a href="#social" data-scroll><i class="fa-solid fa-share-nodes"></i> Social</a>
+    <a href="#rules" data-scroll><i class="fa-solid fa-list-check"></i> Rules</a>
+    <a href="#privacy" data-scroll><i class="fa-solid fa-shield"></i> Privacy</a>
+  </nav>
 
-    <div class="dash-note" style="margin-top:14px;">
-      <b>Slot Timings (IST)</b>
-      CS: 10:00 AM – 9:00 PM
-      BR ₹25: 7:00 PM / 9:30 PM
-      BR ₹35: 9:00 PM / 11:30 PM
-    </div>
+  <div style="margin-top:14px; color:#8fa6ff; font-size:12px; line-height:1.5;">
+    Tip: Menu se click karte hi page same screen pe us section pe chala jayega (smooth scroll).
   </div>
 </aside>
 
-<header>
-  <div class="brand">
-    <button class="hamburger" id="menuBtn" aria-label="Menu">
-      <i class="fa-solid fa-bars"></i>
-    </button>
-    <img src="Picsart_26-01-27_21-00-51-531.jpg.jpeg" alt="TRPS Champions League Logo" />
-    <h1>TRPS Champions League</h1>
-  </div>
-
-  <div class="head-actions">
-    <button class="head-btn primary" id="topRegister">
-      <i class="fa-solid fa-bolt"></i> Register Now
-    </button>
-    <button class="head-btn" id="openDashboardTop">
-      <i class="fa-solid fa-user-shield"></i> My Dashboard
-    </button>
+<!-- ===================== TOPBAR ===================== -->
+<header class="topbar">
+  <div class="top-left">
+    <button class="burger" id="burger" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+    <div class="brand">
+      <img src="Picsart_26-01-27_21-00-51-531.jpg.jpeg" alt="TRPS Champions League Logo" />
+      <div class="brand-title">TRPS Champions League</div>
+    </div>
   </div>
 </header>
 
-<!-- ===== Home / Hero + Slider ===== -->
-<section class="hero" id="home">
+<!-- ===================== HOME ===================== -->
+<section id="home">
   <div class="hero-wrap">
+    <div class="hero-card">
+      <div class="hero-title">Free Fire MAX Tournament</div>
 
-    <!-- Slider -->
-    <div class="hero-left">
+      <div class="hero-note">
+        Register in seconds, complete payment, submit UTR, and your request will be reviewed.
+        Slot options are shown in real-time (past slots are automatically hidden).
+      </div>
+
+      <div class="timing-box">
+        <b>Slot Timings (IST)</b>
+        <div class="tline">CS: 10:00 AM – 9:00 PM</div>
+        <div class="tline">BR (Normal Lobby): 7:00 PM / 9:30 PM</div>
+        <div class="tline">BR (Competitive Lobby): 9:00 PM / 11:30 PM</div>
+        <div class="timing-muted">
+          Note: If you open the form after timings, today’s slots may be unavailable. Try again tomorrow.
+        </div>
+      </div>
+    </div>
+
+    <!-- ✅ Branding Slider: images must be in SAME folder as index.html -->
+    <div class="slider-card">
       <div class="slider" id="slider">
-        <!-- NOTE: Put these images in same folder as index.html OR update paths.
-             Example folder: /slides/slide1.png ... -->
+
         <div class="slide active">
           <img src="slide1.png" alt="TRPS Slide 1">
           <div class="slide-caption">
-            <h2>TRPS Champions League</h2>
-            <p>Official Free Fire MAX tournaments — fast registration, quick verification, and smooth match flow.</p>
-            <div class="slide-cta">
-              <button class="btn btn-gold" id="sliderRegister1"><i class="fa-solid fa-bolt"></i> Register Now</button>
-              <button class="btn btn-ghost" id="sliderDash1"><i class="fa-solid fa-user-shield"></i> My Dashboard</button>
-            </div>
+            <div class="cap-title">TRPS • Free Fire MAX</div>
+            <div class="cap-sub">Official tournament experience with clean, fast registration and real-time slots.</div>
           </div>
         </div>
 
         <div class="slide">
           <img src="slide2.png" alt="TRPS Slide 2">
           <div class="slide-caption">
-            <h2>Clash Squad • Battle Royale</h2>
-            <p>Pick your mode, choose your slot, and get ready to compete with skilled players.</p>
-            <div class="slide-cta">
-              <button class="btn btn-gold" id="sliderRegister2"><i class="fa-solid fa-bolt"></i> Register Now</button>
-              <a class="btn btn-ghost" href="#rules"><i class="fa-solid fa-shield"></i> Rules</a>
-            </div>
+            <div class="cap-title">Clash Squad • Battle Royale</div>
+            <div class="cap-sub">Choose your mode, pick your slot, and get ready to compete with skilled players.</div>
           </div>
         </div>
 
         <div class="slide">
           <img src="slide3.png" alt="TRPS Slide 3">
           <div class="slide-caption">
-            <h2>Presented by TRPS Champions League</h2>
-            <p>Professional setup, clean system, and transparent status updates for every registration.</p>
-            <div class="slide-cta">
-              <button class="btn btn-gold" id="sliderRegister3"><i class="fa-solid fa-bolt"></i> Register Now</button>
-              <a class="btn btn-ghost" href="#social"><i class="fa-solid fa-link"></i> Social</a>
-            </div>
+            <div class="cap-title">Presented by TRPS</div>
+            <div class="cap-sub">Professional branding, clear rules, and organized match flow for a smooth experience.</div>
           </div>
         </div>
 
         <div class="slide">
           <img src="slide4.png" alt="TRPS Slide 4">
           <div class="slide-caption">
-            <h2>Official Free Fire MAX Tournament</h2>
-            <p>Join today and experience next-level matches with real-time slot availability.</p>
-            <div class="slide-cta">
-              <button class="btn btn-gold" id="sliderRegister4"><i class="fa-solid fa-bolt"></i> Register Now</button>
-              <button class="btn btn-ghost" id="sliderDash4"><i class="fa-solid fa-user-shield"></i> My Dashboard</button>
-            </div>
+            <div class="cap-title">Tournament Updates</div>
+            <div class="cap-sub">After registration, keep your Reg ID safe to check status and updates anytime.</div>
           </div>
         </div>
 
         <div class="slide">
           <img src="slide5.png" alt="TRPS Slide 5">
           <div class="slide-caption">
-            <h2>Championship Series</h2>
-            <p>Fair play, clean rules, and a strong community. Your performance, your glory.</p>
-            <div class="slide-cta">
-              <button class="btn btn-gold" id="sliderRegister5"><i class="fa-solid fa-bolt"></i> Register Now</button>
-              <a class="btn btn-ghost" href="#battleroyale"><i class="fa-solid fa-gamepad"></i> Explore Modes</a>
-            </div>
+            <div class="cap-title">Championship Vibes</div>
+            <div class="cap-sub">Fair play, strong competition, and rewards — built for serious players.</div>
           </div>
         </div>
 
-        <div class="slider-dots" id="dots"></div>
+        <div class="dots" id="dots"></div>
       </div>
     </div>
-
-    <!-- Right Info Box -->
-    <div class="hero-right">
-      <div>
-        <h2>Free Fire MAX Tournament</h2>
-        <p>
-          Register in seconds, complete payment, submit UTR, and track everything with <b>My Dashboard</b>.
-          Slot options are shown in real-time (past slots automatically hidden).
-        </p>
-
-        <div class="timings-box">
-<b>Slot Timings (IST)</b>
-CS: 10:00 AM – 9:00 PM
-BR ₹25: 7:00 PM / 9:30 PM
-BR ₹35: 9:00 PM / 11:30 PM
-        </div>
-      </div>
-
-      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;">
-        <button class="btn btn-gold" id="heroRegister"><i class="fa-solid fa-bolt"></i> Register Now</button>
-        <button class="btn btn-ghost" id="heroDash"><i class="fa-solid fa-user-shield"></i> My Dashboard</button>
-      </div>
-    </div>
-
   </div>
 </section>
 
@@ -816,6 +679,72 @@ BR ₹35: 9:00 PM / 11:30 PM
       </div>
     </div>
   </div>
+
+  <!-- ✅ Per Kill Matches (Professional heading, no "type") -->
+  <div class="subhead">
+    <h4>Per Kill Matches</h4>
+    <p>Slots: 10:00 AM – 9:00 PM (IST) • Every 30 minutes</p>
+  </div>
+
+  <div class="br-grid" style="margin-top:18px;">
+    <div class="br-card">
+      <div class="br-head">
+        <h4>SOLO ₹25</h4>
+        <span class="tag tag-live">PER KILL</span>
+      </div>
+
+      <div class="br-meta">Entry: ₹25 • Per Kill: ₹10 • Winner: ₹100</div>
+
+      <div class="br-cta">
+        <button class="btn btn-gold open-reg"
+          data-category="BR"
+          data-entry="25"
+          data-mode="SOLO (Per Kill)"
+          data-stream="0"
+          data-display="BR • SOLO ₹25 • Per Kill"
+        >Register Here</button>
+      </div>
+    </div>
+
+    <div class="br-card">
+      <div class="br-head">
+        <h4>SOLO ₹35</h4>
+        <span class="tag tag-live">PER KILL</span>
+      </div>
+
+      <div class="br-meta">Entry: ₹35 • Per Kill: ₹12 • Winner: ₹120</div>
+
+      <div class="br-cta">
+        <button class="btn btn-live open-reg"
+          data-category="BR"
+          data-entry="35"
+          data-mode="SOLO (Per Kill)"
+          data-stream="0"
+          data-display="BR • SOLO ₹35 • Per Kill"
+        >Register Here</button>
+      </div>
+    </div>
+
+    <div class="br-card">
+      <div class="br-head">
+        <h4>DUO ₹50</h4>
+        <span class="tag">24 TEAMS</span>
+      </div>
+
+      <div class="br-meta">Entry: ₹50 / team • Per Kill: ₹20 (team) • Winner: ₹150</div>
+
+      <div class="br-cta">
+        <button class="btn btn-gold open-reg"
+          data-category="BR"
+          data-entry="50"
+          data-mode="DUO (Per Kill)"
+          data-stream="0"
+          data-display="BR • DUO ₹50 • Per Kill"
+        >Register Here</button>
+      </div>
+    </div>
+  </div>
+
 </section>
 
 <!-- ✅ Clash Squad -->
@@ -953,66 +882,40 @@ BR ₹35: 9:00 PM / 11:30 PM
   </div>
 </section>
 
-<!-- ✅ Check Status (Section) -->
-<section id="status">
+<!-- ✅ Check Status -->
+<section id="checkstatus">
   <h3>Check Status</h3>
-  <p class="small-muted">You can also use <b>My Dashboard</b> (top button) to check status faster.</p>
+  <div class="mini-card">
+    <p>
+      Enter your <b>Reg ID</b> and your phone <b>last 4 digits</b> to view current status.
+    </p>
 
-  <div class="price-card" style="margin-top:14px;">
-    <div class="grid">
-      <div class="field">
-        <label>Reg ID *</label>
-        <input id="statusReg" placeholder="TRPS-0001">
-      </div>
-      <div class="field">
-        <label>Phone Last 4 Digits *</label>
-        <input id="statusLast4" inputmode="numeric" maxlength="4" placeholder="1234">
-      </div>
+    <div class="mini-form">
+      <input id="st_reg" placeholder="Reg ID (e.g., TRPS-0001)" />
+      <input id="st_last4" placeholder="Last 4 digits (e.g., 8996)" inputmode="numeric" maxlength="4" />
+      <button id="st_btn">Check</button>
     </div>
 
-    <div class="actions">
-      <button class="btn btn-live" id="statusBtn"><i class="fa-solid fa-magnifying-glass"></i> Check</button>
-      <button class="btn btn-ghost" id="statusClear"><i class="fa-solid fa-rotate"></i> Clear</button>
-    </div>
-
-    <div class="dash-note">
-<b>Status Notes</b>
-• PENDING: Waiting for verification
-• VERIFIED: Approved (waiting for match / slot)
-• MATCHED: Match fixed (CS)
-• SLOT_ALLOTTED: Room & Slot fixed (BR)
-• NO_OPPONENT: You can change slot and try again
-    </div>
-
-    <div class="result-box" id="statusResult" style="display:none;"></div>
+    <div class="out-box" id="st_out">Status will appear here.</div>
   </div>
 </section>
 
-<!-- ✅ History (Section) -->
+<!-- ✅ History -->
 <section id="history">
   <h3>History</h3>
-  <p class="small-muted">You can also use <b>My Dashboard</b> (top button) for a cleaner view.</p>
+  <div class="mini-card">
+    <p>
+      This shows your saved registrations on this device (no phone number is displayed).
+      Use your <b>History Key</b> to unlock.
+    </p>
 
-  <div class="price-card" style="margin-top:14px;">
-    <div class="grid">
-      <div class="field">
-        <label>History Key *</label>
-        <input id="histKey" placeholder="Enter your history key">
-        <div class="help">History Key is private. Do not share it with anyone.</div>
-      </div>
-      <div class="field">
-        <label>In-Game Name (optional)</label>
-        <input id="histName" placeholder="(Optional) Your in-game name">
-        <div class="help">Optional — if backend supports name filter, it will help.</div>
-      </div>
+    <div class="mini-form">
+      <input id="his_key" placeholder="History Key (shown after submit)" />
+      <button id="his_btn">View History</button>
+      <button id="his_clear" style="background:rgba(255,255,255,0.08); color:#fff; border:1px solid rgba(255,255,255,0.12);">Clear</button>
     </div>
 
-    <div class="actions">
-      <button class="btn btn-live" id="histBtn"><i class="fa-solid fa-clock-rotate-left"></i> View History</button>
-      <button class="btn btn-ghost" id="histClear"><i class="fa-solid fa-rotate"></i> Clear</button>
-    </div>
-
-    <div class="result-box" id="histResult" style="display:none;"></div>
+    <div class="out-box" id="his_out">History will appear here.</div>
   </div>
 </section>
 
@@ -1037,29 +940,32 @@ BR ₹35: 9:00 PM / 11:30 PM
 
 <section id="privacy">
   <h3>Privacy Policy</h3>
-  <p>Your privacy is important to us. All personal information collected through the registration form will be used solely for tournament management and communication purposes. We do not share your data with any third party.</p>
+  <p style="color:#cfd9ff; line-height:1.7;">
+    Your privacy is important to us. All personal information collected through the registration form will be used solely
+    for tournament management and communication purposes. We do not share your data with any third party.
+  </p>
 </section>
 
 <section id="social">
   <h3>Connect With Us</h3>
   <div class="socials">
     <a href="https://www.instagram.com/trps.tcleague" target="_blank" rel="noopener noreferrer"
-      style="background:#E1306C;">
+      style="padding:12px 22px; border-radius:30px; background:#E1306C; color:#fff; font-weight:bold; text-decoration:none; display:flex; gap:8px; align-items:center;">
       <i class="fa-brands fa-instagram"></i> Instagram
     </a>
 
     <a href="https://www.youtube.com/@TRPSChampionsLeague" target="_blank" rel="noopener noreferrer"
-      style="background:#FF0000;">
+      style="padding:12px 22px; border-radius:30px; background:#FF0000; color:#fff; font-weight:bold; text-decoration:none; display:flex; gap:8px; align-items:center;">
       <i class="fa-brands fa-youtube"></i> YouTube
     </a>
 
     <a href="https://www.facebook.com/TRPSChampionsLeague" target="_blank" rel="noopener noreferrer"
-      style="background:#1877F2;">
+      style="padding:12px 22px; border-radius:30px; background:#1877F2; color:#fff; font-weight:bold; text-decoration:none; display:flex; gap:8px; align-items:center;">
       <i class="fa-brands fa-facebook"></i> Facebook Page
     </a>
 
     <a href="https://whatsapp.com/channel/0029VbCAbtDLCoWyWMRWwi3O" target="_blank" rel="noopener noreferrer"
-      style="background:#25D366; color:#000;">
+      style="padding:12px 22px; border-radius:30px; background:#25D366; color:#000; font-weight:bold; text-decoration:none; display:flex; gap:8px; align-items:center;">
       <i class="fa-brands fa-whatsapp"></i> WhatsApp Channel
     </a>
   </div>
@@ -1098,7 +1004,7 @@ BR ₹35: 9:00 PM / 11:30 PM
           </div>
 
           <div class="field" id="fieldSecondName" style="display:none;">
-            <label>Second Player Name *</label>
+            <label id="labelSecondName">Second Player Name *</label>
             <input name="second_name" id="secondName" placeholder="Enter second player name">
           </div>
 
@@ -1116,7 +1022,6 @@ BR ₹35: 9:00 PM / 11:30 PM
           </div>
         </div>
 
-        <!-- ✅ CS OPTIONS (only show when CS selected) -->
         <div class="grid" id="csOptions" style="margin-top:12px; display:none;">
           <div class="field">
             <label>Head Shot Only *</label>
@@ -1192,76 +1097,6 @@ BR ₹35: 9:00 PM / 11:30 PM
   </div>
 </div>
 
-<!-- ✅ Dashboard Modal -->
-<div class="modal" id="dashModal" aria-hidden="true">
-  <div class="dash-card">
-    <div class="modal-head">
-      <h4>My Dashboard</h4>
-      <button class="close-btn" id="closeDash" aria-label="Close">×</button>
-    </div>
-
-    <div class="tabs">
-      <button class="tab active" data-tab="tabStatus"><i class="fa-solid fa-magnifying-glass"></i> Check Status</button>
-      <button class="tab" data-tab="tabHistory"><i class="fa-solid fa-clock-rotate-left"></i> History</button>
-    </div>
-
-    <div class="dash-body">
-      <!-- Status Tab -->
-      <div id="tabStatus">
-        <div class="dash-grid">
-          <div class="field">
-            <label>Reg ID *</label>
-            <input id="dashReg" placeholder="TRPS-0001">
-          </div>
-          <div class="field">
-            <label>Phone Last 4 Digits *</label>
-            <input id="dashLast4" inputmode="numeric" maxlength="4" placeholder="1234">
-          </div>
-        </div>
-
-        <div class="actions">
-          <button class="btn btn-live" id="dashStatusBtn"><i class="fa-solid fa-magnifying-glass"></i> Check</button>
-          <button class="btn btn-ghost" id="dashStatusClear"><i class="fa-solid fa-rotate"></i> Clear</button>
-        </div>
-
-        <div class="dash-note">
-<b>Status Notes</b>
-• PENDING: Waiting for verification
-• VERIFIED: Approved (waiting for match / slot)
-• MATCHED: Match fixed (CS)
-• SLOT_ALLOTTED: Room & Slot fixed (BR)
-• NO_OPPONENT: You can change slot and try again
-        </div>
-
-        <div class="result-box" id="dashStatusResult" style="display:none;"></div>
-      </div>
-
-      <!-- History Tab -->
-      <div id="tabHistory" style="display:none;">
-        <div class="dash-grid">
-          <div class="field">
-            <label>History Key *</label>
-            <input id="dashHistKey" placeholder="Enter your history key">
-            <div class="help">History Key is private. Do not share it with anyone.</div>
-          </div>
-          <div class="field">
-            <label>In-Game Name (optional)</label>
-            <input id="dashHistName" placeholder="(Optional) Your in-game name">
-            <div class="help">Optional — if backend supports name filter, it will help.</div>
-          </div>
-        </div>
-
-        <div class="actions">
-          <button class="btn btn-live" id="dashHistBtn"><i class="fa-solid fa-clock-rotate-left"></i> View</button>
-          <button class="btn btn-ghost" id="dashHistClear"><i class="fa-solid fa-rotate"></i> Clear</button>
-        </div>
-
-        <div class="result-box" id="dashHistResult" style="display:none;"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <script>
   /**********************
    * CONFIG
@@ -1269,137 +1104,78 @@ BR ₹35: 9:00 PM / 11:30 PM
   const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbylSMHYA3ZCLEXHF8OJKTh68rYAbx1tYhd1u-MFOALGhSFBVZqCOiT7lJI0Ld-sHbEb/exec";
   const PAYMENT_BASE = "https://trpschampionsleague.github.io/TCLeague/payment";
   const STORAGE_KEY = "trps_reg_intent_v2";
-
-  // Slot timings (exact)
-  const TIMINGS_TEXT = `Slot Timings (IST)
-CS: 10:00 AM – 9:00 PM
-BR ₹25: 7:00 PM / 9:30 PM
-BR ₹35: 9:00 PM / 11:30 PM`;
+  const HISTORY_STORE = "trps_history_v1";
 
   /**********************
-   * Sidebar
+   * SIDEBAR
    **********************/
   const sidebar = document.getElementById("sidebar");
-  const sideOverlay = document.getElementById("sideOverlay");
-  const menuBtn = document.getElementById("menuBtn");
+  const backdrop = document.getElementById("sideBackdrop");
+  const burger = document.getElementById("burger");
   const sideClose = document.getElementById("sideClose");
 
   function openSide(){
     sidebar.classList.add("open");
-    sideOverlay.classList.add("open");
-    sidebar.setAttribute("aria-hidden", "false");
-    sideOverlay.setAttribute("aria-hidden", "false");
+    backdrop.classList.add("open");
+    sidebar.setAttribute("aria-hidden","false");
     document.body.style.overflow = "hidden";
   }
   function closeSide(){
     sidebar.classList.remove("open");
-    sideOverlay.classList.remove("open");
-    sidebar.setAttribute("aria-hidden", "true");
-    sideOverlay.setAttribute("aria-hidden", "true");
+    backdrop.classList.remove("open");
+    sidebar.setAttribute("aria-hidden","true");
     document.body.style.overflow = "";
   }
-  menuBtn.addEventListener("click", openSide);
+  burger.addEventListener("click", openSide);
   sideClose.addEventListener("click", closeSide);
-  sideOverlay.addEventListener("click", closeSide);
+  backdrop.addEventListener("click", closeSide);
 
-  document.querySelectorAll(".side-link").forEach(a=>{
-    a.addEventListener("click", ()=> closeSide());
+  document.querySelectorAll('[data-scroll]').forEach(a => {
+    a.addEventListener('click', (e) => {
+      const href = a.getAttribute('href') || '';
+      if(!href.startsWith('#')) return;
+      e.preventDefault();
+      const el = document.querySelector(href);
+      closeSide();
+      if(el) el.scrollIntoView({ behavior:'smooth', block:'start' });
+    });
   });
 
   /**********************
-   * Slider
+   * SLIDER + DOTS
    **********************/
   const slides = Array.from(document.querySelectorAll(".slide"));
   const dotsWrap = document.getElementById("dots");
   let slideIndex = 0;
-  let sliderTimer = null;
 
-  function renderDots(){
-    dotsWrap.innerHTML = slides.map((_, i)=> `<div class="dot ${i===0?'active':''}" data-i="${i}"></div>`).join("");
-    dotsWrap.querySelectorAll(".dot").forEach(d=>{
-      d.addEventListener("click", ()=>{
-        const i = parseInt(d.getAttribute("data-i"),10);
-        goToSlide(i, true);
-      });
+  function buildDots(){
+    dotsWrap.innerHTML = "";
+    slides.forEach((_, i) => {
+      const d = document.createElement("div");
+      d.className = "dot" + (i===0 ? " active" : "");
+      d.addEventListener("click", () => goSlide(i));
+      dotsWrap.appendChild(d);
     });
   }
-  function goToSlide(i, userClick=false){
-    slides.forEach(s=> s.classList.remove("active"));
-    slides[i].classList.add("active");
+  function updateDots(){
+    const dots = Array.from(dotsWrap.querySelectorAll(".dot"));
+    dots.forEach((d, i) => d.classList.toggle("active", i === slideIndex));
+  }
+  function goSlide(i){
+    slides[slideIndex].classList.remove("active");
     slideIndex = i;
-    dotsWrap.querySelectorAll(".dot").forEach((d, idx)=>{
-      d.classList.toggle("active", idx === slideIndex);
-    });
-    if(userClick){
-      restartSlider();
-    }
+    slides[slideIndex].classList.add("active");
+    updateDots();
   }
   function nextSlide(){
-    const i = (slideIndex + 1) % slides.length;
-    goToSlide(i);
+    const next = (slideIndex + 1) % slides.length;
+    goSlide(next);
   }
-  function restartSlider(){
-    clearInterval(sliderTimer);
-    sliderTimer = setInterval(nextSlide, 5200);
-  }
-  renderDots();
-  restartSlider();
+  buildDots();
+  setInterval(nextSlide, 6500);
 
   /**********************
-   * Dashboard Modal
-   **********************/
-  const dashModal = document.getElementById("dashModal");
-  const closeDash = document.getElementById("closeDash");
-  const openDashboardTop = document.getElementById("openDashboardTop");
-
-  function openDash(){
-    dashModal.classList.add("open");
-    dashModal.setAttribute("aria-hidden", "false");
-    document.body.style.overflow = "hidden";
-  }
-  function closeDashModal(){
-    dashModal.classList.remove("open");
-    dashModal.setAttribute("aria-hidden", "true");
-    document.body.style.overflow = "";
-  }
-  openDashboardTop.addEventListener("click", openDash);
-  closeDash.addEventListener("click", closeDashModal);
-  dashModal.addEventListener("click", (e)=>{ if(e.target === dashModal) closeDashModal(); });
-
-  // Tab switching
-  document.querySelectorAll(".tab").forEach(t=>{
-    t.addEventListener("click", ()=>{
-      document.querySelectorAll(".tab").forEach(x=> x.classList.remove("active"));
-      t.classList.add("active");
-      const id = t.getAttribute("data-tab");
-      document.getElementById("tabStatus").style.display = (id==="tabStatus") ? "" : "none";
-      document.getElementById("tabHistory").style.display = (id==="tabHistory") ? "" : "none";
-    });
-  });
-
-  /**********************
-   * Registration Modal open helpers
-   **********************/
-  function scrollToRegisterSection(){
-    // scroll to Clash Squad section (register buttons) as default
-    const el = document.getElementById("clashsquad");
-    if(el) el.scrollIntoView({ behavior:"smooth" });
-  }
-
-  // Header/Slider/Hero register buttons => scroll to register section
-  ["topRegister","heroRegister","sliderRegister1","sliderRegister2","sliderRegister3","sliderRegister4","sliderRegister5"].forEach(id=>{
-    const el = document.getElementById(id);
-    if(el) el.addEventListener("click", scrollToRegisterSection);
-  });
-
-  // Slider/Hero dashboard buttons
-  ["heroDash","sliderDash1","sliderDash4"].forEach(id=>{
-    const el = document.getElementById(id);
-    if(el) el.addEventListener("click", openDash);
-  });
-
-  /**********************
-   * Helpers (Form)
+   * Helpers
    **********************/
   function pad(n){ return String(n).padStart(2, "0"); }
   function to12h(h, m){
@@ -1419,7 +1195,6 @@ BR ₹35: 9:00 PM / 11:30 PM`;
     }
     return out;
   }
-
   function parse12hToMinutes(t){
     const m = String(t).trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
     if(!m) return null;
@@ -1444,13 +1219,22 @@ BR ₹35: 9:00 PM / 11:30 PM`;
     });
   }
 
+  // ✅ UPDATED: when slots empty => dropdown shows "Slots closed..." disabled (not selectable)
   function setSlotOptions(list, helpText){
-    slot.innerHTML = `<option value="">Select slot</option>` + list.map(t => `<option value="${t}">${t}</option>`).join("");
+    if(!Array.isArray(list) || list.length === 0){
+      const msg = helpText || "Slots closed. Please try again tomorrow.";
+      slot.innerHTML = `<option value="" selected disabled>${msg}</option>`;
+      slotHelp.textContent = msg;
+      return;
+    }
+    slot.innerHTML =
+      `<option value="">Select slot</option>` +
+      list.map(t => `<option value="${t}">${t}</option>`).join("");
     slotHelp.textContent = helpText || "";
   }
+
   function is10DigitNumber(v){ return /^[0-9]{10}$/.test(v); }
   function isValidUtr(v){ return (v || "").trim().length >= 8; }
-
   function getRadioValue(name){
     const el = document.querySelector(`input[name="${name}"]:checked`);
     return el ? el.value : "";
@@ -1488,6 +1272,7 @@ BR ₹35: 9:00 PM / 11:30 PM`;
   const f_paidFlag = document.getElementById("f_paidFlag");
 
   const labelMainName = document.getElementById("labelMainName");
+  const labelSecondName = document.getElementById("labelSecondName");
   const fieldSecondName = document.getElementById("fieldSecondName");
   const mainName = document.getElementById("mainName");
   const secondName = document.getElementById("secondName");
@@ -1536,7 +1321,6 @@ BR ₹35: 9:00 PM / 11:30 PM`;
    **********************/
   function saveIntent(){
     if(!current) return;
-
     const draft = {
       main_name: mainName.value || "",
       second_name: secondName.value || "",
@@ -1546,10 +1330,8 @@ BR ₹35: 9:00 PM / 11:30 PM`;
       hs_only: getRadioValue("hs_only"),
       limited_ammo: getRadioValue("limited_ammo"),
     };
-
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ current, draft, ts: Date.now() }));
   }
-
   function loadIntent(){
     try{
       const raw = localStorage.getItem(STORAGE_KEY);
@@ -1557,14 +1339,10 @@ BR ₹35: 9:00 PM / 11:30 PM`;
       return JSON.parse(raw);
     }catch(_){ return null; }
   }
-
-  function clearIntent(){
-    localStorage.removeItem(STORAGE_KEY);
-  }
+  function clearIntent(){ localStorage.removeItem(STORAGE_KEY); }
 
   function restoreDraft(draft){
     if(!draft) return;
-
     mainName.value = draft.main_name || "";
     secondName.value = draft.second_name || "";
     contact.value = draft.contact || "";
@@ -1574,7 +1352,6 @@ BR ₹35: 9:00 PM / 11:30 PM`;
     } else {
       slot.value = "";
     }
-
     rulesCheck.checked = (draft.rules === "1");
 
     if(draft.hs_only){
@@ -1588,15 +1365,17 @@ BR ₹35: 9:00 PM / 11:30 PM`;
   }
 
   /**********************
-   * Mode -> Fields + Slots (with professional timing message)
+   * Mode -> Fields + Slots
    **********************/
   function applyModeRules(){
     if(!current) return;
 
+    // defaults
     fieldSecondName.style.display = "none";
     secondName.required = false;
     secondName.value = "";
 
+    // CS options only for CS
     if(current.category === "CS"){
       csOptions.style.display = "grid";
     } else {
@@ -1605,73 +1384,94 @@ BR ₹35: 9:00 PM / 11:30 PM`;
       clearRadio("limited_ammo");
     }
 
+    // labels + second name logic
     if(current.category === "CS"){
       if(current.mode === "1v1"){
         labelMainName.textContent = "In-Game Name *";
       } else if(current.mode === "2v2"){
         labelMainName.textContent = "Player 1 Name *";
+        labelSecondName.textContent = "Player 2 Name *";
         fieldSecondName.style.display = "flex";
         secondName.required = true;
       } else if(current.mode === "4v4"){
         labelMainName.textContent = "Team Name *";
       }
     } else if(current.category === "BR"){
-      labelMainName.textContent = "Team Name *";
+      // ✅ NEW: BR DUO (Per Kill) requires two names
+      if(String(current.mode).toUpperCase().includes("DUO")){
+        labelMainName.textContent = "Player 1 Name *";
+        labelSecondName.textContent = "Player 2 Name *";
+        fieldSecondName.style.display = "flex";
+        secondName.required = true;
+      } else {
+        // SOLO BR (Normal/Competitive/PerKill)
+        labelMainName.textContent = "In-Game Name *";
+      }
     }
 
     const entry = Number(current.entry);
     const isStream = String(current.stream) === "1";
+    const modeUpper = String(current.mode || "").toUpperCase();
+    const isPerKill = modeUpper.includes("PER KILL");
 
-    // Professional timing helper
-    function closedMsg(){
-      return `Today’s slots are closed.\n${TIMINGS_TEXT}\nPlease try again tomorrow.`;
-    }
-
-    // CS normal slots (realtime only)
+    // CS normal slots
     if(current.category === "CS" && !(current.mode === "4v4" && isStream)){
       let list = buildHalfHourSlots(10,0,21,0);
       list = filterFutureSlots(list, 0);
 
       if(list.length === 0){
-        setSlotOptions([], closedMsg());
+        setSlotOptions([], "Slots closed (CS: 10:00 AM – 9:00 PM IST). Please try again tomorrow.");
       } else {
-        setSlotOptions(list, `Slots are shown in real-time (past slots hidden).\nCS: 10:00 AM – 9:00 PM (IST)`);
+        setSlotOptions(list, "CS timing: 10:00 AM – 9:00 PM (IST) • Past slots auto-hidden");
       }
     }
 
-    // CS 4v4 stream slots (realtime only)
+    // CS 4v4 stream slots
     if(current.category === "CS" && current.mode === "4v4" && isStream){
       let list = ["7:00 PM","7:30 PM","8:00 PM","8:30 PM"];
       list = filterFutureSlots(list, 0);
 
       if(list.length === 0){
-        setSlotOptions([], closedMsg());
+        setSlotOptions([], "ON STREAM slots closed for today. Please try again tomorrow.");
       } else {
-        setSlotOptions(list, `ON STREAM slots are shown in real-time (past hidden).\nCS: 10:00 AM – 9:00 PM (IST)`);
+        setSlotOptions(list, "ON STREAM slots (IST) • Past slots auto-hidden");
       }
     }
 
-    // BR ₹25 slots (realtime only)
-    if(current.category === "BR" && entry === 25){
+    // ✅ BR Per Kill (same as CS timing)
+    if(current.category === "BR" && isPerKill){
+      let list = buildHalfHourSlots(10,0,21,0);
+      list = filterFutureSlots(list, 0);
+
+      if(list.length === 0){
+        // keep message as-is (you asked)
+        setSlotOptions([], "Slots closed (CS: 10:00 AM – 9:00 PM IST). Please try again tomorrow.");
+      } else {
+        setSlotOptions(list, "Slots: 10:00 AM – 9:00 PM (IST) • Past slots auto-hidden");
+      }
+    }
+
+    // BR ₹25 slots (Normal Lobby only)
+    if(current.category === "BR" && !isPerKill && entry === 25){
       let list = ["7:00 PM","9:30 PM"];
       list = filterFutureSlots(list, 0);
 
       if(list.length === 0){
-        setSlotOptions([], closedMsg());
+        setSlotOptions([], "Slots closed (BR Normal Lobby: 7:00 PM / 9:30 PM IST). Please try again tomorrow.");
       } else {
-        setSlotOptions(list, `Slots are shown in real-time (past hidden).\nBR ₹25: 7:00 PM / 9:30 PM (IST)`);
+        setSlotOptions(list, "BR Normal Lobby timing: 7:00 PM / 9:30 PM (IST)");
       }
     }
 
-    // BR ₹35 slots (realtime only)
-    if(current.category === "BR" && entry === 35){
+    // BR ₹35 slots (Competitive Lobby only)
+    if(current.category === "BR" && !isPerKill && entry === 35){
       let list = ["9:00 PM","11:30 PM"];
       list = filterFutureSlots(list, 0);
 
       if(list.length === 0){
-        setSlotOptions([], closedMsg());
+        setSlotOptions([], "Slots closed (BR Competitive Lobby: 9:00 PM / 11:30 PM IST). Please try again tomorrow.");
       } else {
-        setSlotOptions(list, `Slots are shown in real-time (past hidden).\nBR ₹35: 9:00 PM / 11:30 PM (IST)`);
+        setSlotOptions(list, "BR Competitive Lobby timing: 9:00 PM / 11:30 PM (IST)");
       }
     }
 
@@ -1750,9 +1550,6 @@ BR ₹35: 9:00 PM / 11:30 PM`;
     });
   });
 
-  /**********************
-   * Pay Now click
-   **********************/
   payNowBtn.addEventListener("click", () => {
     saveIntent();
     payStatePill.textContent = "Payment in progress...";
@@ -1761,9 +1558,6 @@ BR ₹35: 9:00 PM / 11:30 PM`;
     validateAll();
   });
 
-  /**********************
-   * If returned from payment (paid=1)
-   **********************/
   (function handleReturn(){
     const url = new URL(window.location.href);
     const paid = url.searchParams.get("paid");
@@ -1793,6 +1587,33 @@ BR ₹35: 9:00 PM / 11:30 PM`;
 
     validateAll();
   })();
+
+  /**********************
+   * HISTORY helpers (device-only)
+   **********************/
+  function safeJsonParse(x){ try{ return JSON.parse(x); }catch(_){ return null; } }
+  function getHistoryList(){
+    const raw = localStorage.getItem(HISTORY_STORE);
+    const parsed = safeJsonParse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  }
+  function setHistoryList(list){
+    localStorage.setItem(HISTORY_STORE, JSON.stringify(list));
+  }
+  function simpleHash(str){
+    let h = 2166136261;
+    for(let i=0;i<str.length;i++){
+      h ^= str.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return (h >>> 0).toString(16);
+  }
+  function makeHistoryKey(contact10, mainNm){
+    const last4 = String(contact10 || "").slice(-4);
+    const namePart = (mainNm || "").trim().toLowerCase();
+    const h6 = simpleHash(last4 + "|" + namePart).slice(0,6).toUpperCase();
+    return `H-${last4}-${h6}`;
+  }
 
   /**********************
    * Submit -> Apps Script
@@ -1840,10 +1661,28 @@ BR ₹35: 9:00 PM / 11:30 PM`;
       try{ out = JSON.parse(text); } catch(_){ out = { ok:false, error:"Bad response", raw:text }; }
 
       if(out.ok){
-        formMsg.innerHTML = `✅ Registration received! Your Reg ID: <b style="color:#ffd700">${out.regId}</b><br/>
-        WhatsApp pe DM karke confirmation le lo: <a class="wa-link" target="_blank" rel="noopener noreferrer"
-        href="https://wa.me/917294898996?text=Hi%20TRPS%20Champions%20League%2C%20I%20have%20registered.%20Reg%20ID%20${encodeURIComponent(out.regId)}%20Please%20confirm%20my%20entry.">7294898996</a><br/><br/>
-        <span class="small-muted">Tip: Open <b>My Dashboard</b> to check status anytime.</span>`;
+        const hk = makeHistoryKey(contact.value.trim(), mainName.value.trim());
+
+        const list = getHistoryList();
+        list.unshift({
+          historyKey: hk,
+          regId: out.regId,
+          display: current?.display || "",
+          main: mainName.value.trim(),
+          second: (fieldSecondName.style.display === "none") ? "" : secondName.value.trim(),
+          slot: slot.value.trim(),
+          ts: new Date().toISOString()
+        });
+        setHistoryList(list.slice(0, 50));
+
+        formMsg.innerHTML =
+          `✅ Registration received! Your Reg ID: <b style="color:#ffd700">${out.regId}</b><br/>
+           🔐 Your History Key: <b style="color:#ffd700">${hk}</b> (save it)<br/>
+           WhatsApp pe DM karke confirmation le lo:
+           <a class="wa-link" target="_blank" rel="noopener noreferrer"
+              href="https://wa.me/917294898996?text=Hi%20TRPS%20Champions%20League%2C%20I%20have%20registered.%20Reg%20ID%20${encodeURIComponent(out.regId)}%20Please%20confirm%20my%20entry.">
+              7294898996
+           </a>`;
 
         clearIntent();
       } else {
@@ -1857,146 +1696,89 @@ BR ₹35: 9:00 PM / 11:30 PM`;
   });
 
   /**********************
-   * Status + History (section + dashboard)
-   * NOTE: Backend endpoints should support:
-   *   GET ?action=status&reg_id=TRPS-0001&last4=1234
-   *   GET ?action=history&key=HISTORY_KEY&name=optional
+   * CHECK STATUS
    **********************/
+  const stReg = document.getElementById("st_reg");
+  const stLast4 = document.getElementById("st_last4");
+  const stBtn = document.getElementById("st_btn");
+  const stOut = document.getElementById("st_out");
+
   function normalizeRegId(x){
-    x = String(x||"").trim().toUpperCase();
+    x = String(x || "").trim().toUpperCase();
     let m = x.match(/^TRPS-(\d{1,})$/);
-    if(m) return "TRPS-" + ("0000" + m[1]).slice(-4);
+    if (m) return "TRPS-" + ("0000" + m[1]).slice(-4);
     m = x.match(/(\d{1,})/);
-    if(m) return "TRPS-" + ("0000" + m[1]).slice(-4);
+    if (m) return "TRPS-" + ("0000" + m[1]).slice(-4);
     return "";
   }
-  function okLast4(x){ return /^\d{4}$/.test(String(x||"").trim()); }
 
-  async function apiGet(params){
-    const url = new URL(WEB_APP_URL);
-    Object.keys(params).forEach(k=> url.searchParams.set(k, params[k]));
-    const res = await fetch(url.toString(), { method:"GET" });
-    const txt = await res.text();
-    try{ return JSON.parse(txt); }catch(_){ return { ok:false, error:"Bad response", raw:txt }; }
-  }
-
-  function renderStatusResult(r){
-    const lines = [];
-    lines.push(`Reg ID: ${r.reg_id || "-"}`);
-    lines.push(`Status: ${r.status || "-"}`);
-    if(r.selected_display) lines.push(`Mode: ${r.selected_display}`);
-    if(r.slot_time) lines.push(`Slot: ${r.slot_time}`);
-    if(r.match_type) lines.push(`Match Type: ${r.match_type}`);
-    if(r.match_no) lines.push(`Match No: ${r.match_no}`);
-    if(r.opponent_reg_ids) lines.push(`Opponent: ${r.opponent_reg_ids}`);
-    if(r.room_no) lines.push(`Room: ${r.room_no}`);
-    if(r.slot_no) lines.push(`Slot No: ${r.slot_no}`);
-    if(r.notes) lines.push(`Note: ${r.notes}`);
-    return lines.join("\n");
-  }
-
-  async function doStatusCheck(regEl, last4El, outBox){
-    const reg = normalizeRegId(regEl.value);
-    const last4 = String(last4El.value||"").trim();
-    if(!reg || !okLast4(last4)){
-      outBox.style.display = "block";
-      outBox.textContent = "❌ Please enter valid Reg ID and last 4 digits.";
+  stBtn.addEventListener("click", async () => {
+    const reg = normalizeRegId(stReg.value);
+    const last4 = String(stLast4.value || "").trim();
+    if(!reg || !/^\d{4}$/.test(last4)){
+      stOut.textContent = "❌ Please enter valid Reg ID and last 4 digits.";
       return;
     }
-    outBox.style.display = "block";
-    outBox.textContent = "Checking...";
-    const out = await apiGet({ action:"status", reg_id: reg, last4: last4 });
-    if(!out.ok){
-      outBox.textContent = "❌ " + (out.error || "Failed");
-      return;
+    stOut.textContent = "Checking...";
+    try{
+      const url = `${WEB_APP_URL}?action=status&reg_id=${encodeURIComponent(reg)}&last4=${encodeURIComponent(last4)}`;
+      const res = await fetch(url);
+      const out = await res.json();
+      if(!out.ok){
+        stOut.textContent = "❌ " + (out.error || "Not found");
+        return;
+      }
+      const r = out.reg || {};
+      const lines = [];
+      lines.push(`Reg ID: ${r.reg_id}`);
+      lines.push(`Status: ${r.status}`);
+      lines.push(`Mode: ${r.selected_display || (r.category + " • " + r.mode)}`);
+      lines.push(`Slot: ${r.slot_time || "-"}`);
+      if(r.match_type === "CS" && r.match_no){
+        lines.push(`Match: CS • Match No ${r.match_no}`);
+        if(r.opponent_reg_ids) lines.push(`Opponent: ${r.opponent_reg_ids}`);
+      }
+      if(r.match_type === "BR" && r.room_no){
+        lines.push(`Room: ${r.room_no} • Slot: ${r.slot_no || "-"}`);
+      }
+      if(r.notes) lines.push(`Note: ${r.notes}`);
+      stOut.textContent = lines.join("\n");
+    }catch(_){
+      stOut.textContent = "❌ Network error. Try again.";
     }
-    outBox.textContent = renderStatusResult(out.reg || {});
-  }
-
-  // Section Status
-  const statusReg = document.getElementById("statusReg");
-  const statusLast4 = document.getElementById("statusLast4");
-  const statusBtn = document.getElementById("statusBtn");
-  const statusClear = document.getElementById("statusClear");
-  const statusResult = document.getElementById("statusResult");
-
-  statusBtn.addEventListener("click", ()=> doStatusCheck(statusReg, statusLast4, statusResult));
-  statusClear.addEventListener("click", ()=>{
-    statusReg.value=""; statusLast4.value="";
-    statusResult.style.display="none"; statusResult.textContent="";
   });
 
-  // Dashboard Status
-  const dashReg = document.getElementById("dashReg");
-  const dashLast4 = document.getElementById("dashLast4");
-  const dashStatusBtn = document.getElementById("dashStatusBtn");
-  const dashStatusClear = document.getElementById("dashStatusClear");
-  const dashStatusResult = document.getElementById("dashStatusResult");
+  /**********************
+   * HISTORY VIEW (device-only)
+   **********************/
+  const hisKey = document.getElementById("his_key");
+  const hisBtn = document.getElementById("his_btn");
+  const hisOut = document.getElementById("his_out");
+  const hisClear = document.getElementById("his_clear");
 
-  dashStatusBtn.addEventListener("click", ()=> doStatusCheck(dashReg, dashLast4, dashStatusResult));
-  dashStatusClear.addEventListener("click", ()=>{
-    dashReg.value=""; dashLast4.value="";
-    dashStatusResult.style.display="none"; dashStatusResult.textContent="";
-  });
-
-  async function doHistoryCheck(keyEl, nameEl, outBox){
-    const key = String(keyEl.value||"").trim();
-    const name = String(nameEl.value||"").trim();
+  hisBtn.addEventListener("click", () => {
+    const key = String(hisKey.value || "").trim().toUpperCase();
     if(!key){
-      outBox.style.display = "block";
-      outBox.textContent = "❌ Please enter your History Key.";
+      hisOut.textContent = "❌ Enter your History Key first.";
       return;
     }
-    outBox.style.display = "block";
-    outBox.textContent = "Loading...";
-    const out = await apiGet({ action:"history", key: key, name: name });
-    if(!out.ok){
-      outBox.textContent = "❌ " + (out.error || "Failed");
-      return;
-    }
-
-    // Expect out.items = [{reg_id,status,selected_display,slot_time,match_no,room_no,slot_no,created_at}, ...]
-    const items = Array.isArray(out.items) ? out.items : [];
-    if(items.length === 0){
-      outBox.textContent = "No history found for this key.";
+    const list = getHistoryList().filter(x => String(x.historyKey || "").toUpperCase() === key);
+    if(list.length === 0){
+      hisOut.textContent = "No history found for this key (or this device has no saved data).";
       return;
     }
     const lines = [];
-    items.forEach((it, idx)=>{
-      lines.push(`${idx+1}. ${it.reg_id || "-"} • ${it.status || "-"} • ${it.selected_display || ""}`);
-      if(it.slot_time) lines.push(`   Slot: ${it.slot_time}`);
-      if(it.match_no) lines.push(`   Match: ${it.match_no}`);
-      if(it.room_no || it.slot_no) lines.push(`   Room/Slot: ${it.room_no || "-"} / ${it.slot_no || "-"}`);
-      if(it.created_at) lines.push(`   Time: ${it.created_at}`);
-      lines.push("");
+    list.forEach((x, idx) => {
+      const when = new Date(x.ts).toLocaleString();
+      lines.push(`${idx+1}) ${x.regId} • ${x.display}`);
+      lines.push(`   Slot: ${x.slot} • ${when}`);
     });
-    outBox.textContent = lines.join("\n").trim();
-  }
-
-  // Section History
-  const histKey = document.getElementById("histKey");
-  const histName = document.getElementById("histName");
-  const histBtn = document.getElementById("histBtn");
-  const histClear = document.getElementById("histClear");
-  const histResult = document.getElementById("histResult");
-
-  histBtn.addEventListener("click", ()=> doHistoryCheck(histKey, histName, histResult));
-  histClear.addEventListener("click", ()=>{
-    histKey.value=""; histName.value="";
-    histResult.style.display="none"; histResult.textContent="";
+    hisOut.textContent = lines.join("\n");
   });
 
-  // Dashboard History
-  const dashHistKey = document.getElementById("dashHistKey");
-  const dashHistName = document.getElementById("dashHistName");
-  const dashHistBtn = document.getElementById("dashHistBtn");
-  const dashHistClear = document.getElementById("dashHistClear");
-  const dashHistResult = document.getElementById("dashHistResult");
-
-  dashHistBtn.addEventListener("click", ()=> doHistoryCheck(dashHistKey, dashHistName, dashHistResult));
-  dashHistClear.addEventListener("click", ()=>{
-    dashHistKey.value=""; dashHistName.value="";
-    dashHistResult.style.display="none"; dashHistResult.textContent="";
+  hisClear.addEventListener("click", () => {
+    localStorage.removeItem(HISTORY_STORE);
+    hisOut.textContent = "History cleared for this device.";
   });
 </script>
 
