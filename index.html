@@ -747,7 +747,7 @@
    **********************/
   const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzv8wSJ2QGxYXkgL2m6FNJ68rhAj0MvqS7AqY53QjzbBlc1p8EwCimXDeQMoiTl_pwxZg/exec";
   const PAYMENT_BASE = "https://trpschampionsleague.github.io/TCLeague/payment";
-  const STORAGE_KEY = "trps_reg_intent_v1";
+  const STORAGE_KEY = "trps_reg_intent_v2"; // ✅ updated version key
 
   /**********************
    * Helpers
@@ -857,10 +857,25 @@
     validateAll();
   }
 
+  /**********************
+   * Draft Save/Restore (FIX: keep filled data after return)
+   **********************/
   function saveIntent(){
     if(!current) return;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ current, ts: Date.now() }));
+
+    const draft = {
+      main_name: mainName.value || "",
+      second_name: secondName.value || "",
+      contact: contact.value || "",
+      slot: slot.value || "",
+      rules: rulesCheck.checked ? "1" : "0",
+      hs_only: getRadioValue("hs_only"),
+      limited_ammo: getRadioValue("limited_ammo"),
+    };
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ current, draft, ts: Date.now() }));
   }
+
   function loadIntent(){
     try{
       const raw = localStorage.getItem(STORAGE_KEY);
@@ -868,8 +883,28 @@
       return JSON.parse(raw);
     }catch(_){ return null; }
   }
+
   function clearIntent(){
     localStorage.removeItem(STORAGE_KEY);
+  }
+
+  function restoreDraft(draft){
+    if(!draft) return;
+
+    mainName.value = draft.main_name || "";
+    secondName.value = draft.second_name || "";
+    contact.value = draft.contact || "";
+    slot.value = draft.slot || "";
+    rulesCheck.checked = (draft.rules === "1");
+
+    if(draft.hs_only){
+      const hs = document.querySelector(`input[name="hs_only"][value="${draft.hs_only}"]`);
+      if(hs) hs.checked = true;
+    }
+    if(draft.limited_ammo){
+      const am = document.querySelector(`input[name="limited_ammo"][value="${draft.limited_ammo}"]`);
+      if(am) am.checked = true;
+    }
   }
 
   /**********************
@@ -965,8 +1000,12 @@
     return ok;
   }
 
+  // ✅ Auto-save draft on every change
   ["input","change"].forEach(evt => {
-    regForm.addEventListener(evt, () => validateAll());
+    regForm.addEventListener(evt, () => {
+      validateAll();
+      saveIntent();
+    });
   });
 
   /**********************
@@ -994,12 +1033,12 @@
       applyModeRules();
 
       openModal();
-      saveIntent();
+      saveIntent(); // ✅ save fresh intent
     });
   });
 
   /**********************
-   * Pay Now click (no unlock here)
+   * Pay Now click (save draft + no unlock here)
    **********************/
   payNowBtn.addEventListener("click", () => {
     saveIntent();
@@ -1010,7 +1049,7 @@
   });
 
   /**********************
-   * If returned from payment (paid=1) -> unlock UTR
+   * If returned from payment (paid=1) -> unlock UTR + restore draft
    **********************/
   (function handleReturn(){
     const url = new URL(window.location.href);
@@ -1029,14 +1068,21 @@
     f_stream.value = current.stream;
 
     formMsg.textContent = "✅ Payment complete. Ab UTR/Txn ID fill karo & rules tick karke Submit karo.";
-    regForm.reset();
+
+    // ❌ IMPORTANT FIX: regForm.reset() removed (so user data doesn't vanish)
     applyModeRules();
+
+    // ✅ Restore user-filled draft after slot list is ready
+    restoreDraft(intent.draft);
 
     unlockUtr();
     openModal();
 
+    // clean URL
     url.searchParams.delete("paid");
     history.replaceState({}, "", url.toString());
+
+    validateAll();
   })();
 
   /**********************
@@ -1091,7 +1137,7 @@
         WhatsApp pe DM karke confirmation le lo: <a class="wa-link" target="_blank" rel="noopener noreferrer"
         href="https://wa.me/917294898996?text=Hi%20TRPS%20Champions%20League%2C%20I%20have%20registered.%20Reg%20ID%20${encodeURIComponent(out.regId)}%20Please%20confirm%20my%20entry.">7294898996</a>`;
 
-        clearIntent();
+        clearIntent(); // ✅ clear saved draft after success
       } else {
         formMsg.textContent = "❌ Failed: " + (out.error || "Try again");
         submitBtn.disabled = false;
