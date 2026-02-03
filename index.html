@@ -7,60 +7,266 @@
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
+    html { scroll-behavior: smooth; }
     body { background: radial-gradient(circle at top, #0b1c3d, #020816); color: #ffffff; }
 
+    /* ===== Header ===== */
     header {
+      position: sticky;
+      top: 0;
+      z-index: 5000;
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 15px;
-      padding: 20px 40px;
-      background: rgba(0,0,0,0.5);
+      padding: 14px 16px;
+      background: rgba(0,0,0,0.55);
       border-bottom: 2px solid #1f3c88;
+      backdrop-filter: blur(10px);
     }
-    header img { width: 80px; height: auto; }
-    header h1 { font-size: 32px; letter-spacing: 1px; }
+    .brand {
+      display:flex; align-items:center; gap: 12px;
+      min-width: 0;
+    }
+    header img { width: 54px; height: auto; flex: 0 0 auto; }
+    header h1 { font-size: 20px; letter-spacing: 0.6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-    .hero { text-align: center; padding: 80px 20px; position: relative; }
-    .hero::after {
-      content: "TRPS CHAMPIONS LEAGUE";
-      position: absolute;
-      inset: 0;
-      font-size: 80px;
+    /* Header CTAs */
+    .head-actions{ display:flex; gap:10px; align-items:center; }
+    .head-btn{
+      appearance:none; border:0; cursor:pointer;
+      padding: 10px 14px; border-radius: 999px;
+      font-weight: 900; letter-spacing: .2px;
+      display:inline-flex; align-items:center; gap:8px;
+      color:#fff;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .head-btn:hover{ background: rgba(255,255,255,0.11); }
+    .head-btn.primary{
+      background: linear-gradient(135deg,#ffd700,#ff9f00);
+      border: 0;
+      color:#000;
+    }
+    .head-btn.primary:hover{ filter: brightness(1.03); }
+
+    /* ===== Hamburger ===== */
+    .hamburger{
+      width: 44px; height: 44px; border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color:#fff; cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      font-size: 18px;
+    }
+    .hamburger:active{ transform: scale(0.98); }
+
+    /* ===== Sidebar ===== */
+    .sidebar-overlay{
+      position: fixed; inset:0;
+      background: rgba(0,0,0,0.55);
+      display:none;
+      z-index: 9000;
+    }
+    .sidebar-overlay.open{ display:block; }
+    .sidebar{
+      position: fixed; top:0; left:0;
+      height:100%; width: min(320px, 86vw);
+      background: rgba(2,8,22,0.98);
+      border-right: 1px solid rgba(77,163,255,0.25);
+      box-shadow: 0 0 30px rgba(0,0,0,0.55);
+      transform: translateX(-100%);
+      transition: transform .22s ease;
+      z-index: 9999;
+      display:flex; flex-direction:column;
+    }
+    .sidebar.open{ transform: translateX(0); }
+    .side-head{
+      display:flex; align-items:center; justify-content:space-between;
+      padding: 14px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      background: rgba(0,0,0,0.35);
+    }
+    .side-title{ display:flex; align-items:center; gap:10px; font-weight: 900; }
+    .side-title img{ width:36px; opacity:.95; }
+    .side-close{
+      width: 40px; height: 40px; border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color:#fff; cursor:pointer; font-size: 18px;
+    }
+    .side-links{
+      padding: 10px 10px 16px;
+      overflow:auto;
+    }
+    .side-links a{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      text-decoration:none;
+      color:#dbe3ff;
       font-weight: 900;
-      color: rgba(255,255,255,0.03);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      pointer-events: none;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.04);
+      margin-top: 10px;
     }
-    .hero h2 { font-size: 42px; margin-bottom: 15px; }
-    .hero p { max-width: 800px; margin: auto; line-height: 1.7; color: #cfd9ff; }
+    .side-links a:hover{ background: rgba(77,163,255,0.10); border-color: rgba(77,163,255,0.25); }
+    .side-links a small{ opacity:.8; font-weight: 800; }
 
-    section { padding: 60px 40px; max-width: 1200px; margin: auto; }
-    section h3 { font-size: 30px; margin-bottom: 20px; border-left: 6px solid #4da3ff; padding-left: 12px; }
+    /* ===== Sections ===== */
+    section { padding: 54px 16px; max-width: 1200px; margin: auto; scroll-margin-top: 84px; }
+    section h3 { font-size: 28px; margin-bottom: 18px; border-left: 6px solid #4da3ff; padding-left: 12px; }
     ul { margin-left: 20px; line-height: 1.8; color: #dbe3ff; }
 
-    .socials { display: flex; gap: 30px; margin-top: 20px; flex-wrap: wrap; }
-    .socials a { text-decoration: none; color: #fff; font-weight: bold; padding: 12px 25px; border-radius: 30px; background: #1b2f6b; }
+    /* ===== Hero + Slider ===== */
+    .hero { padding: 18px 16px 0; max-width: 1200px; margin: auto; }
+    .hero-wrap{
+      display:grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+    .hero-left{
+      border-radius: 18px;
+      overflow:hidden;
+      border: 1px solid rgba(77,163,255,0.25);
+      background: rgba(0,0,0,0.25);
+      position:relative;
+      min-height: 320px;
+    }
+    .slider{
+      position:relative; height:100%;
+      min-height: 320px;
+    }
+    .slide{
+      position:absolute; inset:0;
+      opacity:0;
+      transform: scale(1.03);
+      transition: opacity .55s ease, transform 1.0s ease;
+      background: #000;
+    }
+    .slide.active{
+      opacity:1;
+      transform: scale(1.0);
+    }
+    .slide img{
+      width:100%; height:100%;
+      object-fit: cover;
+      display:block;
+      filter: contrast(1.02) saturate(1.05);
+    }
+    .slide::after{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        linear-gradient(90deg, rgba(0,0,0,0.55), rgba(0,0,0,0.05) 55%),
+        linear-gradient(0deg, rgba(0,0,0,0.65), rgba(0,0,0,0.10) 60%);
+      pointer-events:none;
+    }
+    .slide-caption{
+      position:absolute; left:16px; right:16px; bottom:16px;
+      display:flex; flex-direction:column; gap:8px;
+      z-index: 3;
+    }
+    .slide-caption h2{
+      font-size: 34px;
+      letter-spacing: .4px;
+      line-height: 1.05;
+    }
+    .slide-caption p{
+      color:#cfd9ff;
+      line-height: 1.5;
+      max-width: 760px;
+      font-size: 14px;
+    }
+    .slide-cta{
+      display:flex; gap:10px; flex-wrap:wrap;
+      margin-top: 4px;
+    }
 
-    .cs-grid{ display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-top: 20px; }
+    .hero-right{
+      border-radius: 18px;
+      border: 1px solid rgba(77,163,255,0.25);
+      background: rgba(0,0,0,0.25);
+      padding: 16px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      min-height: 320px;
+      position:relative;
+      overflow:hidden;
+    }
+    .hero-right::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(circle at top, rgba(77,163,255,0.18), transparent 60%);
+      pointer-events:none;
+      opacity: .9;
+    }
+    .hero-right h2{
+      position:relative;
+      font-size: 28px; line-height: 1.1;
+      margin-bottom: 10px;
+    }
+    .hero-right p{
+      position:relative;
+      color:#cfd9ff; line-height:1.6; font-size: 14px;
+    }
+    .timings-box{
+      position:relative;
+      margin-top: 14px;
+      border-radius: 16px;
+      padding: 12px 12px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.05);
+      color:#dbe3ff;
+      font-size: 13px;
+      line-height: 1.6;
+      white-space: pre-line;
+    }
+    .timings-box b{ color:#ffeaa0; }
+    .slider-dots{
+      position:absolute; right: 12px; bottom: 12px;
+      display:flex; gap:8px;
+      z-index: 5;
+    }
+    .dot{
+      width: 10px; height: 10px; border-radius: 50%;
+      background: rgba(255,255,255,0.35);
+      border: 1px solid rgba(255,255,255,0.20);
+      cursor:pointer;
+    }
+    .dot.active{ background: #ffd700; border-color: rgba(255,215,0,0.55); }
+
+    /* Buttons */
+    .btn{ text-decoration: none; font-weight: 900; padding: 10px 16px; border-radius: 30px; display: inline-block; white-space: nowrap; border: 0; cursor: pointer; }
+    .btn-gold{ background: linear-gradient(135deg,#ffd700,#ff9f00); color:#000; }
+    .btn-live{ background: linear-gradient(135deg,#ff3b3b,#ff9900); color:#000; }
+    .btn-ghost{
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #fff;
+    }
+    .btn-disabled{ background: #444; color: #fff; cursor: not-allowed; opacity: 0.85; pointer-events: none; }
+
+    /* Socials */
+    .socials { display: flex; gap: 18px; margin-top: 20px; flex-wrap: wrap; }
+    .socials a { text-decoration: none; color: #fff; font-weight: 900; padding: 12px 22px; border-radius: 30px; display:flex; gap:8px; align-items:center; }
+
+    /* Cards */
+    .cs-grid{ display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-top: 18px; }
     .price-card{ background: rgba(0,0,0,0.25); border: 1px solid rgba(77,163,255,0.25); padding: 18px; border-radius: 18px; position: relative; overflow: hidden; }
     .price-head{ display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
     .price-head h4{ font-size: 20px; margin: 0; }
     .price-meta{ font-size: 14px; color: #cfd9ff; line-height: 1.4; }
     .live-tag{ color: #ff3b3b; font-weight: 900; margin-left: 6px; }
-
     .mode-row{ display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 12px; margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.08); }
-    .mode-name{ font-size: 16px; font-weight: 800; color: #ffffff; white-space: nowrap; display: flex; align-items: center; gap: 10px; }
+    .mode-name{ font-size: 16px; font-weight: 900; color: #ffffff; white-space: nowrap; display: flex; align-items: center; gap: 10px; }
     .mini-pill{ font-size: 11px; font-weight: 900; letter-spacing: .4px; padding: 4px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.06); color: #ffffff; white-space: nowrap; }
     .mini-pill-live{ border-color: rgba(255,59,59,0.35); background: rgba(255,59,59,0.10); color: #ffb3b3; }
 
-    .btn{ text-decoration: none; font-weight: 900; padding: 10px 16px; border-radius: 30px; display: inline-block; white-space: nowrap; border: 0; cursor: pointer; }
-    .btn-gold{ background: linear-gradient(135deg,#ffd700,#ff9f00); color:#000; }
-    .btn-live{ background: linear-gradient(135deg,#ff3b3b,#ff9900); color:#000; }
-    .btn-disabled{ background: #444; color: #fff; cursor: not-allowed; opacity: 0.85; pointer-events: none; }
-
-    .br-grid{ display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-top: 20px; }
+    .br-grid{ display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-top: 18px; }
     .br-card{ background: rgba(0,0,0,0.25); border: 1px solid rgba(77,163,255,0.25); padding: 18px; border-radius: 18px; position: relative; overflow: hidden; }
     .br-head{ display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
     .br-head h4{ font-size: 20px; margin: 0; }
@@ -71,7 +277,6 @@
     .tag{ display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; font-weight: 900; font-size: 12px; letter-spacing: .5px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.06); color: #fff; white-space: nowrap; }
     .tag-live{ border-color: rgba(255,59,59,0.35); background: rgba(255,59,59,0.10); color: #ffb3b3; }
     .tag-mega{ border-color: rgba(255,215,0,0.40); background: rgba(255,215,0,0.12); color: #ffeaa0; }
-
     .prize-box{ margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.08); color: #dbe3ff; line-height: 1.7; font-size: 14px; white-space: pre-line; }
     .prize-title{ font-weight: 900; color: #cfd9ff; margin-bottom: 6px; letter-spacing: .2px; }
 
@@ -81,7 +286,6 @@
       background: radial-gradient(circle at top, rgba(255,215,0,0.20), transparent 60%);
       pointer-events: none; opacity: 0.95;
     }
-
     .coming-glow{
       position: relative; display: inline-flex; align-items: center; gap: 10px;
       margin-top: 12px; padding: 10px 18px; border-radius: 999px;
@@ -122,13 +326,12 @@
       0%, 100% { transform: scale(0.85); opacity: 0.45; }
       50%      { transform: scale(1.15); opacity: 1; }
     }
-
     .mega-teaser{ margin-top: 10px; font-size: 13px; color: #cfd9ff; }
 
     .wa-link{ color: #25D366; font-weight: 900; text-decoration: none; }
     .wa-link:hover{ text-decoration: underline; }
 
-    /* ✅ Modal Form */
+    /* ===== Modal (Registration) ===== */
     .modal{
       position: fixed; inset: 0; display: none;
       background: rgba(0,0,0,0.65);
@@ -172,9 +375,8 @@
       gap: 12px;
     }
     .field{ display: flex; flex-direction: column; gap: 6px; }
-    .field label{ font-size: 12px; color:#cfd9ff; font-weight: 800; letter-spacing: .3px; }
+    .field label{ font-size: 12px; color:#cfd9ff; font-weight: 900; letter-spacing: .3px; }
 
-    /* ✅ FIX: Slot dropdown PC hover-only issue (always visible) */
     .field select{
       appearance: none;
       -webkit-appearance: none;
@@ -187,7 +389,6 @@
       background: #0b1c3d;
       color: #ffffff;
     }
-
     .field input, .field select, .field textarea{
       padding: 12px 12px;
       border-radius: 12px;
@@ -201,7 +402,6 @@
       cursor: not-allowed;
     }
 
-    /* ✅ NEW: Yes/No tick group (professional) */
     .yn-wrap{
       border: 1px solid rgba(255,255,255,0.12);
       background: rgba(255,255,255,0.04);
@@ -229,21 +429,17 @@
     }
     .yn-btn:active{ transform: scale(0.98); }
     .yn-btn i{ opacity: .95; }
-
-    /* selected styles */
     .yn-wrap input:checked + .yn-btn{
       border-color: rgba(77,163,255,0.40);
       background: rgba(77,163,255,0.16);
       color: #ffffff;
       box-shadow: 0 0 16px rgba(77,163,255,0.10);
     }
-    /* green yes */
     .yn-wrap input.yn-yes:checked + .yn-btn{
       border-color: rgba(59,255,147,0.35);
       background: rgba(59,255,147,0.10);
       box-shadow: 0 0 16px rgba(59,255,147,0.08);
     }
-    /* red no */
     .yn-wrap input.yn-no:checked + .yn-btn{
       border-color: rgba(255,59,59,0.35);
       background: rgba(255,59,59,0.10);
@@ -292,15 +488,6 @@
       margin-top: 14px;
       flex-wrap: wrap;
     }
-    .btn-ghost{
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.12);
-      color: #fff;
-    }
-    .btn:disabled{
-      opacity: .55;
-      cursor: not-allowed;
-    }
     .divider{
       height: 1px;
       background: rgba(255,255,255,0.10);
@@ -317,6 +504,71 @@
     }
     .checkbox input{ margin-top: 3px; }
 
+    /* ===== Dashboard Modal ===== */
+    .dash-card{
+      width: min(900px, 100%);
+      background: rgba(2,8,22,0.96);
+      border: 1px solid rgba(77,163,255,0.30);
+      border-radius: 18px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.45);
+      overflow: hidden;
+    }
+    .tabs{
+      display:flex; gap:10px; padding: 12px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.30);
+      flex-wrap: wrap;
+    }
+    .tab{
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color:#dbe3ff;
+      font-weight: 900;
+      cursor:pointer;
+    }
+    .tab.active{
+      border-color: rgba(77,163,255,0.40);
+      background: rgba(77,163,255,0.18);
+      color:#fff;
+      box-shadow: 0 0 16px rgba(77,163,255,0.10);
+    }
+    .dash-body{ padding: 16px; }
+    .dash-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .dash-note{
+      margin-top: 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.05);
+      padding: 12px;
+      color:#cfd9ff;
+      line-height: 1.6;
+      font-size: 13px;
+      white-space: pre-line;
+    }
+    .result-box{
+      margin-top: 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(77,163,255,0.22);
+      background: rgba(77,163,255,0.08);
+      padding: 12px;
+      color:#dbe3ff;
+      line-height: 1.6;
+      font-size: 13px;
+      white-space: pre-line;
+    }
+    .small-muted{ font-size: 12px; color:#cfd9ff; opacity: .95; }
+
+    /* Footer */
+    footer { text-align: center; padding: 25px; background: #020816; color: #8fa6ff; font-size: 14px; }
+    footer img { width: 50px; opacity: 0.2; margin-top: 10px; }
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .hero-wrap{ grid-template-columns: 1fr; }
+      header h1{ font-size: 18px; }
+    }
     @media (max-width: 900px){
       .cs-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .br-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -326,11 +578,9 @@
       .br-grid{ grid-template-columns: 1fr; }
       .mode-name{ white-space: normal; }
       .grid{ grid-template-columns: 1fr; }
-      .hero::after{ font-size: 44px; }
+      .dash-grid{ grid-template-columns: 1fr; }
+      .slide-caption h2{ font-size: 26px; }
     }
-
-    footer { text-align: center; padding: 25px; background: #020816; color: #8fa6ff; font-size: 14px; }
-    footer img { width: 50px; opacity: 0.2; margin-top: 10px; }
   </style>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -338,14 +588,152 @@
 
 <body>
 
+<!-- ===== Sidebar ===== -->
+<div class="sidebar-overlay" id="sideOverlay" aria-hidden="true"></div>
+<aside class="sidebar" id="sidebar" aria-hidden="true">
+  <div class="side-head">
+    <div class="side-title">
+      <img src="Picsart_26-01-27_21-00-51-531.jpg.jpeg" alt="TRPS Logo">
+      <span>Menu</span>
+    </div>
+    <button class="side-close" id="sideClose" aria-label="Close">×</button>
+  </div>
+
+  <div class="side-links">
+    <a href="#home" class="side-link"><span>Home</span> <small><i class="fa-solid fa-chevron-right"></i></small></a>
+    <a href="#battleroyale" class="side-link"><span>Battle Royale</span> <small><i class="fa-solid fa-chevron-right"></i></small></a>
+    <a href="#clashsquad" class="side-link"><span>Clash Squad</span> <small><i class="fa-solid fa-chevron-right"></i></small></a>
+    <a href="#status" class="side-link"><span>Check Status</span> <small><i class="fa-solid fa-chevron-right"></i></small></a>
+    <a href="#history" class="side-link"><span>History</span> <small><i class="fa-solid fa-chevron-right"></i></small></a>
+    <a href="#social" class="side-link"><span>Social</span> <small><i class="fa-solid fa-chevron-right"></i></small></a>
+    <a href="#rules" class="side-link"><span>Rules</span> <small><i class="fa-solid fa-chevron-right"></i></small></a>
+    <a href="#privacy" class="side-link"><span>Privacy</span> <small><i class="fa-solid fa-chevron-right"></i></small></a>
+
+    <div class="dash-note" style="margin-top:14px;">
+      <b>Slot Timings (IST)</b>
+      CS: 10:00 AM – 9:00 PM
+      BR ₹25: 7:00 PM / 9:30 PM
+      BR ₹35: 9:00 PM / 11:30 PM
+    </div>
+  </div>
+</aside>
+
 <header>
-  <img src="Picsart_26-01-27_21-00-51-531.jpg.jpeg" alt="TRPS Champions League Logo" />
-  <h1>TRPS Champions League</h1>
+  <div class="brand">
+    <button class="hamburger" id="menuBtn" aria-label="Menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+    <img src="Picsart_26-01-27_21-00-51-531.jpg.jpeg" alt="TRPS Champions League Logo" />
+    <h1>TRPS Champions League</h1>
+  </div>
+
+  <div class="head-actions">
+    <button class="head-btn primary" id="topRegister">
+      <i class="fa-solid fa-bolt"></i> Register Now
+    </button>
+    <button class="head-btn" id="openDashboardTop">
+      <i class="fa-solid fa-user-shield"></i> My Dashboard
+    </button>
+  </div>
 </header>
 
-<section class="hero">
-  <h2>Free Fire MAX Tournament</h2>
-  <p>Welcome to the official TRPS Champions League website. Participate in Battle Royale and Clash Squad matches, compete with skilled players, and win exciting rewards.</p>
+<!-- ===== Home / Hero + Slider ===== -->
+<section class="hero" id="home">
+  <div class="hero-wrap">
+
+    <!-- Slider -->
+    <div class="hero-left">
+      <div class="slider" id="slider">
+        <!-- NOTE: Put these images in same folder as index.html OR update paths.
+             Example folder: /slides/slide1.png ... -->
+        <div class="slide active">
+          <img src="slide1.png" alt="TRPS Slide 1">
+          <div class="slide-caption">
+            <h2>TRPS Champions League</h2>
+            <p>Official Free Fire MAX tournaments — fast registration, quick verification, and smooth match flow.</p>
+            <div class="slide-cta">
+              <button class="btn btn-gold" id="sliderRegister1"><i class="fa-solid fa-bolt"></i> Register Now</button>
+              <button class="btn btn-ghost" id="sliderDash1"><i class="fa-solid fa-user-shield"></i> My Dashboard</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide">
+          <img src="slide2.png" alt="TRPS Slide 2">
+          <div class="slide-caption">
+            <h2>Clash Squad • Battle Royale</h2>
+            <p>Pick your mode, choose your slot, and get ready to compete with skilled players.</p>
+            <div class="slide-cta">
+              <button class="btn btn-gold" id="sliderRegister2"><i class="fa-solid fa-bolt"></i> Register Now</button>
+              <a class="btn btn-ghost" href="#rules"><i class="fa-solid fa-shield"></i> Rules</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide">
+          <img src="slide3.png" alt="TRPS Slide 3">
+          <div class="slide-caption">
+            <h2>Presented by TRPS Champions League</h2>
+            <p>Professional setup, clean system, and transparent status updates for every registration.</p>
+            <div class="slide-cta">
+              <button class="btn btn-gold" id="sliderRegister3"><i class="fa-solid fa-bolt"></i> Register Now</button>
+              <a class="btn btn-ghost" href="#social"><i class="fa-solid fa-link"></i> Social</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide">
+          <img src="slide4.png" alt="TRPS Slide 4">
+          <div class="slide-caption">
+            <h2>Official Free Fire MAX Tournament</h2>
+            <p>Join today and experience next-level matches with real-time slot availability.</p>
+            <div class="slide-cta">
+              <button class="btn btn-gold" id="sliderRegister4"><i class="fa-solid fa-bolt"></i> Register Now</button>
+              <button class="btn btn-ghost" id="sliderDash4"><i class="fa-solid fa-user-shield"></i> My Dashboard</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide">
+          <img src="slide5.png" alt="TRPS Slide 5">
+          <div class="slide-caption">
+            <h2>Championship Series</h2>
+            <p>Fair play, clean rules, and a strong community. Your performance, your glory.</p>
+            <div class="slide-cta">
+              <button class="btn btn-gold" id="sliderRegister5"><i class="fa-solid fa-bolt"></i> Register Now</button>
+              <a class="btn btn-ghost" href="#battleroyale"><i class="fa-solid fa-gamepad"></i> Explore Modes</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="slider-dots" id="dots"></div>
+      </div>
+    </div>
+
+    <!-- Right Info Box -->
+    <div class="hero-right">
+      <div>
+        <h2>Free Fire MAX Tournament</h2>
+        <p>
+          Register in seconds, complete payment, submit UTR, and track everything with <b>My Dashboard</b>.
+          Slot options are shown in real-time (past slots automatically hidden).
+        </p>
+
+        <div class="timings-box">
+<b>Slot Timings (IST)</b>
+CS: 10:00 AM – 9:00 PM
+BR ₹25: 7:00 PM / 9:30 PM
+BR ₹35: 9:00 PM / 11:30 PM
+        </div>
+      </div>
+
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;">
+        <button class="btn btn-gold" id="heroRegister"><i class="fa-solid fa-bolt"></i> Register Now</button>
+        <button class="btn btn-ghost" id="heroDash"><i class="fa-solid fa-user-shield"></i> My Dashboard</button>
+      </div>
+    </div>
+
+  </div>
 </section>
 
 <!-- ✅ Battle Royale -->
@@ -565,6 +953,69 @@
   </div>
 </section>
 
+<!-- ✅ Check Status (Section) -->
+<section id="status">
+  <h3>Check Status</h3>
+  <p class="small-muted">You can also use <b>My Dashboard</b> (top button) to check status faster.</p>
+
+  <div class="price-card" style="margin-top:14px;">
+    <div class="grid">
+      <div class="field">
+        <label>Reg ID *</label>
+        <input id="statusReg" placeholder="TRPS-0001">
+      </div>
+      <div class="field">
+        <label>Phone Last 4 Digits *</label>
+        <input id="statusLast4" inputmode="numeric" maxlength="4" placeholder="1234">
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-live" id="statusBtn"><i class="fa-solid fa-magnifying-glass"></i> Check</button>
+      <button class="btn btn-ghost" id="statusClear"><i class="fa-solid fa-rotate"></i> Clear</button>
+    </div>
+
+    <div class="dash-note">
+<b>Status Notes</b>
+• PENDING: Waiting for verification
+• VERIFIED: Approved (waiting for match / slot)
+• MATCHED: Match fixed (CS)
+• SLOT_ALLOTTED: Room & Slot fixed (BR)
+• NO_OPPONENT: You can change slot and try again
+    </div>
+
+    <div class="result-box" id="statusResult" style="display:none;"></div>
+  </div>
+</section>
+
+<!-- ✅ History (Section) -->
+<section id="history">
+  <h3>History</h3>
+  <p class="small-muted">You can also use <b>My Dashboard</b> (top button) for a cleaner view.</p>
+
+  <div class="price-card" style="margin-top:14px;">
+    <div class="grid">
+      <div class="field">
+        <label>History Key *</label>
+        <input id="histKey" placeholder="Enter your history key">
+        <div class="help">History Key is private. Do not share it with anyone.</div>
+      </div>
+      <div class="field">
+        <label>In-Game Name (optional)</label>
+        <input id="histName" placeholder="(Optional) Your in-game name">
+        <div class="help">Optional — if backend supports name filter, it will help.</div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-live" id="histBtn"><i class="fa-solid fa-clock-rotate-left"></i> View History</button>
+      <button class="btn btn-ghost" id="histClear"><i class="fa-solid fa-rotate"></i> Clear</button>
+    </div>
+
+    <div class="result-box" id="histResult" style="display:none;"></div>
+  </div>
+</section>
+
 <section id="rules">
   <h3>Game Rules & Regulations</h3>
   <ul>
@@ -593,22 +1044,22 @@
   <h3>Connect With Us</h3>
   <div class="socials">
     <a href="https://www.instagram.com/trps.tcleague" target="_blank" rel="noopener noreferrer"
-      style="padding:12px 22px; border-radius:30px; background:#E1306C; color:#fff; font-weight:bold; text-decoration:none; display:flex; gap:8px; align-items:center;">
+      style="background:#E1306C;">
       <i class="fa-brands fa-instagram"></i> Instagram
     </a>
 
     <a href="https://www.youtube.com/@TRPSChampionsLeague" target="_blank" rel="noopener noreferrer"
-      style="padding:12px 22px; border-radius:30px; background:#FF0000; color:#fff; font-weight:bold; text-decoration:none; display:flex; gap:8px; align-items:center;">
+      style="background:#FF0000;">
       <i class="fa-brands fa-youtube"></i> YouTube
     </a>
 
     <a href="https://www.facebook.com/TRPSChampionsLeague" target="_blank" rel="noopener noreferrer"
-      style="padding:12px 22px; border-radius:30px; background:#1877F2; color:#fff; font-weight:bold; text-decoration:none; display:flex; gap:8px; align-items:center;">
+      style="background:#1877F2;">
       <i class="fa-brands fa-facebook"></i> Facebook Page
     </a>
 
     <a href="https://whatsapp.com/channel/0029VbCAbtDLCoWyWMRWwi3O" target="_blank" rel="noopener noreferrer"
-      style="padding:12px 22px; border-radius:30px; background:#25D366; color:#000; font-weight:bold; text-decoration:none; display:flex; gap:8px; align-items:center;">
+      style="background:#25D366; color:#000;">
       <i class="fa-brands fa-whatsapp"></i> WhatsApp Channel
     </a>
   </div>
@@ -665,7 +1116,7 @@
           </div>
         </div>
 
-        <!-- ✅ NEW: CS OPTIONS (only show when CS selected) -->
+        <!-- ✅ CS OPTIONS (only show when CS selected) -->
         <div class="grid" id="csOptions" style="margin-top:12px; display:none;">
           <div class="field">
             <label>Head Shot Only *</label>
@@ -741,16 +1192,214 @@
   </div>
 </div>
 
+<!-- ✅ Dashboard Modal -->
+<div class="modal" id="dashModal" aria-hidden="true">
+  <div class="dash-card">
+    <div class="modal-head">
+      <h4>My Dashboard</h4>
+      <button class="close-btn" id="closeDash" aria-label="Close">×</button>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="tabStatus"><i class="fa-solid fa-magnifying-glass"></i> Check Status</button>
+      <button class="tab" data-tab="tabHistory"><i class="fa-solid fa-clock-rotate-left"></i> History</button>
+    </div>
+
+    <div class="dash-body">
+      <!-- Status Tab -->
+      <div id="tabStatus">
+        <div class="dash-grid">
+          <div class="field">
+            <label>Reg ID *</label>
+            <input id="dashReg" placeholder="TRPS-0001">
+          </div>
+          <div class="field">
+            <label>Phone Last 4 Digits *</label>
+            <input id="dashLast4" inputmode="numeric" maxlength="4" placeholder="1234">
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-live" id="dashStatusBtn"><i class="fa-solid fa-magnifying-glass"></i> Check</button>
+          <button class="btn btn-ghost" id="dashStatusClear"><i class="fa-solid fa-rotate"></i> Clear</button>
+        </div>
+
+        <div class="dash-note">
+<b>Status Notes</b>
+• PENDING: Waiting for verification
+• VERIFIED: Approved (waiting for match / slot)
+• MATCHED: Match fixed (CS)
+• SLOT_ALLOTTED: Room & Slot fixed (BR)
+• NO_OPPONENT: You can change slot and try again
+        </div>
+
+        <div class="result-box" id="dashStatusResult" style="display:none;"></div>
+      </div>
+
+      <!-- History Tab -->
+      <div id="tabHistory" style="display:none;">
+        <div class="dash-grid">
+          <div class="field">
+            <label>History Key *</label>
+            <input id="dashHistKey" placeholder="Enter your history key">
+            <div class="help">History Key is private. Do not share it with anyone.</div>
+          </div>
+          <div class="field">
+            <label>In-Game Name (optional)</label>
+            <input id="dashHistName" placeholder="(Optional) Your in-game name">
+            <div class="help">Optional — if backend supports name filter, it will help.</div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-live" id="dashHistBtn"><i class="fa-solid fa-clock-rotate-left"></i> View</button>
+          <button class="btn btn-ghost" id="dashHistClear"><i class="fa-solid fa-rotate"></i> Clear</button>
+        </div>
+
+        <div class="result-box" id="dashHistResult" style="display:none;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
   /**********************
    * CONFIG
    **********************/
-  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbylSMHYA3ZCLEXHF8OJKTh68rYAbx1tYhd1u-MFOALGhSFBVZqCOiT7lJI0Ld-sHbEb/exec"; // ✅ updated
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbylSMHYA3ZCLEXHF8OJKTh68rYAbx1tYhd1u-MFOALGhSFBVZqCOiT7lJI0Ld-sHbEb/exec";
   const PAYMENT_BASE = "https://trpschampionsleague.github.io/TCLeague/payment";
-  const STORAGE_KEY = "trps_reg_intent_v2"; // ✅ updated version key
+  const STORAGE_KEY = "trps_reg_intent_v2";
+
+  // Slot timings (exact)
+  const TIMINGS_TEXT = `Slot Timings (IST)
+CS: 10:00 AM – 9:00 PM
+BR ₹25: 7:00 PM / 9:30 PM
+BR ₹35: 9:00 PM / 11:30 PM`;
 
   /**********************
-   * Helpers
+   * Sidebar
+   **********************/
+  const sidebar = document.getElementById("sidebar");
+  const sideOverlay = document.getElementById("sideOverlay");
+  const menuBtn = document.getElementById("menuBtn");
+  const sideClose = document.getElementById("sideClose");
+
+  function openSide(){
+    sidebar.classList.add("open");
+    sideOverlay.classList.add("open");
+    sidebar.setAttribute("aria-hidden", "false");
+    sideOverlay.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+  }
+  function closeSide(){
+    sidebar.classList.remove("open");
+    sideOverlay.classList.remove("open");
+    sidebar.setAttribute("aria-hidden", "true");
+    sideOverlay.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  }
+  menuBtn.addEventListener("click", openSide);
+  sideClose.addEventListener("click", closeSide);
+  sideOverlay.addEventListener("click", closeSide);
+
+  document.querySelectorAll(".side-link").forEach(a=>{
+    a.addEventListener("click", ()=> closeSide());
+  });
+
+  /**********************
+   * Slider
+   **********************/
+  const slides = Array.from(document.querySelectorAll(".slide"));
+  const dotsWrap = document.getElementById("dots");
+  let slideIndex = 0;
+  let sliderTimer = null;
+
+  function renderDots(){
+    dotsWrap.innerHTML = slides.map((_, i)=> `<div class="dot ${i===0?'active':''}" data-i="${i}"></div>`).join("");
+    dotsWrap.querySelectorAll(".dot").forEach(d=>{
+      d.addEventListener("click", ()=>{
+        const i = parseInt(d.getAttribute("data-i"),10);
+        goToSlide(i, true);
+      });
+    });
+  }
+  function goToSlide(i, userClick=false){
+    slides.forEach(s=> s.classList.remove("active"));
+    slides[i].classList.add("active");
+    slideIndex = i;
+    dotsWrap.querySelectorAll(".dot").forEach((d, idx)=>{
+      d.classList.toggle("active", idx === slideIndex);
+    });
+    if(userClick){
+      restartSlider();
+    }
+  }
+  function nextSlide(){
+    const i = (slideIndex + 1) % slides.length;
+    goToSlide(i);
+  }
+  function restartSlider(){
+    clearInterval(sliderTimer);
+    sliderTimer = setInterval(nextSlide, 5200);
+  }
+  renderDots();
+  restartSlider();
+
+  /**********************
+   * Dashboard Modal
+   **********************/
+  const dashModal = document.getElementById("dashModal");
+  const closeDash = document.getElementById("closeDash");
+  const openDashboardTop = document.getElementById("openDashboardTop");
+
+  function openDash(){
+    dashModal.classList.add("open");
+    dashModal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+  }
+  function closeDashModal(){
+    dashModal.classList.remove("open");
+    dashModal.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  }
+  openDashboardTop.addEventListener("click", openDash);
+  closeDash.addEventListener("click", closeDashModal);
+  dashModal.addEventListener("click", (e)=>{ if(e.target === dashModal) closeDashModal(); });
+
+  // Tab switching
+  document.querySelectorAll(".tab").forEach(t=>{
+    t.addEventListener("click", ()=>{
+      document.querySelectorAll(".tab").forEach(x=> x.classList.remove("active"));
+      t.classList.add("active");
+      const id = t.getAttribute("data-tab");
+      document.getElementById("tabStatus").style.display = (id==="tabStatus") ? "" : "none";
+      document.getElementById("tabHistory").style.display = (id==="tabHistory") ? "" : "none";
+    });
+  });
+
+  /**********************
+   * Registration Modal open helpers
+   **********************/
+  function scrollToRegisterSection(){
+    // scroll to Clash Squad section (register buttons) as default
+    const el = document.getElementById("clashsquad");
+    if(el) el.scrollIntoView({ behavior:"smooth" });
+  }
+
+  // Header/Slider/Hero register buttons => scroll to register section
+  ["topRegister","heroRegister","sliderRegister1","sliderRegister2","sliderRegister3","sliderRegister4","sliderRegister5"].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.addEventListener("click", scrollToRegisterSection);
+  });
+
+  // Slider/Hero dashboard buttons
+  ["heroDash","sliderDash1","sliderDash4"].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.addEventListener("click", openDash);
+  });
+
+  /**********************
+   * Helpers (Form)
    **********************/
   function pad(n){ return String(n).padStart(2, "0"); }
   function to12h(h, m){
@@ -771,7 +1420,6 @@
     return out;
   }
 
-  // ✅ REALTIME SLOT FILTER (past slot hide)
   function parse12hToMinutes(t){
     const m = String(t).trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
     if(!m) return null;
@@ -884,7 +1532,7 @@
   }
 
   /**********************
-   * Draft Save/Restore (keep filled data after return)
+   * Draft Save/Restore
    **********************/
   function saveIntent(){
     if(!current) return;
@@ -920,7 +1568,6 @@
     mainName.value = draft.main_name || "";
     secondName.value = draft.second_name || "";
     contact.value = draft.contact || "";
-    // slot draft will be restored only if it still exists (else blank)
     const desiredSlot = draft.slot || "";
     if(desiredSlot && [...slot.options].some(o => o.value === desiredSlot)){
       slot.value = desiredSlot;
@@ -941,7 +1588,7 @@
   }
 
   /**********************
-   * Mode -> Fields + Slots
+   * Mode -> Fields + Slots (with professional timing message)
    **********************/
   function applyModeRules(){
     if(!current) return;
@@ -950,7 +1597,6 @@
     secondName.required = false;
     secondName.value = "";
 
-    // CS options show/hide
     if(current.category === "CS"){
       csOptions.style.display = "grid";
     } else {
@@ -976,51 +1622,56 @@
     const entry = Number(current.entry);
     const isStream = String(current.stream) === "1";
 
-    // ✅ CS normal slots (realtime only)
+    // Professional timing helper
+    function closedMsg(){
+      return `Today’s slots are closed.\n${TIMINGS_TEXT}\nPlease try again tomorrow.`;
+    }
+
+    // CS normal slots (realtime only)
     if(current.category === "CS" && !(current.mode === "4v4" && isStream)){
       let list = buildHalfHourSlots(10,0,21,0);
-      list = filterFutureSlots(list, 0); // ✅ only future slots
+      list = filterFutureSlots(list, 0);
 
       if(list.length === 0){
-        setSlotOptions([], "✅ Aaj ke CS slots khatam. Kal dubara try karo.");
+        setSlotOptions([], closedMsg());
       } else {
-        setSlotOptions(list, "Available: abhi se aage (30 min gap)");
+        setSlotOptions(list, `Slots are shown in real-time (past slots hidden).\nCS: 10:00 AM – 9:00 PM (IST)`);
       }
     }
 
-    // ✅ CS 4v4 stream slots (realtime only)
+    // CS 4v4 stream slots (realtime only)
     if(current.category === "CS" && current.mode === "4v4" && isStream){
       let list = ["7:00 PM","7:30 PM","8:00 PM","8:30 PM"];
       list = filterFutureSlots(list, 0);
 
       if(list.length === 0){
-        setSlotOptions([], "✅ Aaj ke ON STREAM slots khatam. Kal dubara try karo.");
+        setSlotOptions([], closedMsg());
       } else {
-        setSlotOptions(list, "ON STREAM slots: future only (30 min gap)");
+        setSlotOptions(list, `ON STREAM slots are shown in real-time (past hidden).\nCS: 10:00 AM – 9:00 PM (IST)`);
       }
     }
 
-    // ✅ BR ₹25 slots (realtime only)
+    // BR ₹25 slots (realtime only)
     if(current.category === "BR" && entry === 25){
       let list = ["7:00 PM","9:30 PM"];
       list = filterFutureSlots(list, 0);
 
       if(list.length === 0){
-        setSlotOptions([], "✅ Aaj ke BR ₹25 slots khatam. Kal dubara try karo.");
+        setSlotOptions([], closedMsg());
       } else {
-        setSlotOptions(list, "BR ₹25 slots: future only");
+        setSlotOptions(list, `Slots are shown in real-time (past hidden).\nBR ₹25: 7:00 PM / 9:30 PM (IST)`);
       }
     }
 
-    // ✅ BR ₹35 slots (realtime only)
+    // BR ₹35 slots (realtime only)
     if(current.category === "BR" && entry === 35){
       let list = ["9:00 PM","11:30 PM"];
       list = filterFutureSlots(list, 0);
 
       if(list.length === 0){
-        setSlotOptions([], "✅ Aaj ke BR ₹35 slots khatam. Kal dubara try karo.");
+        setSlotOptions([], closedMsg());
       } else {
-        setSlotOptions(list, "BR ₹35 slots: future only");
+        setSlotOptions(list, `Slots are shown in real-time (past hidden).\nBR ₹35: 9:00 PM / 11:30 PM (IST)`);
       }
     }
 
@@ -1051,7 +1702,6 @@
 
     const rulesOk = rulesCheck.checked;
 
-    // CS extra mandatory
     let csOk = true;
     if(current.category === "CS"){
       const hs = getRadioValue("hs_only");
@@ -1064,7 +1714,6 @@
     return ok;
   }
 
-  // ✅ Auto-save draft on every change
   ["input","change"].forEach(evt => {
     regForm.addEventListener(evt, () => {
       validateAll();
@@ -1146,7 +1795,7 @@
   })();
 
   /**********************
-   * Submit -> Apps Script -> Sheet
+   * Submit -> Apps Script
    **********************/
   regForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -1155,12 +1804,11 @@
     submitBtn.disabled = true;
     formMsg.textContent = "Submitting...";
 
-    // Convert CS options to clean values
     let shotType = "N/A";
     let ammoType = "N/A";
     if(current && current.category === "CS"){
-      const hs = getRadioValue("hs_only"); // YES/NO
-      const ammo = getRadioValue("limited_ammo"); // YES/NO
+      const hs = getRadioValue("hs_only");
+      const ammo = getRadioValue("limited_ammo");
       shotType = (hs === "YES") ? "Head Shot" : "Body Shot";
       ammoType = (ammo === "YES") ? "Limited" : "Unlimited";
     }
@@ -1180,7 +1828,6 @@
     fd.append("paid_flag", f_paidFlag.value);
     fd.append("utr", utr.value.trim());
 
-    // NEW fields
     fd.append("shot_type", shotType);
     fd.append("ammo_type", ammoType);
 
@@ -1195,7 +1842,8 @@
       if(out.ok){
         formMsg.innerHTML = `✅ Registration received! Your Reg ID: <b style="color:#ffd700">${out.regId}</b><br/>
         WhatsApp pe DM karke confirmation le lo: <a class="wa-link" target="_blank" rel="noopener noreferrer"
-        href="https://wa.me/917294898996?text=Hi%20TRPS%20Champions%20League%2C%20I%20have%20registered.%20Reg%20ID%20${encodeURIComponent(out.regId)}%20Please%20confirm%20my%20entry.">7294898996</a>`;
+        href="https://wa.me/917294898996?text=Hi%20TRPS%20Champions%20League%2C%20I%20have%20registered.%20Reg%20ID%20${encodeURIComponent(out.regId)}%20Please%20confirm%20my%20entry.">7294898996</a><br/><br/>
+        <span class="small-muted">Tip: Open <b>My Dashboard</b> to check status anytime.</span>`;
 
         clearIntent();
       } else {
@@ -1206,6 +1854,149 @@
       formMsg.textContent = "❌ Network error. Try again.";
       submitBtn.disabled = false;
     }
+  });
+
+  /**********************
+   * Status + History (section + dashboard)
+   * NOTE: Backend endpoints should support:
+   *   GET ?action=status&reg_id=TRPS-0001&last4=1234
+   *   GET ?action=history&key=HISTORY_KEY&name=optional
+   **********************/
+  function normalizeRegId(x){
+    x = String(x||"").trim().toUpperCase();
+    let m = x.match(/^TRPS-(\d{1,})$/);
+    if(m) return "TRPS-" + ("0000" + m[1]).slice(-4);
+    m = x.match(/(\d{1,})/);
+    if(m) return "TRPS-" + ("0000" + m[1]).slice(-4);
+    return "";
+  }
+  function okLast4(x){ return /^\d{4}$/.test(String(x||"").trim()); }
+
+  async function apiGet(params){
+    const url = new URL(WEB_APP_URL);
+    Object.keys(params).forEach(k=> url.searchParams.set(k, params[k]));
+    const res = await fetch(url.toString(), { method:"GET" });
+    const txt = await res.text();
+    try{ return JSON.parse(txt); }catch(_){ return { ok:false, error:"Bad response", raw:txt }; }
+  }
+
+  function renderStatusResult(r){
+    const lines = [];
+    lines.push(`Reg ID: ${r.reg_id || "-"}`);
+    lines.push(`Status: ${r.status || "-"}`);
+    if(r.selected_display) lines.push(`Mode: ${r.selected_display}`);
+    if(r.slot_time) lines.push(`Slot: ${r.slot_time}`);
+    if(r.match_type) lines.push(`Match Type: ${r.match_type}`);
+    if(r.match_no) lines.push(`Match No: ${r.match_no}`);
+    if(r.opponent_reg_ids) lines.push(`Opponent: ${r.opponent_reg_ids}`);
+    if(r.room_no) lines.push(`Room: ${r.room_no}`);
+    if(r.slot_no) lines.push(`Slot No: ${r.slot_no}`);
+    if(r.notes) lines.push(`Note: ${r.notes}`);
+    return lines.join("\n");
+  }
+
+  async function doStatusCheck(regEl, last4El, outBox){
+    const reg = normalizeRegId(regEl.value);
+    const last4 = String(last4El.value||"").trim();
+    if(!reg || !okLast4(last4)){
+      outBox.style.display = "block";
+      outBox.textContent = "❌ Please enter valid Reg ID and last 4 digits.";
+      return;
+    }
+    outBox.style.display = "block";
+    outBox.textContent = "Checking...";
+    const out = await apiGet({ action:"status", reg_id: reg, last4: last4 });
+    if(!out.ok){
+      outBox.textContent = "❌ " + (out.error || "Failed");
+      return;
+    }
+    outBox.textContent = renderStatusResult(out.reg || {});
+  }
+
+  // Section Status
+  const statusReg = document.getElementById("statusReg");
+  const statusLast4 = document.getElementById("statusLast4");
+  const statusBtn = document.getElementById("statusBtn");
+  const statusClear = document.getElementById("statusClear");
+  const statusResult = document.getElementById("statusResult");
+
+  statusBtn.addEventListener("click", ()=> doStatusCheck(statusReg, statusLast4, statusResult));
+  statusClear.addEventListener("click", ()=>{
+    statusReg.value=""; statusLast4.value="";
+    statusResult.style.display="none"; statusResult.textContent="";
+  });
+
+  // Dashboard Status
+  const dashReg = document.getElementById("dashReg");
+  const dashLast4 = document.getElementById("dashLast4");
+  const dashStatusBtn = document.getElementById("dashStatusBtn");
+  const dashStatusClear = document.getElementById("dashStatusClear");
+  const dashStatusResult = document.getElementById("dashStatusResult");
+
+  dashStatusBtn.addEventListener("click", ()=> doStatusCheck(dashReg, dashLast4, dashStatusResult));
+  dashStatusClear.addEventListener("click", ()=>{
+    dashReg.value=""; dashLast4.value="";
+    dashStatusResult.style.display="none"; dashStatusResult.textContent="";
+  });
+
+  async function doHistoryCheck(keyEl, nameEl, outBox){
+    const key = String(keyEl.value||"").trim();
+    const name = String(nameEl.value||"").trim();
+    if(!key){
+      outBox.style.display = "block";
+      outBox.textContent = "❌ Please enter your History Key.";
+      return;
+    }
+    outBox.style.display = "block";
+    outBox.textContent = "Loading...";
+    const out = await apiGet({ action:"history", key: key, name: name });
+    if(!out.ok){
+      outBox.textContent = "❌ " + (out.error || "Failed");
+      return;
+    }
+
+    // Expect out.items = [{reg_id,status,selected_display,slot_time,match_no,room_no,slot_no,created_at}, ...]
+    const items = Array.isArray(out.items) ? out.items : [];
+    if(items.length === 0){
+      outBox.textContent = "No history found for this key.";
+      return;
+    }
+    const lines = [];
+    items.forEach((it, idx)=>{
+      lines.push(`${idx+1}. ${it.reg_id || "-"} • ${it.status || "-"} • ${it.selected_display || ""}`);
+      if(it.slot_time) lines.push(`   Slot: ${it.slot_time}`);
+      if(it.match_no) lines.push(`   Match: ${it.match_no}`);
+      if(it.room_no || it.slot_no) lines.push(`   Room/Slot: ${it.room_no || "-"} / ${it.slot_no || "-"}`);
+      if(it.created_at) lines.push(`   Time: ${it.created_at}`);
+      lines.push("");
+    });
+    outBox.textContent = lines.join("\n").trim();
+  }
+
+  // Section History
+  const histKey = document.getElementById("histKey");
+  const histName = document.getElementById("histName");
+  const histBtn = document.getElementById("histBtn");
+  const histClear = document.getElementById("histClear");
+  const histResult = document.getElementById("histResult");
+
+  histBtn.addEventListener("click", ()=> doHistoryCheck(histKey, histName, histResult));
+  histClear.addEventListener("click", ()=>{
+    histKey.value=""; histName.value="";
+    histResult.style.display="none"; histResult.textContent="";
+  });
+
+  // Dashboard History
+  const dashHistKey = document.getElementById("dashHistKey");
+  const dashHistName = document.getElementById("dashHistName");
+  const dashHistBtn = document.getElementById("dashHistBtn");
+  const dashHistClear = document.getElementById("dashHistClear");
+  const dashHistResult = document.getElementById("dashHistResult");
+
+  dashHistBtn.addEventListener("click", ()=> doHistoryCheck(dashHistKey, dashHistName, dashHistResult));
+  dashHistClear.addEventListener("click", ()=>{
+    dashHistKey.value=""; dashHistName.value="";
+    dashHistResult.style.display="none"; dashHistResult.textContent="";
   });
 </script>
 
