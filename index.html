@@ -1,0 +1,1107 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TRPS Champions League | Free Fire Max Tournament</title>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
+    body { background: radial-gradient(circle at top, #0b1c3d, #020816); color: #ffffff; }
+
+    header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 20px 40px;
+      background: rgba(0,0,0,0.5);
+      border-bottom: 2px solid #1f3c88;
+    }
+    header img { width: 80px; height: auto; }
+    header h1 { font-size: 32px; letter-spacing: 1px; }
+
+    .hero { text-align: center; padding: 80px 20px; position: relative; }
+    .hero::after {
+      content: "TRPS CHAMPIONS LEAGUE";
+      position: absolute;
+      inset: 0;
+      font-size: 80px;
+      font-weight: 900;
+      color: rgba(255,255,255,0.03);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+    .hero h2 { font-size: 42px; margin-bottom: 15px; }
+    .hero p { max-width: 800px; margin: auto; line-height: 1.7; color: #cfd9ff; }
+
+    section { padding: 60px 40px; max-width: 1200px; margin: auto; }
+    section h3 { font-size: 30px; margin-bottom: 20px; border-left: 6px solid #4da3ff; padding-left: 12px; }
+    ul { margin-left: 20px; line-height: 1.8; color: #dbe3ff; }
+
+    .socials { display: flex; gap: 30px; margin-top: 20px; flex-wrap: wrap; }
+    .socials a { text-decoration: none; color: #fff; font-weight: bold; padding: 12px 25px; border-radius: 30px; background: #1b2f6b; }
+
+    .cs-grid{ display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-top: 20px; }
+    .price-card{ background: rgba(0,0,0,0.25); border: 1px solid rgba(77,163,255,0.25); padding: 18px; border-radius: 18px; position: relative; overflow: hidden; }
+    .price-head{ display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+    .price-head h4{ font-size: 20px; margin: 0; }
+    .price-meta{ font-size: 14px; color: #cfd9ff; line-height: 1.4; }
+    .live-tag{ color: #ff3b3b; font-weight: 900; margin-left: 6px; }
+
+    .mode-row{ display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 12px; margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.08); }
+    .mode-name{ font-size: 16px; font-weight: 800; color: #ffffff; white-space: nowrap; display: flex; align-items: center; gap: 10px; }
+    .mini-pill{ font-size: 11px; font-weight: 900; letter-spacing: .4px; padding: 4px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.06); color: #ffffff; white-space: nowrap; }
+    .mini-pill-live{ border-color: rgba(255,59,59,0.35); background: rgba(255,59,59,0.10); color: #ffb3b3; }
+
+    .btn{ text-decoration: none; font-weight: 900; padding: 10px 16px; border-radius: 30px; display: inline-block; white-space: nowrap; border: 0; cursor: pointer; }
+    .btn-gold{ background: linear-gradient(135deg,#ffd700,#ff9f00); color:#000; }
+    .btn-live{ background: linear-gradient(135deg,#ff3b3b,#ff9900); color:#000; }
+    .btn-disabled{ background: #444; color: #fff; cursor: not-allowed; opacity: 0.85; pointer-events: none; }
+
+    .br-grid{ display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-top: 20px; }
+    .br-card{ background: rgba(0,0,0,0.25); border: 1px solid rgba(77,163,255,0.25); padding: 18px; border-radius: 18px; position: relative; overflow: hidden; }
+    .br-head{ display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+    .br-head h4{ font-size: 20px; margin: 0; }
+    .br-meta{ font-size: 14px; color: #cfd9ff; line-height: 1.4; }
+    .br-body{ margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.08); color: #dbe3ff; line-height: 1.6; font-size: 15px; }
+    .br-cta{ margin-top: 12px; }
+
+    .tag{ display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; font-weight: 900; font-size: 12px; letter-spacing: .5px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.06); color: #fff; white-space: nowrap; }
+    .tag-live{ border-color: rgba(255,59,59,0.35); background: rgba(255,59,59,0.10); color: #ffb3b3; }
+    .tag-mega{ border-color: rgba(255,215,0,0.40); background: rgba(255,215,0,0.12); color: #ffeaa0; }
+
+    .prize-box{ margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.08); color: #dbe3ff; line-height: 1.7; font-size: 14px; white-space: pre-line; }
+    .prize-title{ font-weight: 900; color: #cfd9ff; margin-bottom: 6px; letter-spacing: .2px; }
+
+    .mega-featured{ border: 1px solid rgba(255,215,0,0.35); box-shadow: 0 0 22px rgba(255,215,0,0.14); }
+    .mega-featured::before{
+      content: ""; position: absolute; inset: -2px;
+      background: radial-gradient(circle at top, rgba(255,215,0,0.20), transparent 60%);
+      pointer-events: none; opacity: 0.95;
+    }
+
+    .coming-glow{
+      position: relative; display: inline-flex; align-items: center; gap: 10px;
+      margin-top: 12px; padding: 10px 18px; border-radius: 999px;
+      font-weight: 900; letter-spacing: 0.6px; color: #fff;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,215,0,0.40);
+      box-shadow: 0 0 16px rgba(255,215,0,0.22);
+      overflow: hidden; user-select: none;
+      animation: megaBreathe 1.7s ease-in-out infinite;
+    }
+    .coming-glow::after{
+      content:""; position:absolute; top:-35%; left:-40%;
+      width: 60%; height: 170%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+      transform: rotate(18deg);
+      animation: megaSweep 2.8s ease-in-out infinite;
+      pointer-events:none; opacity: 0.75;
+    }
+    .blink-dot{
+      width: 10px; height: 10px; border-radius: 50%;
+      background: #ff3b3b; box-shadow: 0 0 10px rgba(255,59,59,0.45);
+      animation: dotBlink 1.1s ease-in-out infinite;
+      flex: 0 0 auto;
+    }
+    @keyframes megaBreathe{
+      0%   { transform: translateY(0) scale(1);   box-shadow: 0 0 14px rgba(255,215,0,0.18); }
+      50%  { transform: translateY(-1px) scale(1.02); box-shadow: 0 0 28px rgba(255,215,0,0.32); }
+      100% { transform: translateY(0) scale(1);   box-shadow: 0 0 14px rgba(255,215,0,0.18); }
+    }
+    @keyframes megaSweep{
+      0%   { left:-50%; opacity: 0.0; }
+      15%  { opacity: 0.65; }
+      50%  { left: 110%; opacity: 0.75; }
+      60%  { opacity: 0.0; }
+      100% { left: 110%; opacity: 0.0; }
+    }
+    @keyframes dotBlink{
+      0%, 100% { transform: scale(0.85); opacity: 0.45; }
+      50%      { transform: scale(1.15); opacity: 1; }
+    }
+
+    .mega-teaser{ margin-top: 10px; font-size: 13px; color: #cfd9ff; }
+
+    .wa-link{ color: #25D366; font-weight: 900; text-decoration: none; }
+    .wa-link:hover{ text-decoration: underline; }
+
+    /* ✅ Modal Form */
+    .modal{
+      position: fixed; inset: 0; display: none;
+      background: rgba(0,0,0,0.65);
+      align-items: center; justify-content: center;
+      padding: 18px;
+      z-index: 9999;
+    }
+    .modal.open{ display: flex; }
+    .modal-card{
+      width: min(860px, 100%);
+      background: rgba(2,8,22,0.96);
+      border: 1px solid rgba(77,163,255,0.30);
+      border-radius: 18px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.45);
+      overflow: hidden;
+    }
+    .modal-head{
+      display:flex; justify-content: space-between; align-items: center;
+      padding: 14px 16px;
+      background: rgba(0,0,0,0.35);
+      border-bottom: 1px solid rgba(255,255,255,0.10);
+    }
+    .modal-head h4{ font-size: 18px; margin:0; }
+    .close-btn{
+      background: transparent; color: #cfd9ff; border: 0;
+      font-size: 22px; cursor: pointer; padding: 6px 10px;
+    }
+    .modal-body{ padding: 16px; }
+    .selected-box{
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(77,163,255,0.22);
+      background: rgba(255,255,255,0.04);
+      color: #cfd9ff;
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+    .grid{
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .field{ display: flex; flex-direction: column; gap: 6px; }
+    .field label{ font-size: 12px; color:#cfd9ff; font-weight: 800; letter-spacing: .3px; }
+
+    /* ✅ FIX: Slot dropdown PC hover-only issue (always visible) */
+    .field select{
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background: rgba(255,255,255,0.08);
+      color: #ffffff;
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+    .field select option{
+      background: #0b1c3d;
+      color: #ffffff;
+    }
+
+    .field input, .field select, .field textarea{
+      padding: 12px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: #fff;
+      outline: none;
+    }
+    .field input:disabled, .field select:disabled, .field textarea:disabled{
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    /* ✅ NEW: Yes/No tick group (professional) */
+    .yn-wrap{
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      border-radius: 14px;
+      padding: 10px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .yn-wrap input{ display:none; }
+    .yn-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: #dbe3ff;
+      font-weight: 900;
+      cursor: pointer;
+      user-select: none;
+      transition: transform .06s ease, background .12s ease, border-color .12s ease;
+    }
+    .yn-btn:active{ transform: scale(0.98); }
+    .yn-btn i{ opacity: .95; }
+
+    /* selected styles */
+    .yn-wrap input:checked + .yn-btn{
+      border-color: rgba(77,163,255,0.40);
+      background: rgba(77,163,255,0.16);
+      color: #ffffff;
+      box-shadow: 0 0 16px rgba(77,163,255,0.10);
+    }
+    /* green yes */
+    .yn-wrap input.yn-yes:checked + .yn-btn{
+      border-color: rgba(59,255,147,0.35);
+      background: rgba(59,255,147,0.10);
+      box-shadow: 0 0 16px rgba(59,255,147,0.08);
+    }
+    /* red no */
+    .yn-wrap input.yn-no:checked + .yn-btn{
+      border-color: rgba(255,59,59,0.35);
+      background: rgba(255,59,59,0.10);
+      box-shadow: 0 0 16px rgba(255,59,59,0.08);
+    }
+
+    .help{
+      font-size: 12px;
+      color: #cfd9ff;
+      line-height: 1.5;
+      opacity: 0.95;
+    }
+    .pay-row{
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: 6px;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: #cfd9ff;
+      font-weight: 900;
+      font-size: 12px;
+    }
+    .warn{
+      border-color: rgba(255,215,0,0.35);
+      background: rgba(255,215,0,0.10);
+      color: #ffeaa0;
+    }
+    .ok{
+      border-color: rgba(59,255,147,0.25);
+      background: rgba(59,255,147,0.08);
+      color: #b9ffd7;
+    }
+    .actions{
+      display:flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+    .btn-ghost{
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #fff;
+    }
+    .btn:disabled{
+      opacity: .55;
+      cursor: not-allowed;
+    }
+    .divider{
+      height: 1px;
+      background: rgba(255,255,255,0.10);
+      margin: 14px 0;
+    }
+    .checkbox{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      color:#dbe3ff;
+      font-size: 13px;
+      line-height: 1.45;
+      margin-top: 4px;
+    }
+    .checkbox input{ margin-top: 3px; }
+
+    @media (max-width: 900px){
+      .cs-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .br-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 700px){
+      .cs-grid{ grid-template-columns: 1fr; }
+      .br-grid{ grid-template-columns: 1fr; }
+      .mode-name{ white-space: normal; }
+      .grid{ grid-template-columns: 1fr; }
+      .hero::after{ font-size: 44px; }
+    }
+
+    footer { text-align: center; padding: 25px; background: #020816; color: #8fa6ff; font-size: 14px; }
+    footer img { width: 50px; opacity: 0.2; margin-top: 10px; }
+  </style>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+<header>
+  <img src="Picsart_26-01-27_21-00-51-531.jpg.jpeg" alt="TRPS Champions League Logo" />
+  <h1>TRPS Champions League</h1>
+</header>
+
+<section class="hero">
+  <h2>Free Fire MAX Tournament</h2>
+  <p>Welcome to the official TRPS Champions League website. Participate in Battle Royale and Clash Squad matches, compete with skilled players, and win exciting rewards.</p>
+</section>
+
+<!-- ✅ Battle Royale -->
+<section id="battleroyale">
+  <h3>Battle Royale</h3>
+
+  <div class="br-grid">
+    <div class="br-card">
+      <div class="br-head">
+        <h4>Normal Lobby</h4>
+        <span class="tag">OPEN</span>
+      </div>
+
+      <div class="br-meta">Entry: ₹25 • Prize Pool: ₹250</div>
+
+      <div class="prize-box">
+        <div class="prize-title">Prize Distribution</div>
+        🥇 1st Place: ₹110
+        🥈 2nd Place: ₹80
+        🥉 3rd Place: ₹60
+      </div>
+
+      <div class="br-cta">
+        <button class="btn btn-gold open-reg"
+          data-category="BR"
+          data-entry="25"
+          data-mode="Normal Lobby"
+          data-stream="0"
+          data-display="BR • Normal Lobby • Entry ₹25"
+        >Register Here</button>
+      </div>
+    </div>
+
+    <div class="br-card">
+      <div class="br-head">
+        <h4>Competitive Lobby</h4>
+        <span class="tag tag-live">ON STREAM</span>
+      </div>
+
+      <div class="br-meta">Entry: ₹35 • Prize Pool: ₹335</div>
+
+      <div class="prize-box">
+        <div class="prize-title">Prize Distribution</div>
+        🥇 1st Place: ₹145
+        🥈 2nd Place: ₹115
+        🥉 3rd Place: ₹75
+      </div>
+
+      <div class="br-cta">
+        <button class="btn btn-live open-reg"
+          data-category="BR"
+          data-entry="35"
+          data-mode="Competitive Lobby"
+          data-stream="1"
+          data-display="BR • Competitive • Entry ₹35 (On Stream)"
+        >Register Here</button>
+      </div>
+    </div>
+
+    <div class="br-card mega-featured">
+      <div class="br-head">
+        <h4>Mega League</h4>
+        <span class="tag tag-mega">COMING SOON</span>
+      </div>
+
+      <div class="br-meta">Big Prize Pool • VIP Matches</div>
+
+      <div class="br-body">
+        Get ready for the biggest BR event of TRPS Champions League.
+        <div class="mega-teaser"><b>Coming Soon</b> • <b>Big Prize Pool</b></div>
+      </div>
+
+      <div class="br-cta">
+        <a class="btn btn-disabled" href="#" aria-disabled="true">Register Here</a>
+      </div>
+
+      <div class="coming-glow">
+        <span class="blink-dot"></span>
+        COMING SOON ✨
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ✅ Clash Squad -->
+<section id="clashsquad">
+  <h3>Clash Squad</h3>
+
+  <div class="cs-grid">
+
+    <div class="price-card">
+      <div class="price-head">
+        <h4>Entry ₹15</h4>
+        <div class="price-meta">Winning ₹25</div>
+      </div>
+
+      <div class="mode-row">
+        <div class="mode-name">1v1</div>
+        <button class="btn btn-gold open-reg" data-category="CS" data-entry="15" data-mode="1v1" data-stream="0" data-display="CS • 1v1 • Entry ₹15">Register Here</button>
+      </div>
+      <div class="mode-row">
+        <div class="mode-name">2v2</div>
+        <button class="btn btn-gold open-reg" data-category="CS" data-entry="15" data-mode="2v2" data-stream="0" data-display="CS • 2v2 • Entry ₹15">Register Here</button>
+      </div>
+      <div class="mode-row">
+        <div class="mode-name">4v4</div>
+        <button class="btn btn-gold open-reg" data-category="CS" data-entry="15" data-mode="4v4" data-stream="0" data-display="CS • 4v4 • Entry ₹15">Register Here</button>
+      </div>
+    </div>
+
+    <div class="price-card">
+      <div class="price-head">
+        <h4>Entry ₹25</h4>
+        <div class="price-meta">Winning ₹40</div>
+      </div>
+
+      <div class="mode-row">
+        <div class="mode-name">1v1</div>
+        <button class="btn btn-gold open-reg" data-category="CS" data-entry="25" data-mode="1v1" data-stream="0" data-display="CS • 1v1 • Entry ₹25">Register Here</button>
+      </div>
+      <div class="mode-row">
+        <div class="mode-name">2v2</div>
+        <button class="btn btn-gold open-reg" data-category="CS" data-entry="25" data-mode="2v2" data-stream="0" data-display="CS • 2v2 • Entry ₹25">Register Here</button>
+      </div>
+      <div class="mode-row">
+        <div class="mode-name">4v4</div>
+        <button class="btn btn-gold open-reg" data-category="CS" data-entry="25" data-mode="4v4" data-stream="0" data-display="CS • 4v4 • Entry ₹25">Register Here</button>
+      </div>
+    </div>
+
+    <div class="price-card">
+      <div class="price-head">
+        <h4>Entry ₹40</h4>
+        <div class="price-meta">Winning ₹60</div>
+      </div>
+
+      <div class="mode-row">
+        <div class="mode-name">1v1</div>
+        <button class="btn btn-gold open-reg" data-category="CS" data-entry="40" data-mode="1v1" data-stream="0" data-display="CS • 1v1 • Entry ₹40">Register Here</button>
+      </div>
+      <div class="mode-row">
+        <div class="mode-name">2v2</div>
+        <button class="btn btn-gold open-reg" data-category="CS" data-entry="40" data-mode="2v2" data-stream="0" data-display="CS • 2v2 • Entry ₹40">Register Here</button>
+      </div>
+      <div class="mode-row">
+        <div class="mode-name">4v4</div>
+        <button class="btn btn-gold open-reg" data-category="CS" data-entry="40" data-mode="4v4" data-stream="0" data-display="CS • 4v4 • Entry ₹40">Register Here</button>
+      </div>
+    </div>
+
+    <div class="price-card">
+      <div class="price-head">
+        <h4>Entry ₹50</h4>
+        <div class="price-meta">Winning ₹80</div>
+      </div>
+
+      <div class="mode-row">
+        <div class="mode-name">1v1</div>
+        <button class="btn btn-gold open-reg" data-category="CS" data-entry="50" data-mode="1v1" data-stream="0" data-display="CS • 1v1 • Entry ₹50">Register Here</button>
+      </div>
+      <div class="mode-row">
+        <div class="mode-name">2v2</div>
+        <button class="btn btn-gold open-reg" data-category="CS" data-entry="50" data-mode="2v2" data-stream="0" data-display="CS • 2v2 • Entry ₹50">Register Here</button>
+      </div>
+      <div class="mode-row">
+        <div class="mode-name">4v4</div>
+        <button class="btn btn-gold open-reg" data-category="CS" data-entry="50" data-mode="4v4" data-stream="0" data-display="CS • 4v4 • Entry ₹50">Register Here</button>
+      </div>
+    </div>
+
+    <div class="price-card">
+      <div class="price-head">
+        <h4>Entry ₹100</h4>
+        <div class="price-meta">Winning ₹180</div>
+      </div>
+
+      <div class="mode-row">
+        <div class="mode-name">1v1</div>
+        <button class="btn btn-gold open-reg" data-category="CS" data-entry="100" data-mode="1v1" data-stream="0" data-display="CS • 1v1 • Entry ₹100">Register Here</button>
+      </div>
+      <div class="mode-row">
+        <div class="mode-name">2v2</div>
+        <button class="btn btn-gold open-reg" data-category="CS" data-entry="100" data-mode="2v2" data-stream="0" data-display="CS • 2v2 • Entry ₹100">Register Here</button>
+      </div>
+      <div class="mode-row">
+        <div class="mode-name">4v4</div>
+        <button class="btn btn-gold open-reg" data-category="CS" data-entry="100" data-mode="4v4" data-stream="0" data-display="CS • 4v4 • Entry ₹100">Register Here</button>
+      </div>
+    </div>
+
+    <div class="price-card">
+      <div class="price-head">
+        <h4>Entry ₹150 <span class="live-tag">(On Stream)</span></h4>
+        <div class="price-meta">Winning ₹250</div>
+      </div>
+
+      <div class="mode-row">
+        <div class="mode-name">1v1</div>
+        <button class="btn btn-gold open-reg" data-category="CS" data-entry="150" data-mode="1v1" data-stream="0" data-display="CS • 1v1 • Entry ₹150">Register Here</button>
+      </div>
+
+      <div class="mode-row">
+        <div class="mode-name">2v2</div>
+        <button class="btn btn-gold open-reg" data-category="CS" data-entry="150" data-mode="2v2" data-stream="0" data-display="CS • 2v2 • Entry ₹150">Register Here</button>
+      </div>
+
+      <div class="mode-row">
+        <div class="mode-name">4v4 <span class="mini-pill mini-pill-live">ON STREAM 🔴</span></div>
+        <button class="btn btn-live open-reg" data-category="CS" data-entry="150" data-mode="4v4" data-stream="1" data-display="CS • 4v4 • Entry ₹150 (On Stream)">Register Here</button>
+      </div>
+
+      <p style="margin-top:12px; color:#cfd9ff; font-size:13px;">
+        Note: Only <b>4v4</b> will be <b>On Stream</b> 🔴 (1v1/2v2 normal matches).
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<section id="rules">
+  <h3>Game Rules & Regulations</h3>
+  <ul>
+    <li>
+      After registering, players must DM on
+      <a class="wa-link" target="_blank" rel="noopener noreferrer"
+         href="https://wa.me/917294898996?text=Hi%20TRPS%20Champions%20League%2C%20I%20have%20registered.%20Please%20confirm%20my%20entry.">
+        7294898996 (WhatsApp)
+      </a>
+      for confirmation.
+    </li>
+    <li>Players must join rooms on time.</li>
+    <li>Battle Royale and Clash Squad modes are conducted separately.</li>
+    <li>Squad-based matches for Battle Royale.</li>
+    <li>Any use of hacks, mods, or unfair means will result in disqualification.</li>
+    <li>Organizer's decision will be final.</li>
+  </ul>
+</section>
+
+<section id="privacy">
+  <h3>Privacy Policy</h3>
+  <p>Your privacy is important to us. All personal information collected through the registration form will be used solely for tournament management and communication purposes. We do not share your data with any third party.</p>
+</section>
+
+<section id="social">
+  <h3>Connect With Us</h3>
+  <div class="socials">
+    <a href="https://www.instagram.com/trps.tcleague" target="_blank" rel="noopener noreferrer"
+      style="padding:12px 22px; border-radius:30px; background:#E1306C; color:#fff; font-weight:bold; text-decoration:none; display:flex; gap:8px; align-items:center;">
+      <i class="fa-brands fa-instagram"></i> Instagram
+    </a>
+
+    <a href="https://www.youtube.com/@TRPSChampionsLeague" target="_blank" rel="noopener noreferrer"
+      style="padding:12px 22px; border-radius:30px; background:#FF0000; color:#fff; font-weight:bold; text-decoration:none; display:flex; gap:8px; align-items:center;">
+      <i class="fa-brands fa-youtube"></i> YouTube
+    </a>
+
+    <a href="https://www.facebook.com/TRPSChampionsLeague" target="_blank" rel="noopener noreferrer"
+      style="padding:12px 22px; border-radius:30px; background:#1877F2; color:#fff; font-weight:bold; text-decoration:none; display:flex; gap:8px; align-items:center;">
+      <i class="fa-brands fa-facebook"></i> Facebook Page
+    </a>
+
+    <a href="https://whatsapp.com/channel/0029VbCAbtDLCoWyWMRWwi3O" target="_blank" rel="noopener noreferrer"
+      style="padding:12px 22px; border-radius:30px; background:#25D366; color:#000; font-weight:bold; text-decoration:none; display:flex; gap:8px; align-items:center;">
+      <i class="fa-brands fa-whatsapp"></i> WhatsApp Channel
+    </a>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 TRPS Champions League. All Rights Reserved.</p>
+  <img src="Picsart_26-01-27_21-00-51-531.jpg.jpeg" alt="TRPS Watermark" />
+</footer>
+
+<!-- ✅ Registration Modal -->
+<div class="modal" id="regModal" aria-hidden="true">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h4>Registration Form</h4>
+      <button class="close-btn" id="closeModal" aria-label="Close">×</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="selected-box" id="selectedBox">
+        <b>Selected:</b> <span id="selectedText">—</span><br/>
+        <span class="help">Payment hone ke baad <b>UTR/Transaction ID</b> yahin fill karna compulsory hai.</span>
+      </div>
+
+      <form id="regForm">
+        <input type="hidden" name="category" id="f_category">
+        <input type="hidden" name="entry" id="f_entry">
+        <input type="hidden" name="mode" id="f_mode">
+        <input type="hidden" name="stream" id="f_stream">
+        <input type="hidden" name="paid_flag" id="f_paidFlag" value="0">
+
+        <div class="grid">
+          <div class="field">
+            <label id="labelMainName">In-Game Name *</label>
+            <input name="main_name" id="mainName" placeholder="Enter name" required>
+          </div>
+
+          <div class="field" id="fieldSecondName" style="display:none;">
+            <label>Second Player Name *</label>
+            <input name="second_name" id="secondName" placeholder="Enter second player name">
+          </div>
+
+          <div class="field">
+            <label>Contact Number (10-digit) *</label>
+            <input name="contact" id="contact" inputmode="numeric" placeholder="Enter WhatsApp number" maxlength="10" required>
+          </div>
+
+          <div class="field">
+            <label>Slot Time *</label>
+            <select name="slot" id="slot" required>
+              <option value="">Select slot</option>
+            </select>
+            <div class="help" id="slotHelp"></div>
+          </div>
+        </div>
+
+        <!-- ✅ NEW: CS OPTIONS (only show when CS selected) -->
+        <div class="grid" id="csOptions" style="margin-top:12px; display:none;">
+          <div class="field">
+            <label>Head Shot Only *</label>
+            <div class="yn-wrap">
+              <input class="yn-yes" type="radio" name="hs_only" id="hs_yes" value="YES">
+              <label class="yn-btn" for="hs_yes"><i class="fa-solid fa-check"></i> Yes</label>
+
+              <input class="yn-no" type="radio" name="hs_only" id="hs_no" value="NO">
+              <label class="yn-btn" for="hs_no"><i class="fa-solid fa-xmark"></i> No</label>
+            </div>
+            <div class="help">Select Yes = Head Shot mode, No = Normal (Body Shot).</div>
+          </div>
+
+          <div class="field">
+            <label>Limited Ammo *</label>
+            <div class="yn-wrap">
+              <input class="yn-yes" type="radio" name="limited_ammo" id="ammo_yes" value="YES">
+              <label class="yn-btn" for="ammo_yes"><i class="fa-solid fa-check"></i> Yes</label>
+
+              <input class="yn-no" type="radio" name="limited_ammo" id="ammo_no" value="NO">
+              <label class="yn-btn" for="ammo_no"><i class="fa-solid fa-xmark"></i> No</label>
+            </div>
+            <div class="help">Yes = Limited Ammo, No = Unlimited Ammo.</div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="field">
+          <label>Payment *</label>
+          <div class="pay-row">
+            <a class="btn btn-gold" id="payNowBtn" href="#" target="_blank" rel="noopener noreferrer">Pay Now</a>
+            <span class="pill warn" id="payStatePill">Step 1: Pay Now</span>
+            <span class="pill" id="amtPill">Amount: ₹0</span>
+          </div>
+          <div class="help" style="margin-top:8px;">
+            ✅ Payment ke baad <b>UTR/Transaction ID</b> fill karna compulsory hai.
+          </div>
+        </div>
+
+        <div class="grid" style="margin-top:12px;">
+          <div class="field">
+            <label>UTR / Transaction ID *</label>
+            <input name="utr" id="utr" placeholder="Payment ke baad UTR yahan paste karo" disabled>
+            <div class="help" id="utrHelp">Payment complete hone ke baad UTR field enable hoga.</div>
+          </div>
+
+          <div class="field">
+            <label>Confirmation *</label>
+            <div class="help">
+              Submit ke baad WhatsApp pe DM karke confirmation le lo:
+              <a class="wa-link" target="_blank" rel="noopener noreferrer"
+                 href="https://wa.me/917294898996?text=Hi%20TRPS%20Champions%20League%2C%20I%20have%20registered.%20Please%20confirm%20my%20entry.">
+                7294898996
+              </a>
+            </div>
+            <div class="checkbox">
+              <input type="checkbox" id="rulesCheck">
+              <label for="rulesCheck">
+                I agree to the Tournament Terms & Conditions and Fair Play Policy of TRPS Champions League.
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn btn-live" id="submitBtn" disabled>Submit</button>
+        </div>
+
+        <div class="help" id="formMsg" style="margin-top:10px;"></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  /**********************
+   * CONFIG
+   **********************/
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzv8wSJ2QGxYXkgL2m6FNJ68rhAj0MvqS7AqY53QjzbBlc1p8EwCimXDeQMoiTl_pwxZg/exec";
+  const PAYMENT_BASE = "https://trpschampionsleague.github.io/TCLeague/payment";
+  const STORAGE_KEY = "trps_reg_intent_v1";
+
+  /**********************
+   * Helpers
+   **********************/
+  function pad(n){ return String(n).padStart(2, "0"); }
+  function to12h(h, m){
+    const ampm = h >= 12 ? "PM" : "AM";
+    let hh = h % 12; if(hh === 0) hh = 12;
+    return `${hh}:${pad(m)} ${ampm}`;
+  }
+  function buildHalfHourSlots(startH, startM, endH, endM){
+    const out = [];
+    let h = startH, m = startM;
+    while(true){
+      out.push(to12h(h, m));
+      if(h === endH && m === endM) break;
+      m += 30;
+      if(m >= 60){ m = 0; h += 1; }
+      if(h > 23) break;
+    }
+    return out;
+  }
+  function setSlotOptions(list, helpText){
+    slot.innerHTML = `<option value="">Select slot</option>` + list.map(t => `<option value="${t}">${t}</option>`).join("");
+    slotHelp.textContent = helpText || "";
+  }
+  function is10DigitNumber(v){ return /^[0-9]{10}$/.test(v); }
+  function isValidUtr(v){ return (v || "").trim().length >= 8; }
+
+  function getRadioValue(name){
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    return el ? el.value : "";
+  }
+  function clearRadio(name){
+    document.querySelectorAll(`input[name="${name}"]`).forEach(x => x.checked = false);
+  }
+
+  function openModal(){
+    regModal.classList.add("open");
+    regModal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+  }
+  function closeModal(){
+    regModal.classList.remove("open");
+    regModal.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  }
+
+  /**********************
+   * DOM
+   **********************/
+  const regModal = document.getElementById("regModal");
+  const closeModalBtn = document.getElementById("closeModal");
+  const selectedText = document.getElementById("selectedText");
+  const amtPill = document.getElementById("amtPill");
+  const payStatePill = document.getElementById("payStatePill");
+  const payNowBtn = document.getElementById("payNowBtn");
+  const csOptions = document.getElementById("csOptions");
+
+  const f_category = document.getElementById("f_category");
+  const f_entry = document.getElementById("f_entry");
+  const f_mode = document.getElementById("f_mode");
+  const f_stream = document.getElementById("f_stream");
+  const f_paidFlag = document.getElementById("f_paidFlag");
+
+  const labelMainName = document.getElementById("labelMainName");
+  const fieldSecondName = document.getElementById("fieldSecondName");
+  const mainName = document.getElementById("mainName");
+  const secondName = document.getElementById("secondName");
+  const contact = document.getElementById("contact");
+  const slot = document.getElementById("slot");
+  const slotHelp = document.getElementById("slotHelp");
+  const utr = document.getElementById("utr");
+  const utrHelp = document.getElementById("utrHelp");
+  const rulesCheck = document.getElementById("rulesCheck");
+  const regForm = document.getElementById("regForm");
+  const submitBtn = document.getElementById("submitBtn");
+  const formMsg = document.getElementById("formMsg");
+
+  closeModalBtn.addEventListener("click", closeModal);
+  regModal.addEventListener("click", (e) => { if(e.target === regModal) closeModal(); });
+
+  /**********************
+   * State
+   **********************/
+  let current = null;
+  let paidUnlocked = false;
+
+  function resetPaymentState(){
+    paidUnlocked = false;
+    f_paidFlag.value = "0";
+    utr.value = "";
+    utr.disabled = true;
+    utrHelp.textContent = "Payment complete hone ke baad UTR field enable hoga.";
+    payStatePill.textContent = "Step 1: Pay Now";
+    payStatePill.className = "pill warn";
+    validateAll();
+  }
+
+  function unlockUtr(){
+    paidUnlocked = true;
+    f_paidFlag.value = "1";
+    utr.disabled = false;
+    utrHelp.textContent = "✅ Ab UTR/Txn ID fill karo, rules tick karo, then Submit.";
+    payStatePill.textContent = "Payment Done ✓ (Enter UTR)";
+    payStatePill.className = "pill ok";
+    validateAll();
+  }
+
+  function saveIntent(){
+    if(!current) return;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ current, ts: Date.now() }));
+  }
+  function loadIntent(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return null;
+      return JSON.parse(raw);
+    }catch(_){ return null; }
+  }
+  function clearIntent(){
+    localStorage.removeItem(STORAGE_KEY);
+  }
+
+  /**********************
+   * Mode -> Fields + Slots
+   **********************/
+  function applyModeRules(){
+    if(!current) return;
+
+    fieldSecondName.style.display = "none";
+    secondName.required = false;
+    secondName.value = "";
+
+    // CS options show/hide
+    if(current.category === "CS"){
+      csOptions.style.display = "grid";
+    } else {
+      csOptions.style.display = "none";
+      clearRadio("hs_only");
+      clearRadio("limited_ammo");
+    }
+
+    if(current.category === "CS"){
+      if(current.mode === "1v1"){
+        labelMainName.textContent = "In-Game Name *";
+      } else if(current.mode === "2v2"){
+        labelMainName.textContent = "Player 1 Name *";
+        fieldSecondName.style.display = "flex";
+        secondName.required = true;
+      } else if(current.mode === "4v4"){
+        labelMainName.textContent = "Team Name *";
+      }
+    } else if(current.category === "BR"){
+      labelMainName.textContent = "Team Name *";
+    }
+
+    const entry = Number(current.entry);
+    const isStream = String(current.stream) === "1";
+
+    if(current.category === "CS" && !(current.mode === "4v4" && isStream)){
+      const list = buildHalfHourSlots(10,0,21,0);
+      setSlotOptions(list, "Available: 10:00 AM to 9:00 PM (30 min gap)");
+    }
+    if(current.category === "CS" && current.mode === "4v4" && isStream){
+      const list = ["7:00 PM","7:30 PM","8:00 PM","8:30 PM"];
+      setSlotOptions(list, "ON STREAM slots: 7:00 PM to 8:30 PM (30 min gap)");
+    }
+    if(current.category === "BR" && entry === 25){
+      const list = ["7:00 PM","9:30 PM"];
+      setSlotOptions(list, "BR ₹25 slots: 7:00 PM or 9:30 PM");
+    }
+    if(current.category === "BR" && entry === 35){
+      const list = ["9:00 PM","11:30 PM"];
+      setSlotOptions(list, "BR ₹35 slots: 9:00 PM or 11:30 PM");
+    }
+
+    amtPill.textContent = `Amount: ₹${entry}`;
+
+    const returnUrl = new URL(window.location.href);
+    returnUrl.searchParams.set("paid", "1");
+    returnUrl.searchParams.delete("regopen");
+    const payUrl = `${PAYMENT_BASE}?amt=${encodeURIComponent(entry)}&return=${encodeURIComponent(returnUrl.toString())}`;
+    payNowBtn.href = payUrl;
+  }
+
+  /**********************
+   * Validation
+   **********************/
+  function validateAll(){
+    if(!current){
+      submitBtn.disabled = true;
+      return;
+    }
+    const mainOk = mainName.value.trim().length > 0;
+    const secondOk = (fieldSecondName.style.display === "none") ? true : (secondName.value.trim().length > 0);
+    const contactOk = is10DigitNumber(contact.value.trim());
+    const slotOk = slot.value.trim().length > 0;
+
+    const payOk = paidUnlocked;
+    const utrOk = payOk ? isValidUtr(utr.value) : false;
+
+    const rulesOk = rulesCheck.checked;
+
+    // CS extra mandatory
+    let csOk = true;
+    if(current.category === "CS"){
+      const hs = getRadioValue("hs_only");
+      const ammo = getRadioValue("limited_ammo");
+      csOk = !!hs && !!ammo;
+    }
+
+    const ok = mainOk && secondOk && contactOk && slotOk && payOk && utrOk && rulesOk && csOk;
+    submitBtn.disabled = !ok;
+    return ok;
+  }
+
+  ["input","change"].forEach(evt => {
+    regForm.addEventListener(evt, () => validateAll());
+  });
+
+  /**********************
+   * Open form from buttons
+   **********************/
+  document.querySelectorAll(".open-reg").forEach(btn => {
+    btn.addEventListener("click", () => {
+      current = {
+        category: btn.dataset.category,
+        entry: btn.dataset.entry,
+        mode: btn.dataset.mode,
+        stream: btn.dataset.stream,
+        display: btn.dataset.display
+      };
+
+      selectedText.textContent = current.display;
+      f_category.value = current.category;
+      f_entry.value = current.entry;
+      f_mode.value = current.mode;
+      f_stream.value = current.stream;
+
+      formMsg.textContent = "";
+      regForm.reset();
+      resetPaymentState();
+      applyModeRules();
+
+      openModal();
+      saveIntent();
+    });
+  });
+
+  /**********************
+   * Pay Now click (no unlock here)
+   **********************/
+  payNowBtn.addEventListener("click", () => {
+    saveIntent();
+    payStatePill.textContent = "Payment in progress...";
+    payStatePill.className = "pill warn";
+    formMsg.textContent = "✅ Payment page open ho raha hai. Payment complete hone ke baad yahan aake UTR fill karo.";
+    validateAll();
+  });
+
+  /**********************
+   * If returned from payment (paid=1) -> unlock UTR
+   **********************/
+  (function handleReturn(){
+    const url = new URL(window.location.href);
+    const paid = url.searchParams.get("paid");
+    if(paid !== "1") return;
+
+    const intent = loadIntent();
+    if(!intent || !intent.current) return;
+
+    current = intent.current;
+
+    selectedText.textContent = current.display;
+    f_category.value = current.category;
+    f_entry.value = current.entry;
+    f_mode.value = current.mode;
+    f_stream.value = current.stream;
+
+    formMsg.textContent = "✅ Payment complete. Ab UTR/Txn ID fill karo & rules tick karke Submit karo.";
+    regForm.reset();
+    applyModeRules();
+
+    unlockUtr();
+    openModal();
+
+    url.searchParams.delete("paid");
+    history.replaceState({}, "", url.toString());
+  })();
+
+  /**********************
+   * Submit -> Apps Script -> Sheet
+   **********************/
+  regForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if(!validateAll()) return;
+
+    submitBtn.disabled = true;
+    formMsg.textContent = "Submitting...";
+
+    // Convert CS options to clean values
+    let shotType = "N/A";
+    let ammoType = "N/A";
+    if(current && current.category === "CS"){
+      const hs = getRadioValue("hs_only"); // YES/NO
+      const ammo = getRadioValue("limited_ammo"); // YES/NO
+      shotType = (hs === "YES") ? "Head Shot" : "Body Shot";
+      ammoType = (ammo === "YES") ? "Limited" : "Unlimited";
+    }
+
+    const fd = new FormData();
+    fd.append("category", f_category.value);
+    fd.append("entry", f_entry.value);
+    fd.append("mode", f_mode.value);
+    fd.append("stream", f_stream.value);
+    fd.append("selected_display", current?.display || "");
+
+    fd.append("main_name", mainName.value.trim());
+    fd.append("second_name", (fieldSecondName.style.display === "none") ? "" : secondName.value.trim());
+    fd.append("contact", contact.value.trim());
+    fd.append("slot", slot.value.trim());
+
+    fd.append("paid_flag", f_paidFlag.value);
+    fd.append("utr", utr.value.trim());
+
+    // NEW fields
+    fd.append("shot_type", shotType);
+    fd.append("ammo_type", ammoType);
+
+    fd.append("rules_accepted", rulesCheck.checked ? "YES" : "NO");
+
+    try{
+      const res = await fetch(WEB_APP_URL, { method: "POST", body: fd });
+      const text = await res.text();
+      let out = null;
+      try{ out = JSON.parse(text); } catch(_){ out = { ok:false, error:"Bad response", raw:text }; }
+
+      if(out.ok){
+        formMsg.innerHTML = `✅ Registration received! Your Reg ID: <b style="color:#ffd700">${out.regId}</b><br/>
+        WhatsApp pe DM karke confirmation le lo: <a class="wa-link" target="_blank" rel="noopener noreferrer"
+        href="https://wa.me/917294898996?text=Hi%20TRPS%20Champions%20League%2C%20I%20have%20registered.%20Reg%20ID%20${encodeURIComponent(out.regId)}%20Please%20confirm%20my%20entry.">7294898996</a>`;
+
+        clearIntent();
+      } else {
+        formMsg.textContent = "❌ Failed: " + (out.error || "Try again");
+        submitBtn.disabled = false;
+      }
+    } catch(err){
+      formMsg.textContent = "❌ Network error. Try again.";
+      submitBtn.disabled = false;
+    }
+  });
+</script>
+
+</body>
+</html>
