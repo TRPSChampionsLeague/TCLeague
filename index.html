@@ -300,6 +300,19 @@
       font-weight: 700;
     }
 
+    /* ✅ Per Kill strict rules box (cards + modal) */
+    .pk-rules{
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,59,59,0.35);
+      background: rgba(255,59,59,0.08);
+      color: #ffd6d6;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .pk-rules b{ color:#ffb3b3; }
+
     /* ✅ Modal Form */
     .modal{
       position: fixed; inset: 0; display: none;
@@ -478,7 +491,13 @@
 
     footer { text-align: center; padding: 25px; background: #020816; color: #8fa6ff; font-size: 14px; }
     footer img { width: 50px; opacity: 0.2; margin-top: 10px; }
-  </style>
+  footer img { width: 50px; opacity: 0.2; margin-top: 10px; }
+
+/* Slider captions: keep heading, hide only the note text */
+.slide-caption .cap-sub{
+  display: none !important;
+}
+</style>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -572,7 +591,7 @@
         <div class="slide">
           <img src="slide3.png" alt="TRPS Slide 3">
           <div class="slide-caption">
-            <div class="cap-title">Presented by TRPS</div>
+            <div class="cap-title">Presented by TRPS Champions League</div>
             <div class="cap-sub">Professional branding, clear rules, and organized match flow for a smooth experience.</div>
           </div>
         </div>
@@ -695,6 +714,15 @@
 
       <div class="br-meta">Entry: ₹25 • Per Kill: ₹10 • Winner: ₹100</div>
 
+      <!-- ✅ Per Kill Strict Rules (card) -->
+      <div class="pk-rules">
+        <b>Strict Rules (Per Kill):</b><br>
+        • Revive OFF<br>
+        • Gun Attributes OFF<br>
+        • No Team-Up<br>
+        • No Glitch / Exploit
+      </div>
+
       <div class="br-cta">
         <button class="btn btn-gold open-reg"
           data-category="BR"
@@ -714,6 +742,15 @@
 
       <div class="br-meta">Entry: ₹35 • Per Kill: ₹12 • Winner: ₹120</div>
 
+      <!-- ✅ Per Kill Strict Rules (card) -->
+      <div class="pk-rules">
+        <b>Strict Rules (Per Kill):</b><br>
+        • Revive OFF<br>
+        • Gun Attributes OFF<br>
+        • No Team-Up<br>
+        • No Glitch / Exploit
+      </div>
+
       <div class="br-cta">
         <button class="btn btn-live open-reg"
           data-category="BR"
@@ -732,6 +769,15 @@
       </div>
 
       <div class="br-meta">Entry: ₹50 / team • Per Kill: ₹20 (team) • Winner: ₹150</div>
+
+      <!-- ✅ Per Kill Strict Rules (card) -->
+      <div class="pk-rules">
+        <b>Strict Rules (Per Kill):</b><br>
+        • Revive OFF<br>
+        • Gun Attributes OFF<br>
+        • No Team-Up<br>
+        • No Glitch / Exploit
+      </div>
 
       <div class="br-cta">
         <button class="btn btn-gold open-reg"
@@ -936,6 +982,20 @@
     <li>Any use of hacks, mods, or unfair means will result in disqualification.</li>
     <li>Organizer's decision will be final.</li>
   </ul>
+
+  <!-- ✅ Per Kill Strict Rules (visible on rules page too) -->
+  <div class="mini-card" style="margin-top:16px;">
+    <h4 style="margin:0 0 10px; font-size:18px; font-weight:1000;">Per Kill Matches — Strict Rules</h4>
+    <ul style="margin-left:20px; line-height:1.85; color:#dbe3ff;">
+      <li><b>Revive OFF</b> (revive allowed nahi hoga)</li>
+      <li><b>Gun Attributes OFF</b></li>
+      <li><b>No Team-Up</b> (enemy ke saath milke khelna banned)</li>
+      <li><b>No Glitch / Exploit</b> (bug abuse, map exploit, etc. banned)</li>
+    </ul>
+    <p style="margin-top:10px; color:#cfd9ff; line-height:1.6; font-size:13px;">
+      Rule break = Direct Disqualification (No Refund).
+    </p>
+  </div>
 </section>
 
 <section id="privacy">
@@ -988,6 +1048,18 @@
       <div class="selected-box" id="selectedBox">
         <b>Selected:</b> <span id="selectedText">—</span><br/>
         <span class="help">Payment hone ke baad <b>UTR/Transaction ID</b> yahin fill karna compulsory hai.</span>
+      </div>
+
+      <!-- ✅ Per Kill rules shown ONLY for Per Kill modes -->
+      <div id="perKillRulesBox" class="pk-rules" style="display:none; margin-top:-6px; margin-bottom:14px;">
+        <b>Per Kill – Mandatory Rules:</b><br>
+        • Revive OFF<br>
+        • Gun Attributes OFF<br>
+        • No Team-Up<br>
+        • No Glitch / Exploit<br>
+        <span style="font-size:12px; color:#ffb3b3;">
+          Rule break = Direct Disqualification (No Refund)
+        </span>
       </div>
 
       <form id="regForm">
@@ -1081,7 +1153,9 @@
             <div class="checkbox">
               <input type="checkbox" id="rulesCheck">
               <label for="rulesCheck">
-                I agree to the Tournament Terms & Conditions and Fair Play Policy of TRPS Champions League.
+                I agree to all Tournament Rules. I understand that for <b>Per Kill matches</b>:
+                Revive OFF, Gun Attributes OFF, No Team-Up & No Glitch usage.
+                Violation = Disqualification (No Refund).
               </label>
             </div>
           </div>
@@ -1264,6 +1338,7 @@
   const payStatePill = document.getElementById("payStatePill");
   const payNowBtn = document.getElementById("payNowBtn");
   const csOptions = document.getElementById("csOptions");
+  const perKillRulesBox = document.getElementById("perKillRulesBox");
 
   const f_category = document.getElementById("f_category");
   const f_entry = document.getElementById("f_entry");
@@ -1397,7 +1472,7 @@
         labelMainName.textContent = "Team Name *";
       }
     } else if(current.category === "BR"){
-      // ✅ NEW: BR DUO (Per Kill) requires two names
+      // ✅ BR DUO (Per Kill) requires two names
       if(String(current.mode).toUpperCase().includes("DUO")){
         labelMainName.textContent = "Player 1 Name *";
         labelSecondName.textContent = "Player 2 Name *";
@@ -1413,6 +1488,11 @@
     const isStream = String(current.stream) === "1";
     const modeUpper = String(current.mode || "").toUpperCase();
     const isPerKill = modeUpper.includes("PER KILL");
+
+    // ✅ Show/Hide Per Kill strict rules in form
+    if(perKillRulesBox){
+      perKillRulesBox.style.display = (current.category === "BR" && isPerKill) ? "block" : "none";
+    }
 
     // CS normal slots
     if(current.category === "CS" && !(current.mode === "4v4" && isStream)){
@@ -1444,7 +1524,6 @@
       list = filterFutureSlots(list, 0);
 
       if(list.length === 0){
-        // keep message as-is (you asked)
         setSlotOptions([], "Slots closed (CS: 10:00 AM – 9:00 PM IST). Please try again tomorrow.");
       } else {
         setSlotOptions(list, "Slots: 10:00 AM – 9:00 PM (IST) • Past slots auto-hidden");
