@@ -297,10 +297,6 @@
       border: 1px solid rgba(255,255,255,0.12);
       color: #fff;
     }
-    .btn:disabled{
-      opacity: .55;
-      cursor: not-allowed;
-    }
     .divider{
       height: 1px;
       background: rgba(255,255,255,0.10);
@@ -589,6 +585,40 @@
   <p>Your privacy is important to us. All personal information collected through the registration form will be used solely for tournament management and communication purposes. We do not share your data with any third party.</p>
 </section>
 
+<!-- ✅ Check Status (same page) -->
+<section id="checkstatus">
+  <h3>Check Your Status</h3>
+
+  <p style="color:#cfd9ff; line-height:1.6; max-width:820px;">
+    Apna registration status dekhne ke liye <b>Reg ID</b> aur <b>Phone ke last 4 digits</b> enter karo.
+  </p>
+
+  <div style="margin-top:18px; display:grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap:12px; max-width:900px;">
+    <div class="field">
+      <label>Reg ID (TRPS-0001)</label>
+      <input id="st_reg" placeholder="TRPS-0001">
+    </div>
+
+    <div class="field">
+      <label>Phone Last 4</label>
+      <input id="st_last4" inputmode="numeric" maxlength="4" placeholder="1234">
+    </div>
+
+    <div class="field" style="display:flex; align-items:flex-end;">
+      <button class="btn btn-live" id="st_btn" type="button" style="width:100%;">Check Status</button>
+    </div>
+  </div>
+
+  <div class="help" id="st_help" style="margin-top:10px;"></div>
+
+  <p class="help" style="margin-top:14px;">
+    Direct link:
+    <a class="wa-link" href="https://trpschampionsleague.github.io/TCLeague/status" target="_blank" rel="noopener noreferrer">
+      https://trpschampionsleague.github.io/TCLeague/status
+    </a>
+  </p>
+</section>
+
 <section id="social">
   <h3>Connect With Us</h3>
   <div class="socials">
@@ -665,7 +695,7 @@
           </div>
         </div>
 
-        <!-- ✅ NEW: CS OPTIONS (only show when CS selected) -->
+        <!-- ✅ CS OPTIONS -->
         <div class="grid" id="csOptions" style="margin-top:12px; display:none;">
           <div class="field">
             <label>Head Shot Only *</label>
@@ -745,9 +775,13 @@
   /**********************
    * CONFIG
    **********************/
-  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzv8wSJ2QGxYXkgL2m6FNJ68rhAj0MvqS7AqY53QjzbBlc1p8EwCimXDeQMoiTl_pwxZg/exec";
+  // ✅ UPDATED: your new deploy URL
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbylSMHYA3ZCLEXHF8OJKTh68rYAbx1tYhd1u-MFOALGhSFBVZqCOiT7lJI0Ld-sHbEb/exec";
+
   const PAYMENT_BASE = "https://trpschampionsleague.github.io/TCLeague/payment";
-  const STORAGE_KEY = "trps_reg_intent_v2"; // ✅ updated version key
+  const STATUS_URL   = "https://trpschampionsleague.github.io/TCLeague/status";
+
+  const STORAGE_KEY = "trps_reg_intent_v2";
 
   /**********************
    * Helpers
@@ -858,7 +892,7 @@
   }
 
   /**********************
-   * Draft Save/Restore (FIX: keep filled data after return)
+   * Draft Save/Restore (keep filled data after return)
    **********************/
   function saveIntent(){
     if(!current) return;
@@ -917,7 +951,6 @@
     secondName.required = false;
     secondName.value = "";
 
-    // CS options show/hide
     if(current.category === "CS"){
       csOptions.style.display = "grid";
     } else {
@@ -987,7 +1020,6 @@
 
     const rulesOk = rulesCheck.checked;
 
-    // CS extra mandatory
     let csOk = true;
     if(current.category === "CS"){
       const hs = getRadioValue("hs_only");
@@ -1000,7 +1032,6 @@
     return ok;
   }
 
-  // ✅ Auto-save draft on every change
   ["input","change"].forEach(evt => {
     regForm.addEventListener(evt, () => {
       validateAll();
@@ -1033,12 +1064,12 @@
       applyModeRules();
 
       openModal();
-      saveIntent(); // ✅ save fresh intent
+      saveIntent();
     });
   });
 
   /**********************
-   * Pay Now click (save draft + no unlock here)
+   * Pay Now click
    **********************/
   payNowBtn.addEventListener("click", () => {
     saveIntent();
@@ -1049,7 +1080,7 @@
   });
 
   /**********************
-   * If returned from payment (paid=1) -> unlock UTR + restore draft
+   * Return from payment (paid=1)
    **********************/
   (function handleReturn(){
     const url = new URL(window.location.href);
@@ -1069,16 +1100,12 @@
 
     formMsg.textContent = "✅ Payment complete. Ab UTR/Txn ID fill karo & rules tick karke Submit karo.";
 
-    // ❌ IMPORTANT FIX: regForm.reset() removed (so user data doesn't vanish)
     applyModeRules();
-
-    // ✅ Restore user-filled draft after slot list is ready
     restoreDraft(intent.draft);
 
     unlockUtr();
     openModal();
 
-    // clean URL
     url.searchParams.delete("paid");
     history.replaceState({}, "", url.toString());
 
@@ -1086,7 +1113,7 @@
   })();
 
   /**********************
-   * Submit -> Apps Script -> Sheet
+   * Submit -> Apps Script
    **********************/
   regForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -1095,12 +1122,11 @@
     submitBtn.disabled = true;
     formMsg.textContent = "Submitting...";
 
-    // Convert CS options to clean values
     let shotType = "N/A";
     let ammoType = "N/A";
     if(current && current.category === "CS"){
-      const hs = getRadioValue("hs_only"); // YES/NO
-      const ammo = getRadioValue("limited_ammo"); // YES/NO
+      const hs = getRadioValue("hs_only");
+      const ammo = getRadioValue("limited_ammo");
       shotType = (hs === "YES") ? "Head Shot" : "Body Shot";
       ammoType = (ammo === "YES") ? "Limited" : "Unlimited";
     }
@@ -1120,10 +1146,8 @@
     fd.append("paid_flag", f_paidFlag.value);
     fd.append("utr", utr.value.trim());
 
-    // NEW fields
     fd.append("shot_type", shotType);
     fd.append("ammo_type", ammoType);
-
     fd.append("rules_accepted", rulesCheck.checked ? "YES" : "NO");
 
     try{
@@ -1133,11 +1157,23 @@
       try{ out = JSON.parse(text); } catch(_){ out = { ok:false, error:"Bad response", raw:text }; }
 
       if(out.ok){
-        formMsg.innerHTML = `✅ Registration received! Your Reg ID: <b style="color:#ffd700">${out.regId}</b><br/>
-        WhatsApp pe DM karke confirmation le lo: <a class="wa-link" target="_blank" rel="noopener noreferrer"
-        href="https://wa.me/917294898996?text=Hi%20TRPS%20Champions%20League%2C%20I%20have%20registered.%20Reg%20ID%20${encodeURIComponent(out.regId)}%20Please%20confirm%20my%20entry.">7294898996</a>`;
+        const regId = out.regId;
 
-        clearIntent(); // ✅ clear saved draft after success
+        // ✅ Status URL auto (reg + last4)
+        const sUrl = new URL(STATUS_URL);
+        sUrl.searchParams.set("reg", regId);
+        sUrl.searchParams.set("last4", (contact.value || "").trim().slice(-4));
+
+        formMsg.innerHTML =
+          `✅ Registration received! Your Reg ID: <b style="color:#ffd700">${regId}</b><br/>
+          WhatsApp pe DM karke confirmation le lo: <a class="wa-link" target="_blank" rel="noopener noreferrer"
+          href="https://wa.me/917294898996?text=Hi%20TRPS%20Champions%20League%2C%20I%20have%20registered.%20Reg%20ID%20${encodeURIComponent(regId)}%20Please%20confirm%20my%20entry.">7294898996</a>
+          <br/><br/>
+          <a class="btn btn-ghost" target="_blank" rel="noopener noreferrer" href="${sUrl.toString()}">
+            Check Status
+          </a>`;
+
+        clearIntent();
       } else {
         formMsg.textContent = "❌ Failed: " + (out.error || "Try again");
         submitBtn.disabled = false;
@@ -1147,6 +1183,46 @@
       submitBtn.disabled = false;
     }
   });
+
+  /**********************
+   * ✅ Check Status button logic (same page)
+   **********************/
+  (function initStatusLink(){
+    const regEl = document.getElementById("st_reg");
+    const last4El = document.getElementById("st_last4");
+    const btn = document.getElementById("st_btn");
+    const help = document.getElementById("st_help");
+
+    if(!btn) return;
+
+    function normReg(v){
+      let x = String(v||"").trim().toUpperCase();
+      const m = x.match(/(\d{1,})/);
+      if(!m) return "";
+      return "TRPS-" + ("0000" + m[1]).slice(-4);
+    }
+
+    btn.addEventListener("click", () => {
+      const regId = normReg(regEl.value);
+      const last4 = String(last4El.value||"").trim();
+
+      if(!regId){
+        help.textContent = "❌ Reg ID sahi daalo (example: TRPS-0001)";
+        return;
+      }
+      if(!/^\d{4}$/.test(last4)){
+        help.textContent = "❌ Phone ke last 4 digits sahi daalo (4 numbers)";
+        return;
+      }
+
+      const url = new URL(STATUS_URL);
+      url.searchParams.set("reg", regId);
+      url.searchParams.set("last4", last4);
+
+      window.open(url.toString(), "_blank");
+      help.textContent = "✅ Opening status page...";
+    });
+  })();
 </script>
 
 </body>
