@@ -1,0 +1,194 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TRPS Champions League | Check Status</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body{
+      margin:0;
+      min-height:100vh;
+      background: radial-gradient(circle at top, #0b1c3d, #020816);
+      color:#ffffff;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+    }
+    header{
+      padding:18px 24px;
+      background: rgba(0,0,0,0.5);
+      border-bottom:2px solid #1f3c88;
+      text-align:center;
+      font-size:22px;
+      font-weight:900;
+    }
+    .wrap{
+      max-width:900px;
+      margin:40px auto;
+      padding:20px;
+    }
+    .card{
+      background: rgba(0,0,0,0.25);
+      border:1px solid rgba(77,163,255,0.25);
+      border-radius:16px;
+      padding:20px;
+      margin-bottom:20px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3,1fr);
+      gap:12px;
+    }
+    @media(max-width:700px){
+      .grid{ grid-template-columns:1fr; }
+    }
+    label{
+      font-size:12px;
+      font-weight:800;
+      color:#cfd9ff;
+    }
+    input{
+      padding:12px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.08);
+      color:#fff;
+    }
+    .btn{
+      padding:12px;
+      border-radius:999px;
+      border:0;
+      font-weight:900;
+      cursor:pointer;
+      background: linear-gradient(135deg,#ff3b3b,#ff9900);
+      color:#000;
+    }
+    .status{
+      font-size:18px;
+      font-weight:900;
+      margin-bottom:10px;
+    }
+    .pill{
+      display:inline-block;
+      padding:6px 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:900;
+      background: rgba(255,255,255,0.1);
+      border:1px solid rgba(255,255,255,0.2);
+      margin-right:8px;
+    }
+    .ok{ color:#8cffc1; }
+    .warn{ color:#ffd27a; }
+    .bad{ color:#ff9a9a; }
+    .help{
+      color:#cfd9ff;
+      font-size:13px;
+      line-height:1.6;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>TRPS Champions League – Check Status</header>
+
+<div class="wrap">
+
+  <div class="card">
+    <div class="grid">
+      <div>
+        <label>Reg ID</label>
+        <input id="reg" placeholder="TRPS-0001">
+      </div>
+      <div>
+        <label>Phone Last 4</label>
+        <input id="last4" maxlength="4" placeholder="1234">
+      </div>
+      <div style="display:flex;align-items:flex-end;">
+        <button class="btn" onclick="checkStatus()">Check Status</button>
+      </div>
+    </div>
+    <div class="help" id="msg" style="margin-top:10px;"></div>
+  </div>
+
+  <div class="card" id="result" style="display:none;"></div>
+
+</div>
+
+<script>
+  const WEB_APP_URL =
+    "https://script.google.com/macros/s/AKfycbylSMHYA3ZCLEXHF8OJKTh68rYAbx1tYhd1u-MFOALGhSFBVZqCOiT7lJI0Ld-sHbEb/exec";
+
+  function normReg(v){
+    const m = String(v||"").toUpperCase().match(/(\d+)/);
+    if(!m) return "";
+    return "TRPS-" + ("0000"+m[1]).slice(-4);
+  }
+
+  async function checkStatus(){
+    const reg = normReg(document.getElementById("reg").value);
+    const last4 = document.getElementById("last4").value.trim();
+    const msg = document.getElementById("msg");
+    const box = document.getElementById("result");
+
+    msg.textContent = "";
+    box.style.display = "none";
+
+    if(!reg){
+      msg.textContent = "❌ Reg ID sahi daalo (TRPS-0001)";
+      return;
+    }
+    if(!/^\d{4}$/.test(last4)){
+      msg.textContent = "❌ Phone ke last 4 digits sahi daalo";
+      return;
+    }
+
+    msg.textContent = "Checking status...";
+
+    const url = new URL(WEB_APP_URL);
+    url.searchParams.set("action","status");
+    url.searchParams.set("reg",reg);
+    url.searchParams.set("last4",last4);
+
+    try{
+      const res = await fetch(url.toString());
+      const data = await res.json();
+
+      if(!data.ok){
+        msg.textContent = "❌ " + (data.error || "No record found");
+        return;
+      }
+
+      msg.textContent = "";
+      box.style.display = "block";
+      box.innerHTML = `
+        <div class="status">Status: <span class="${data.status==='VERIFIED'?'ok':data.status==='PENDING'?'warn':'bad'}">${data.status}</span></div>
+
+        <div class="pill">${data.category}</div>
+        <div class="pill">${data.mode}</div>
+        <div class="pill">₹${data.entry}</div>
+        <div class="pill">${data.slot}</div>
+
+        <div class="help" style="margin-top:12px;">
+          ${data.note || ""}
+        </div>
+      `;
+
+    }catch(e){
+      msg.textContent = "❌ Network error. Try again.";
+    }
+  }
+
+  // Auto-load if params in URL
+  (function(){
+    const u = new URL(location.href);
+    if(u.searchParams.get("reg") && u.searchParams.get("last4")){
+      document.getElementById("reg").value = u.searchParams.get("reg");
+      document.getElementById("last4").value = u.searchParams.get("last4");
+      checkStatus();
+    }
+  })();
+</script>
+
+</body>
+</html>
