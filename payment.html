@@ -1,254 +1,305 @@
-﻿<!doctype html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>TRPS Champions League — Payment</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TRPS Champions League | Payment</title>
 
   <style>
-    :root{
-      --bg1:#0b1c3d; --bg2:#020816;
-      --line:rgba(77,163,255,.26);
-      --text:#eef2ff; --muted:#cfd9ff;
-      --gold1:#ffd700; --gold2:#ff9f00;
-      --btn:#101f44;
-    }
-    *{box-sizing:border-box;margin:0;padding:0;font-family:Segoe UI,Tahoma,sans-serif}
+    *{box-sizing:border-box;margin:0;padding:0;font-family:Segoe UI, Tahoma, sans-serif}
     body{
       min-height:100vh;
-      display:flex;align-items:center;justify-content:center;
-      padding:18px;
-      background:radial-gradient(circle at top,var(--bg1),var(--bg2));
-      color:var(--text);
+      background: radial-gradient(circle at top, #0b1c3d, #020816);
+      color:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:22px;
     }
-    .wrap{width:min(860px,100%);}
-    .card{
-      background:rgba(8,17,42,.90);
-      border:1px solid var(--line);
-      border-radius:22px;
-      overflow:hidden;
-      box-shadow:0 0 34px rgba(0,0,0,.45);
-      backdrop-filter: blur(6px);
-    }
-    .head{
-      padding:18px 18px 16px;
-      background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,0));
-      border-bottom:1px solid rgba(255,255,255,.08);
-    }
-    .title{font-size:20px;font-weight:900;letter-spacing:.3px;}
-    .sub{margin-top:6px;color:var(--muted);line-height:1.55;font-size:14px;}
 
-    .content{padding:18px;}
-    .topRow{display:flex;gap:14px;flex-wrap:wrap;align-items:center;justify-content:space-between;}
-    .feeBlock .lbl{color:var(--muted);font-size:14px;}
-    .feeBlock .amt{font-size:54px;font-weight:1000;margin-top:4px;color:var(--gold1);letter-spacing:.5px;}
-    .pill{
-      display:inline-flex;align-items:center;gap:8px;
-      padding:8px 12px;border-radius:999px;
-      border:1px solid rgba(255,215,0,.35);
-      background:rgba(255,215,0,.10);
-      color:#ffeaa0;font-weight:900;font-size:12px;
-      white-space:nowrap;
+    .card{
+      width:min(880px, 100%);
+      background: rgba(0,0,0,0.55);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+      overflow:hidden;
     }
+
+    .top{
+      display:flex;
+      gap:16px;
+      align-items:center;
+      padding-bottom:16px;
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .logo{
+      width:64px;height:64px;border-radius:14px;
+      background: rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.08);
+      display:flex;align-items:center;justify-content:center;
+      font-weight:900;letter-spacing:1px;
+    }
+
+    .title h1{font-size:22px;letter-spacing:0.5px}
+    .title p{opacity:0.8;font-size:13px;margin-top:4px}
 
     .grid{
-      margin-top:16px;
       display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:14px;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 18px;
+      margin-top:18px;
     }
+
+    @media(max-width:860px){
+      .grid{grid-template-columns:1fr}
+    }
+
     .box{
-      background:rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:18px;
-      padding:14px;
-    }
-    .boxTitle{font-size:13px;font-weight:1000;color:var(--muted);letter-spacing:.35px;}
-    .mono{margin-top:8px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:16px;}
-    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px;}
-    .btn{
-      appearance:none;border:0;cursor:pointer;
-      padding:10px 16px;border-radius:999px;
-      font-weight:1000;letter-spacing:.2px;
-      text-decoration:none;display:inline-flex;align-items:center;justify-content:center;
-      white-space:nowrap;
-      transition:transform .08s ease,opacity .2s ease, filter .2s ease;
-      user-select:none;
-    }
-    .btn:active{transform:scale(.98)}
-    .btnGold{background:linear-gradient(135deg,var(--gold1),var(--gold2));color:#000;}
-    .btnGhost{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);color:var(--text);}
-    .btnDark{background:var(--btn);border:1px solid rgba(255,255,255,.10);color:var(--text);}
-    .btnDisabled{
-      pointer-events:none !important;
-      opacity:.55 !important;
-      filter:grayscale(.2);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 16px;
     }
 
-    .note{margin-top:10px;color:var(--muted);font-size:13px;line-height:1.55;}
+    .amountRow{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:12px;
+      margin-top:10px;
+      padding:12px 14px;
+      border-radius:14px;
+      background: rgba(0,0,0,0.35);
+      border:1px solid rgba(255,255,255,0.08);
+    }
 
-    /* QR */
-    .qrBox{margin-top:14px;}
-    .qrPanel{
-      margin-top:12px;
-      display:none;
-      background:rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:18px;
-      padding:14px;
+    .amtLabel{opacity:0.85;font-size:13px}
+    .amt{
+      font-size:28px;
+      font-weight:900;
+      letter-spacing:0.5px;
+    }
+
+    .hint{
+      margin-top:10px;
+      opacity:0.85;
+      font-size:13px;
+      line-height:1.5;
+    }
+
+    .btns{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:14px;
+    }
+
+    button{
+      border:none;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-weight:800;
+      cursor:pointer;
+      transition: transform 0.08s ease, opacity 0.2s ease;
+    }
+    button:active{transform:scale(0.98)}
+
+    .primary{
+      background: linear-gradient(90deg, #ffd54a, #ff8a3d);
+      color:#1b0f00;
+      box-shadow: 0 12px 30px rgba(255,140,60,0.18);
+      flex:1;
+      min-width: 220px;
+    }
+    .secondary{
+      background: rgba(255,255,255,0.08);
+      border:1px solid rgba(255,255,255,0.12);
+      color:#fff;
+      flex:1;
+      min-width: 220px;
+    }
+
+    .disabled{
+      opacity:0.45;
+      cursor:not-allowed;
+      transform:none !important;
+    }
+
+    .qrWrap{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:10px;
+    }
+
+    .qrBox{
+      width:100%;
+      aspect-ratio: 1/1;
+      max-width: 360px;
+      border-radius: 16px;
+      background: rgba(0,0,0,0.35);
+      border: 1px solid rgba(255,255,255,0.10);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+    }
+
+    .qrBox img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      display:none; /* hidden until Pay Now click */
+    }
+
+    .qrPlaceholder{
       text-align:center;
+      padding: 18px;
+      opacity:0.85;
+      font-size:14px;
+      line-height:1.55;
     }
-    .qrImg{
-      width:min(320px,100%);
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.12);
-      background:#fff;
-      display:block;
-      margin:10px auto 0;
-    }
-    /* IMPORTANT: no errors/tips shown to user */
-    .hidden{display:none !important;}
 
-    @media(max-width:820px){
-      .grid{grid-template-columns:1fr;}
-      .feeBlock .amt{font-size:44px;}
+    .error{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:12px;
+      background: rgba(255, 65, 65, 0.12);
+      border: 1px solid rgba(255, 65, 65, 0.25);
+      color: #ffd7d7;
+      display:none;
+      font-size:13px;
+      line-height:1.5;
+    }
+
+    .small{
+      margin-top:12px;
+      opacity:0.75;
+      font-size:12px;
+      line-height:1.5;
     }
   </style>
 </head>
-
 <body>
-  <div class="wrap">
-    <div class="card">
-      <div class="head">
-        <div class="title">TRPS Champions League — Payment</div>
-        <div class="sub">
-          Secure UPI payment. Payment ke baad UTR/Transaction ID registration form me fill karna mandatory hai.
+  <div class="card">
+    <div class="top">
+      <div class="logo">TRPS</div>
+      <div class="title">
+        <h1>Payment</h1>
+        <p>Complete your entry payment and then return to the registration form.</p>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- LEFT -->
+      <div class="box">
+        <div class="amtLabel">Amount to Pay</div>
+
+        <div class="amountRow">
+          <div>
+            <div class="amtLabel">UPI Payment</div>
+            <div class="amt" id="amtText">₹0</div>
+          </div>
+          <div style="text-align:right">
+            <div class="amtLabel">QR Image</div>
+            <div style="font-weight:800;opacity:0.9" id="qrName">-</div>
+          </div>
+        </div>
+
+        <div class="hint">
+          Step 1: Click <b>Pay Now</b> to reveal the QR.<br/>
+          Step 2: Pay using any UPI app.<br/>
+          Step 3: After you click Pay Now, <b>Return to Form</b> will be enabled.
+        </div>
+
+        <div class="btns">
+          <button class="primary" id="payBtn">Pay Now (Show QR)</button>
+          <button class="secondary disabled" id="returnBtn" disabled>Return to Form</button>
+        </div>
+
+        <div class="error" id="errBox"></div>
+
+        <div class="small">
+          Note: QR will appear only after clicking Pay Now.
         </div>
       </div>
 
-      <div class="content">
-        <div class="topRow">
-          <div class="feeBlock">
-            <div class="lbl">Entry Fee</div>
-            <div class="amt" id="amtText">₹0</div>
-          </div>
-          <div class="pill">Remember: Pay → Return → Enter UTR</div>
-        </div>
-
-        <div class="grid">
-          <!-- UPI -->
-          <div class="box">
-            <div class="boxTitle">UPI ID</div>
-            <div class="mono" id="upiId">krsinghronak1@ybl</div>
-            <div class="row">
-              <button class="btn btnGhost" id="copyBtn" type="button">Copy UPI ID</button>
-            </div>
-            <div class="note">Agar UPI app open nahi hota, manual UPI ID se pay kar sakte ho.</div>
-          </div>
-
-          <!-- Pay -->
-          <div class="box">
-            <div class="boxTitle">Pay Now</div>
-            <div class="note">Click “Pay Now” to open UPI app with amount.</div>
-            <div class="row">
-              <a class="btn btnGold" id="payBtn" href="#" target="_blank" rel="noopener">Pay Now</a>
-              <button class="btn btnDark" id="returnBtn" type="button">Return to Form</button>
-            </div>
-            <div class="note">Payment ke baad form pe jaake UTR/Transaction ID fill karo.</div>
-          </div>
-        </div>
-
-        <!-- QR -->
+      <!-- RIGHT -->
+      <div class="box qrWrap">
         <div class="qrBox">
-          <div class="row" style="justify-content:flex-start;">
-            <button class="btn btnGhost" id="qrToggle" type="button">Show QR Code</button>
+          <div class="qrPlaceholder" id="qrPlaceholder">
+            QR hidden for safety ✅<br/>
+            Click <b>Pay Now (Show QR)</b> to view.
           </div>
-
-          <div class="qrPanel" id="qrPanel">
-            <div class="boxTitle" style="text-align:left;">QR Code</div>
-            <img class="qrImg" id="qrImg" alt="UPI QR Code" />
-          </div>
+          <img id="qrImg" alt="UPI QR" />
         </div>
-
       </div>
     </div>
   </div>
 
-<script>
-  // ===== CONFIG =====
-  const PAYMENT_MIN = 1;
-  const PAYMENT_MAX = 2100;
+  <script>
+    // ===== Helpers =====
+    const qs = new URLSearchParams(location.search);
 
-  // Return fallback
-  const FORM_FALLBACK_URL = "https://trpschampionsleague.github.io/TCLeague/";
+    function clampAmt(val){
+      const n = Number(val);
+      if(!Number.isFinite(n)) return null;
+      if(n < 1 || n > 2100) return null;
+      return Math.round(n);
+    }
 
-  // ===== PARAMS =====
-  const params = new URLSearchParams(location.search);
-  const amt = Number(params.get("amt") || "0");
-  const returnUrl = params.get("return");
+    function showError(msg){
+      const box = document.getElementById("errBox");
+      box.style.display = "block";
+      box.textContent = msg;
+    }
 
-  const amtText  = document.getElementById("amtText");
-  const payBtn   = document.getElementById("payBtn");
-  const qrToggle = document.getElementById("qrToggle");
-  const qrPanel  = document.getElementById("qrPanel");
-  const qrImg    = document.getElementById("qrImg");
+    // ===== Elements =====
+    const payBtn     = document.getElementById("payBtn");
+    const returnBtn  = document.getElementById("returnBtn");
+    const amtText    = document.getElementById("amtText");
+    const qrName     = document.getElementById("qrName");
+    const qrImg      = document.getElementById("qrImg");
+    const placeholder= document.getElementById("qrPlaceholder");
 
-  // ===== VALIDATION (SILENT) =====
-  const valid = Number.isFinite(amt) && amt >= PAYMENT_MIN && amt <= PAYMENT_MAX;
+    // ===== Amount Setup =====
+    const amt = clampAmt(qs.get("amt"));
+    if(!amt){
+      amtText.textContent = "Invalid";
+      qrName.textContent  = "-";
+      showError("Invalid amount. Use like: payment.html?amt=25  (Allowed: 1 to 2100)");
+      payBtn.classList.add("disabled");
+      payBtn.disabled = true;
+    } else {
+      amtText.textContent = "₹" + amt;
+      // QR file name mapping: /qr/AMOUNT.png (Change folder if you want)
+      const qrPath = "qr/" + amt + ".png";
+      qrName.textContent = amt + ".png";
+      qrImg.src = qrPath;
+    }
 
-  // Show amount (silent)
-  amtText.textContent = valid ? ("₹" + amt) : "₹0";
+    // ===== Return URL =====
+    // Best: payment.html?amt=25&return=https://forms.gle/xxxxx
+    const returnUrl = qs.get("return") || document.referrer || "index.html";
 
-  // ===== PAY LINK (UPI DEEP LINK) =====
-  const upiId = document.getElementById("upiId").textContent.trim();
+    // ===== Pay Now click =====
+    payBtn.addEventListener("click", () => {
+      // show QR
+      placeholder.style.display = "none";
+      qrImg.style.display = "block";
 
-  if(valid){
-    const note = encodeURIComponent(`TRPS TC League Entry ₹${amt}`);
-    const upiUrl = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent("TRPS Champions League")}&am=${encodeURIComponent(String(amt))}&cu=INR&tn=${note}`;
-    payBtn.href = upiUrl;
-  } else {
-    // No message, just disable
-    payBtn.href = "#";
-    payBtn.classList.add("btnDisabled");
-    qrToggle.classList.add("btnDisabled");
-  }
+      // enable return button
+      returnBtn.disabled = false;
+      returnBtn.classList.remove("disabled");
+    });
 
-  // ===== COPY UPI =====
-  document.getElementById("copyBtn").addEventListener("click", async () => {
-    try{ await navigator.clipboard.writeText(upiId); }catch(e){}
-  });
-
-  // ===== RETURN BUTTON =====
-  document.getElementById("returnBtn").addEventListener("click", () => {
-    if(returnUrl){ location.href = returnUrl; return; }
-    if(history.length > 1) history.back();
-    else location.href = FORM_FALLBACK_URL;
-  });
-
-  // ===== QR (SHOW ON CLICK ONLY) =====
-  function setQrForAmount(a){
-    const png = `./${a}.png`;
-    const jpg = `./${a}.jpg`;
-
-    // No error text shown. If missing, image just won't load.
-    qrImg.onerror = () => {
-      qrImg.onerror = null;
-      qrImg.src = jpg;
-    };
-    qrImg.src = png;
-  }
-
-  qrToggle.addEventListener("click", () => {
-    // If invalid, do nothing (silent)
-    if(!valid) return;
-
-    const open = qrPanel.style.display === "block";
-    qrPanel.style.display = open ? "none" : "block";
-    qrToggle.textContent = open ? "Show QR Code" : "Hide QR Code";
-
-    if(!open) setQrForAmount(amt);
-  });
-</script>
-
+    // ===== Return click =====
+    returnBtn.addEventListener("click", () => {
+      window.location.href = returnUrl;
+    });
+  </script>
 </body>
 </html>
