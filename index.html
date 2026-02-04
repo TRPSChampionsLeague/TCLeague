@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TRPS Champions League | Free Fire Max Tournament</title>
 
+  <!-- Razorpay Checkout -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
     body { background: radial-gradient(circle at top, #0b1c3d, #020816); color: #ffffff; }
@@ -36,7 +39,7 @@
     .sidebar-backdrop{
       position: fixed; inset: 0;
       background: rgba(0,0,0,0.55);
-      display:none; z-index: 9998;
+      display:none; z-index: 11999;
     }
     .sidebar-backdrop.open{ display:block; }
 
@@ -48,7 +51,7 @@
       box-shadow: 0 0 32px rgba(0,0,0,0.55);
       transform: translateX(-105%);
       transition: transform .28s ease;
-      z-index: 9999;
+      z-index: 12000;
       padding: 16px;
       overflow: auto;
     }
@@ -165,11 +168,11 @@
       max-width: 760px;
     }
     .cap-title{
-      font-size: 34px;
+      font-size: 30px;
       font-weight: 1000;
       letter-spacing: .2px;
       text-shadow: 0 10px 24px rgba(0,0,0,0.55);
-      line-height: 1.05;
+      line-height: 1.07;
     }
     .cap-sub{
       margin-top: 8px;
@@ -178,6 +181,7 @@
       line-height: 1.5;
       max-width: 720px;
       text-shadow: 0 10px 24px rgba(0,0,0,0.55);
+      display: none !important;
     }
     .dots{
       position:absolute; right: 14px; bottom: 14px;
@@ -278,7 +282,6 @@
     .wa-link{ color: #25D366; font-weight: 900; text-decoration: none; }
     .wa-link:hover{ text-decoration: underline; }
 
-    /* ===== Per Kill heading ===== */
     .subhead{
       margin-top: 26px;
       padding: 16px 16px;
@@ -300,7 +303,6 @@
       font-weight: 700;
     }
 
-    /* ✅ Per Kill strict rules box (cards + modal) */
     .pk-rules{
       margin-top: 12px;
       padding: 10px 12px;
@@ -319,7 +321,7 @@
       background: rgba(0,0,0,0.65);
       align-items: center; justify-content: center;
       padding: 18px;
-      z-index: 9999;
+      z-index: 11000;
     }
     .modal.open{ display: flex; }
     .modal-card{
@@ -371,7 +373,7 @@
       color: #fff;
       outline: none;
     }
-    .field input:disabled, .field select:disabled, .field textarea:disabled{ opacity: 0.55; cursor: not-allowed; }
+    .field input:disabled, .field select:disabled, .field textarea:disabled{ opacity: 0.65; cursor: not-allowed; }
 
     .yn-wrap{
       border: 1px solid rgba(255,255,255,0.12);
@@ -399,7 +401,6 @@
       transition: transform .06s ease, background .12s ease, border-color .12s ease;
     }
     .yn-btn:active{ transform: scale(0.98); }
-    .yn-btn i{ opacity: .95; }
     .yn-wrap input:checked + .yn-btn{
       border-color: rgba(77,163,255,0.40);
       background: rgba(77,163,255,0.16);
@@ -428,6 +429,7 @@
     }
     .warn{ border-color: rgba(255,215,0,0.35); background: rgba(255,215,0,0.10); color: #ffeaa0; }
     .ok{ border-color: rgba(59,255,147,0.25); background: rgba(59,255,147,0.08); color: #b9ffd7; }
+
     .actions{ display:flex; gap: 10px; justify-content: flex-end; margin-top: 14px; flex-wrap: wrap; }
     .btn-ghost{ background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #fff; }
     .btn:disabled{ opacity: .55; cursor: not-allowed; }
@@ -486,18 +488,12 @@
       .br-grid{ grid-template-columns: 1fr; }
       .mode-name{ white-space: normal; }
       .grid{ grid-template-columns: 1fr; }
-      .cap-title{ font-size: 28px; }
+      .cap-title{ font-size: 26px; }
     }
 
     footer { text-align: center; padding: 25px; background: #020816; color: #8fa6ff; font-size: 14px; }
     footer img { width: 50px; opacity: 0.2; margin-top: 10px; }
-  footer img { width: 50px; opacity: 0.2; margin-top: 10px; }
-
-/* Slider captions: keep heading, hide only the note text */
-.slide-caption .cap-sub{
-  display: none !important;
-}
-</style>
+  </style>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -529,10 +525,6 @@
     <a href="#rules" data-scroll><i class="fa-solid fa-list-check"></i> Rules</a>
     <a href="#privacy" data-scroll><i class="fa-solid fa-shield"></i> Privacy</a>
   </nav>
-
-  <div style="margin-top:14px; color:#8fa6ff; font-size:12px; line-height:1.5;">
-    Tip: Menu se click karte hi page same screen pe us section pe chala jayega (smooth scroll).
-  </div>
 </aside>
 
 <!-- ===================== TOPBAR ===================== -->
@@ -553,7 +545,7 @@
       <div class="hero-title">Free Fire MAX Tournament</div>
 
       <div class="hero-note">
-        Register in seconds, complete payment, submit UTR, and your request will be reviewed.
+        Register in seconds, complete payment, and submit your request.
         Slot options are shown in real-time (past slots are automatically hidden).
       </div>
 
@@ -568,7 +560,7 @@
       </div>
     </div>
 
-    <!-- ✅ Branding Slider: images must be in SAME folder as index.html -->
+    <!-- ✅ Branding Slider -->
     <div class="slider-card">
       <div class="slider" id="slider">
 
@@ -699,10 +691,10 @@
     </div>
   </div>
 
-  <!-- ✅ Per Kill Matches (Professional heading, no "type") -->
+  <!-- ✅ Per Kill Matches -->
   <div class="subhead">
     <h4>Per Kill Matches</h4>
-    <p>Slots: 10:00 AM – 9:00 PM (IST) • Every 30 minutes</p>
+    <p>Slots: 10:00 AM – 9:00 PM (IST) • Every 30 minutes • (Seats shown live)</p>
   </div>
 
   <div class="br-grid" style="margin-top:18px;">
@@ -712,11 +704,11 @@
         <span class="tag tag-live">PER KILL</span>
       </div>
 
-      <div class="br-meta">Entry: ₹25 • Per Kill: ₹10 • Winner: ₹100</div>
+      <div class="br-meta">Entry: ₹25 • Per Kill: ₹10 • Winner: ₹120</div>
 
-      <!-- ✅ Per Kill Strict Rules (card) -->
       <div class="pk-rules">
         <b>Strict Rules (Per Kill):</b><br>
+        • Minimum <b>2 Kills</b> required<br>
         • Revive OFF<br>
         • Gun Attributes OFF<br>
         • No Team-Up<br>
@@ -740,11 +732,11 @@
         <span class="tag tag-live">PER KILL</span>
       </div>
 
-      <div class="br-meta">Entry: ₹35 • Per Kill: ₹12 • Winner: ₹120</div>
+      <div class="br-meta">Entry: ₹35 • Per Kill: ₹15 • Winner: ₹150</div>
 
-      <!-- ✅ Per Kill Strict Rules (card) -->
       <div class="pk-rules">
         <b>Strict Rules (Per Kill):</b><br>
+        • Minimum <b>2 Kills</b> required<br>
         • Revive OFF<br>
         • Gun Attributes OFF<br>
         • No Team-Up<br>
@@ -770,9 +762,9 @@
 
       <div class="br-meta">Entry: ₹50 / team • Per Kill: ₹20 (team) • Winner: ₹150</div>
 
-      <!-- ✅ Per Kill Strict Rules (card) -->
       <div class="pk-rules">
         <b>Strict Rules (Per Kill):</b><br>
+        • Minimum <b>2 Kills</b> required<br>
         • Revive OFF<br>
         • Gun Attributes OFF<br>
         • No Team-Up<br>
@@ -790,7 +782,6 @@
       </div>
     </div>
   </div>
-
 </section>
 
 <!-- ✅ Clash Squad -->
@@ -798,7 +789,6 @@
   <h3>Clash Squad</h3>
 
   <div class="cs-grid">
-
     <div class="price-card">
       <div class="price-head">
         <h4>Entry ₹15</h4>
@@ -924,7 +914,6 @@
         Note: Only <b>4v4</b> will be <b>On Stream</b> 🔴 (1v1/2v2 normal matches).
       </p>
     </div>
-
   </div>
 </section>
 
@@ -983,14 +972,14 @@
     <li>Organizer's decision will be final.</li>
   </ul>
 
-  <!-- ✅ Per Kill Strict Rules (visible on rules page too) -->
   <div class="mini-card" style="margin-top:16px;">
     <h4 style="margin:0 0 10px; font-size:18px; font-weight:1000;">Per Kill Matches — Strict Rules</h4>
     <ul style="margin-left:20px; line-height:1.85; color:#dbe3ff;">
-      <li><b>Revive OFF</b> (revive allowed nahi hoga)</li>
+      <li><b>Minimum 2 Kills required</b></li>
+      <li><b>Revive OFF</b></li>
       <li><b>Gun Attributes OFF</b></li>
-      <li><b>No Team-Up</b> (enemy ke saath milke khelna banned)</li>
-      <li><b>No Glitch / Exploit</b> (bug abuse, map exploit, etc. banned)</li>
+      <li><b>No Team-Up</b></li>
+      <li><b>No Glitch / Exploit</b></li>
     </ul>
     <p style="margin-top:10px; color:#cfd9ff; line-height:1.6; font-size:13px;">
       Rule break = Direct Disqualification (No Refund).
@@ -1047,12 +1036,12 @@
     <div class="modal-body">
       <div class="selected-box" id="selectedBox">
         <b>Selected:</b> <span id="selectedText">—</span><br/>
-        <span class="help">Payment hone ke baad <b>UTR/Transaction ID</b> yahin fill karna compulsory hai.</span>
+        <span class="help">Payment ke baad hi Submit enable hoga.</span>
       </div>
 
-      <!-- ✅ Per Kill rules shown ONLY for Per Kill modes -->
       <div id="perKillRulesBox" class="pk-rules" style="display:none; margin-top:-6px; margin-bottom:14px;">
         <b>Per Kill – Mandatory Rules:</b><br>
+        • Minimum <b>2 Kills</b> required<br>
         • Revive OFF<br>
         • Gun Attributes OFF<br>
         • No Team-Up<br>
@@ -1067,7 +1056,10 @@
         <input type="hidden" name="entry" id="f_entry">
         <input type="hidden" name="mode" id="f_mode">
         <input type="hidden" name="stream" id="f_stream">
-        <input type="hidden" name="paid_flag" id="f_paidFlag" value="0">
+        <input type="hidden" name="match_date" id="f_matchDate" value="">
+
+        <!-- Razorpay verified token (frontend keeps; backend verifies) -->
+        <input type="hidden" name="payment_token" id="f_paymentToken" value="">
 
         <div class="grid">
           <div class="field">
@@ -1085,6 +1077,15 @@
             <input name="contact" id="contact" inputmode="numeric" placeholder="Enter WhatsApp number" maxlength="10" required>
           </div>
 
+          <!-- ✅ Date selector ONLY for BR Per Kill -->
+          <div class="field" id="fieldPkDate" style="display:none;">
+            <label>Match Date *</label>
+            <select id="pkDateSelect">
+              <option value="">Select date</option>
+            </select>
+            <div class="help" id="dateHelp"></div>
+          </div>
+
           <div class="field">
             <label>Slot Time *</label>
             <select name="slot" id="slot" required>
@@ -1094,6 +1095,7 @@
           </div>
         </div>
 
+        <!-- ✅ CS options -->
         <div class="grid" id="csOptions" style="margin-top:12px; display:none;">
           <div class="field">
             <label>Head Shot Only *</label>
@@ -1118,29 +1120,36 @@
             </div>
             <div class="help">Yes = Limited Ammo, No = Unlimited Ammo.</div>
           </div>
+
+          <div class="field">
+            <label>Gun Rule *</label>
+            <div class="yn-wrap">
+              <input class="yn-yes" type="radio" name="gun_rule" id="gun_onetap" value="ONE_TAP">
+              <label class="yn-btn" for="gun_onetap"><i class="fa-solid fa-bolt"></i> One Tap</label>
+
+              <input class="yn-no" type="radio" name="gun_rule" id="gun_allguns" value="ALL_GUNS">
+              <label class="yn-btn" for="gun_allguns"><i class="fa-solid fa-gun"></i> All Guns</label>
+            </div>
+            <div class="help">Match rules ke hisaab se select karo (One Tap / All Guns).</div>
+          </div>
         </div>
 
         <div class="divider"></div>
 
+        <!-- ✅ Razorpay payment -->
         <div class="field">
           <label>Payment *</label>
           <div class="pay-row">
-            <a class="btn btn-gold" id="payNowBtn" href="#" target="_blank" rel="noopener noreferrer">Pay Now</a>
+            <button type="button" class="btn btn-gold" id="payNowBtn">Pay Now</button>
             <span class="pill warn" id="payStatePill">Step 1: Pay Now</span>
             <span class="pill" id="amtPill">Amount: ₹0</span>
           </div>
           <div class="help" style="margin-top:8px;">
-            ✅ Payment ke baad <b>UTR/Transaction ID</b> fill karna compulsory hai.
+            ✅ Payment successful hote hi <b>Submit</b> unlock ho jayega.
           </div>
         </div>
 
         <div class="grid" style="margin-top:12px;">
-          <div class="field">
-            <label>UTR / Transaction ID *</label>
-            <input name="utr" id="utr" placeholder="Payment ke baad UTR yahan paste karo" disabled>
-            <div class="help" id="utrHelp">Payment complete hone ke baad UTR field enable hoga.</div>
-          </div>
-
           <div class="field">
             <label>Confirmation *</label>
             <div class="help">
@@ -1153,8 +1162,8 @@
             <div class="checkbox">
               <input type="checkbox" id="rulesCheck">
               <label for="rulesCheck">
-                I agree to all Tournament Rules. I understand that for <b>Per Kill matches</b>:
-                Revive OFF, Gun Attributes OFF, No Team-Up & No Glitch usage.
+                I agree to all Tournament Rules. For <b>Per Kill matches</b>:
+                Minimum 2 kills required, Revive OFF, Gun Attributes OFF, No Team-Up & No Glitch usage.
                 Violation = Disqualification (No Refund).
               </label>
             </div>
@@ -1175,10 +1184,30 @@
   /**********************
    * CONFIG
    **********************/
-  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbylSMHYA3ZCLEXHF8OJKTh68rYAbx1tYhd1u-MFOALGhSFBVZqCOiT7lJI0Ld-sHbEb/exec";
-  const PAYMENT_BASE = "https://trpschampionsleague.github.io/TCLeague/payment";
-  const STORAGE_KEY = "trps_reg_intent_v2";
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxFeuZ3owpiuNafgGXdcSPnsslBCYRk560LZ1Am2qDvlABOmW4EFP6wFrDoTixgEAo/exec"; // ✅ change this only
+  const STORAGE_KEY = "trps_reg_intent_v3";              // upgraded due to new payment flow
   const HISTORY_STORE = "trps_history_v1";
+
+  /**********************
+   * OVERLAY HISTORY (Back button closes modal/sidebar first)
+   **********************/
+  function pushOverlayState(type){
+    try{
+      const s = history.state || {};
+      if(s && s.__overlay === type) return;
+      history.pushState({ __overlay: type }, "");
+    }catch(_){}
+  }
+  window.addEventListener("popstate", () => {
+    if(regModal.classList.contains("open")){
+      closeModal(false);
+      return;
+    }
+    if(sidebar.classList.contains("open")){
+      closeSide(false);
+      return;
+    }
+  });
 
   /**********************
    * SIDEBAR
@@ -1188,21 +1217,30 @@
   const burger = document.getElementById("burger");
   const sideClose = document.getElementById("sideClose");
 
-  function openSide(){
+  function openSide(push=true){
+    if(regModal.classList.contains("open")) closeModal(false);
+
     sidebar.classList.add("open");
     backdrop.classList.add("open");
     sidebar.setAttribute("aria-hidden","false");
     document.body.style.overflow = "hidden";
+    if(push) pushOverlayState("sidebar");
   }
-  function closeSide(){
+  function closeSide(goBack=true){
     sidebar.classList.remove("open");
     backdrop.classList.remove("open");
     sidebar.setAttribute("aria-hidden","true");
     document.body.style.overflow = "";
+    if(goBack){
+      const s = history.state || {};
+      if(s && s.__overlay === "sidebar"){
+        history.back();
+      }
+    }
   }
-  burger.addEventListener("click", openSide);
-  sideClose.addEventListener("click", closeSide);
-  backdrop.addEventListener("click", closeSide);
+  burger.addEventListener("click", () => openSide(true));
+  sideClose.addEventListener("click", () => closeSide(true));
+  backdrop.addEventListener("click", () => closeSide(true));
 
   document.querySelectorAll('[data-scroll]').forEach(a => {
     a.addEventListener('click', (e) => {
@@ -1210,7 +1248,7 @@
       if(!href.startsWith('#')) return;
       e.preventDefault();
       const el = document.querySelector(href);
-      closeSide();
+      closeSide(true);
       if(el) el.scrollIntoView({ behavior:'smooth', block:'start' });
     });
   });
@@ -1249,7 +1287,7 @@
   setInterval(nextSlide, 6500);
 
   /**********************
-   * Helpers
+   * Helpers (slots)
    **********************/
   function pad(n){ return String(n).padStart(2, "0"); }
   function to12h(h, m){
@@ -1292,8 +1330,37 @@
       return sm !== null && sm >= minAllowed;
     });
   }
+  function todayISO(){
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth()+1).padStart(2,'0');
+    const da = String(d.getDate()).padStart(2,'0');
+    return `${y}-${m}-${da}`;
+  }
+  function addDaysISO(baseIso, days){
+    const d = new Date(baseIso + "T00:00:00");
+    d.setDate(d.getDate() + days);
+    const y = d.getFullYear();
+    const m = String(d.getMonth()+1).padStart(2,'0');
+    const da = String(d.getDate()).padStart(2,'0');
+    return `${y}-${m}-${da}`;
+  }
 
-  // ✅ UPDATED: when slots empty => dropdown shows "Slots closed..." disabled (not selectable)
+  function setSlotOptionsWithSeats(slotObjs, helpText){
+    if(!Array.isArray(slotObjs) || slotObjs.length === 0){
+      const msg = helpText || "Slots closed. Please try again tomorrow.";
+      slot.innerHTML = `<option value="" selected disabled>${msg}</option>`;
+      slotHelp.textContent = msg;
+      return;
+    }
+    const optHtml = slotObjs.map(s => {
+      const label = s.full ? `${s.time} (FULL)` : `${s.time} (${s.left} left)`;
+      const disabled = s.full ? "disabled" : "";
+      return `<option value="${s.time}" ${disabled}>${label}</option>`;
+    }).join("");
+    slot.innerHTML = `<option value="">Select slot</option>` + optHtml;
+    slotHelp.textContent = helpText || "";
+  }
   function setSlotOptions(list, helpText){
     if(!Array.isArray(list) || list.length === 0){
       const msg = helpText || "Slots closed. Please try again tomorrow.";
@@ -1308,7 +1375,6 @@
   }
 
   function is10DigitNumber(v){ return /^[0-9]{10}$/.test(v); }
-  function isValidUtr(v){ return (v || "").trim().length >= 8; }
   function getRadioValue(name){
     const el = document.querySelector(`input[name="${name}"]:checked`);
     return el ? el.value : "";
@@ -1317,15 +1383,22 @@
     document.querySelectorAll(`input[name="${name}"]`).forEach(x => x.checked = false);
   }
 
-  function openModal(){
+  function openModal(push=true){
     regModal.classList.add("open");
     regModal.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
+    if(push) pushOverlayState("modal");
   }
-  function closeModal(){
+  function closeModal(goBack=true){
     regModal.classList.remove("open");
     regModal.setAttribute("aria-hidden", "true");
     document.body.style.overflow = "";
+    if(goBack){
+      const s = history.state || {};
+      if(s && s.__overlay === "modal"){
+        history.back();
+      }
+    }
   }
 
   /**********************
@@ -1344,7 +1417,12 @@
   const f_entry = document.getElementById("f_entry");
   const f_mode = document.getElementById("f_mode");
   const f_stream = document.getElementById("f_stream");
-  const f_paidFlag = document.getElementById("f_paidFlag");
+  const f_matchDate = document.getElementById("f_matchDate");
+  const f_paymentToken = document.getElementById("f_paymentToken");
+
+  const fieldPkDate = document.getElementById("fieldPkDate");
+  const pkDateSelect = document.getElementById("pkDateSelect");
+  const dateHelp = document.getElementById("dateHelp");
 
   const labelMainName = document.getElementById("labelMainName");
   const labelSecondName = document.getElementById("labelSecondName");
@@ -1354,45 +1432,39 @@
   const contact = document.getElementById("contact");
   const slot = document.getElementById("slot");
   const slotHelp = document.getElementById("slotHelp");
-  const utr = document.getElementById("utr");
-  const utrHelp = document.getElementById("utrHelp");
   const rulesCheck = document.getElementById("rulesCheck");
   const regForm = document.getElementById("regForm");
   const submitBtn = document.getElementById("submitBtn");
   const formMsg = document.getElementById("formMsg");
 
-  closeModalBtn.addEventListener("click", closeModal);
-  regModal.addEventListener("click", (e) => { if(e.target === regModal) closeModal(); });
+  closeModalBtn.addEventListener("click", () => closeModal(true));
+  regModal.addEventListener("click", (e) => { if(e.target === regModal) closeModal(true); });
 
   /**********************
    * State
    **********************/
   let current = null;
-  let paidUnlocked = false;
+  let paymentVerified = false;   // ✅ key state
+  let razorpayMeta = { order_id:"", payment_id:"", signature:"" };
 
   function resetPaymentState(){
-    paidUnlocked = false;
-    f_paidFlag.value = "0";
-    utr.value = "";
-    utr.disabled = true;
-    utrHelp.textContent = "Payment complete hone ke baad UTR field enable hoga.";
+    paymentVerified = false;
+    razorpayMeta = { order_id:"", payment_id:"", signature:"" };
+    f_paymentToken.value = "";
     payStatePill.textContent = "Step 1: Pay Now";
     payStatePill.className = "pill warn";
     validateAll();
   }
-
-  function unlockUtr(){
-    paidUnlocked = true;
-    f_paidFlag.value = "1";
-    utr.disabled = false;
-    utrHelp.textContent = "✅ Ab UTR/Txn ID fill karo, rules tick karo, then Submit.";
-    payStatePill.textContent = "Payment Done ✓ (Enter UTR)";
+  function markPaid(token){
+    paymentVerified = true;
+    f_paymentToken.value = token || "";
+    payStatePill.textContent = "Payment Verified ✓";
     payStatePill.className = "pill ok";
     validateAll();
   }
 
   /**********************
-   * Draft Save/Restore
+   * Draft Save/Restore (includes payment)
    **********************/
   function saveIntent(){
     if(!current) return;
@@ -1404,6 +1476,12 @@
       rules: rulesCheck.checked ? "1" : "0",
       hs_only: getRadioValue("hs_only"),
       limited_ammo: getRadioValue("limited_ammo"),
+      gun_rule: getRadioValue("gun_rule"),
+      match_date: f_matchDate.value || "",
+      payment_verified: paymentVerified ? "1" : "0",
+      payment_token: f_paymentToken.value || "",
+      rzp_order_id: razorpayMeta.order_id || "",
+      rzp_payment_id: razorpayMeta.payment_id || ""
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ current, draft, ts: Date.now() }));
   }
@@ -1421,6 +1499,14 @@
     mainName.value = draft.main_name || "";
     secondName.value = draft.second_name || "";
     contact.value = draft.contact || "";
+
+    if(draft.match_date){
+      f_matchDate.value = draft.match_date;
+      if(pkDateSelect && [...pkDateSelect.options].some(o => o.value === draft.match_date)){
+        pkDateSelect.value = draft.match_date;
+      }
+    }
+
     const desiredSlot = draft.slot || "";
     if(desiredSlot && [...slot.options].some(o => o.value === desiredSlot)){
       slot.value = desiredSlot;
@@ -1429,37 +1515,73 @@
     }
     rulesCheck.checked = (draft.rules === "1");
 
-    if(draft.hs_only){
-      const hs = document.querySelector(`input[name="hs_only"][value="${draft.hs_only}"]`);
-      if(hs) hs.checked = true;
+    ["hs_only","limited_ammo","gun_rule"].forEach(name => {
+      if(draft[name]){
+        const el = document.querySelector(`input[name="${name}"][value="${draft[name]}"]`);
+        if(el) el.checked = true;
+      }
+    });
+
+    // payment restore
+    if(draft.payment_verified === "1" && draft.payment_token){
+      markPaid(draft.payment_token);
     }
-    if(draft.limited_ammo){
-      const am = document.querySelector(`input[name="limited_ammo"][value="${draft.limited_ammo}"]`);
-      if(am) am.checked = true;
+  }
+
+  /**********************
+   * Per Kill date setup
+   **********************/
+  function buildPkDates(){
+    const base = todayISO();
+    const list = [base, addDaysISO(base,1), addDaysISO(base,2), addDaysISO(base,3)];
+    pkDateSelect.innerHTML = `<option value="">Select date</option>` + list.map(d => {
+      const label = (d === base) ? `${d} (Today)` : d;
+      return `<option value="${d}">${label}</option>`;
+    }).join("");
+  }
+  buildPkDates();
+
+  pkDateSelect.addEventListener("change", () => {
+    f_matchDate.value = pkDateSelect.value || "";
+    if(current) applyModeRules();
+    saveIntent();
+    validateAll();
+  });
+
+  /**********************
+   * Sheet-based slots fetch (BR Per Kill only)
+   **********************/
+  async function fetchPkSlotsFromSheet(dateIso){
+    try{
+      const url = `${WEB_APP_URL}?action=slots&category=${encodeURIComponent(current.category)}&mode=${encodeURIComponent(current.mode)}&entry=${encodeURIComponent(current.entry)}&date=${encodeURIComponent(dateIso)}`;
+      const res = await fetch(url);
+      const out = await res.json();
+      if(!out || !out.ok || !Array.isArray(out.slots)) return null;
+      return out;
+    }catch(_){
+      return null;
     }
   }
 
   /**********************
    * Mode -> Fields + Slots
    **********************/
-  function applyModeRules(){
+  async function applyModeRules(){
     if(!current) return;
 
-    // defaults
     fieldSecondName.style.display = "none";
     secondName.required = false;
     secondName.value = "";
 
-    // CS options only for CS
     if(current.category === "CS"){
       csOptions.style.display = "grid";
     } else {
       csOptions.style.display = "none";
       clearRadio("hs_only");
       clearRadio("limited_ammo");
+      clearRadio("gun_rule");
     }
 
-    // labels + second name logic
     if(current.category === "CS"){
       if(current.mode === "1v1"){
         labelMainName.textContent = "In-Game Name *";
@@ -1472,14 +1594,12 @@
         labelMainName.textContent = "Team Name *";
       }
     } else if(current.category === "BR"){
-      // ✅ BR DUO (Per Kill) requires two names
       if(String(current.mode).toUpperCase().includes("DUO")){
         labelMainName.textContent = "Player 1 Name *";
         labelSecondName.textContent = "Player 2 Name *";
         fieldSecondName.style.display = "flex";
         secondName.required = true;
       } else {
-        // SOLO BR (Normal/Competitive/PerKill)
         labelMainName.textContent = "In-Game Name *";
       }
     }
@@ -1489,12 +1609,24 @@
     const modeUpper = String(current.mode || "").toUpperCase();
     const isPerKill = modeUpper.includes("PER KILL");
 
-    // ✅ Show/Hide Per Kill strict rules in form
     if(perKillRulesBox){
       perKillRulesBox.style.display = (current.category === "BR" && isPerKill) ? "block" : "none";
     }
 
-    // CS normal slots
+    if(current.category === "BR" && isPerKill){
+      fieldPkDate.style.display = "flex";
+      if(!f_matchDate.value){
+        f_matchDate.value = todayISO();
+        pkDateSelect.value = f_matchDate.value;
+      }
+      dateHelp.textContent = "Per Kill ke liye date select karo (Today / next days).";
+    } else {
+      fieldPkDate.style.display = "none";
+      pkDateSelect.value = "";
+      f_matchDate.value = "";
+      dateHelp.textContent = "";
+    }
+
     if(current.category === "CS" && !(current.mode === "4v4" && isStream)){
       let list = buildHalfHourSlots(10,0,21,0);
       list = filterFutureSlots(list, 0);
@@ -1506,7 +1638,6 @@
       }
     }
 
-    // CS 4v4 stream slots
     if(current.category === "CS" && current.mode === "4v4" && isStream){
       let list = ["7:00 PM","7:30 PM","8:00 PM","8:30 PM"];
       list = filterFutureSlots(list, 0);
@@ -1518,19 +1649,40 @@
       }
     }
 
-    // ✅ BR Per Kill (same as CS timing)
     if(current.category === "BR" && isPerKill){
-      let list = buildHalfHourSlots(10,0,21,0);
-      list = filterFutureSlots(list, 0);
+      const dateIso = f_matchDate.value || todayISO();
+      let baseSlots = buildHalfHourSlots(10,0,21,0);
 
-      if(list.length === 0){
-        setSlotOptions([], "Slots closed (CS: 10:00 AM – 9:00 PM IST). Please try again tomorrow.");
+      if(dateIso === todayISO()){
+        baseSlots = filterFutureSlots(baseSlots, 0);
+      }
+
+      slotHelp.textContent = "Loading seats...";
+      const sheetOut = await fetchPkSlotsFromSheet(dateIso);
+
+      if(sheetOut && Array.isArray(sheetOut.slots)){
+        const map = new Map(sheetOut.slots.map(s => [String(s.time).trim(), s]));
+        const merged = baseSlots.map(t => {
+          const s = map.get(t) || null;
+          const left = (s && typeof s.left === "number") ? s.left : (sheetOut.capacity ? sheetOut.capacity : 0);
+          const full = (s && !!s.full) || (left <= 0);
+          return { time: t, left: Math.max(0, left), full };
+        });
+
+        if(merged.length === 0){
+          setSlotOptions([], "Slots closed (10:00 AM – 9:00 PM IST). Please try again tomorrow.");
+        } else {
+          setSlotOptionsWithSeats(merged, "Per Kill slots (IST) • Seats live from sheet • Past slots auto-hidden");
+        }
       } else {
-        setSlotOptions(list, "Slots: 10:00 AM – 9:00 PM (IST) • Past slots auto-hidden");
+        if(baseSlots.length === 0){
+          setSlotOptions([], "Slots closed (10:00 AM – 9:00 PM IST). Please try again tomorrow.");
+        } else {
+          setSlotOptions(baseSlots, "Slots (IST) • Past slots auto-hidden (Seat check unavailable)");
+        }
       }
     }
 
-    // BR ₹25 slots (Normal Lobby only)
     if(current.category === "BR" && !isPerKill && entry === 25){
       let list = ["7:00 PM","9:30 PM"];
       list = filterFutureSlots(list, 0);
@@ -1542,7 +1694,6 @@
       }
     }
 
-    // BR ₹35 slots (Competitive Lobby only)
     if(current.category === "BR" && !isPerKill && entry === 35){
       let list = ["9:00 PM","11:30 PM"];
       list = filterFutureSlots(list, 0);
@@ -1555,16 +1706,11 @@
     }
 
     amtPill.textContent = `Amount: ₹${entry}`;
-
-    const returnUrl = new URL(window.location.href);
-    returnUrl.searchParams.set("paid", "1");
-    returnUrl.searchParams.delete("regopen");
-    const payUrl = `${PAYMENT_BASE}?amt=${encodeURIComponent(entry)}&return=${encodeURIComponent(returnUrl.toString())}`;
-    payNowBtn.href = payUrl;
+    validateAll();
   }
 
   /**********************
-   * Validation
+   * Validation (payment must be verified)
    **********************/
   function validateAll(){
     if(!current){
@@ -1576,19 +1722,22 @@
     const contactOk = is10DigitNumber(contact.value.trim());
     const slotOk = slot.value.trim().length > 0;
 
-    const payOk = paidUnlocked;
-    const utrOk = payOk ? isValidUtr(utr.value) : false;
+    const modeUpper = String(current.mode || "").toUpperCase();
+    const isPerKill = modeUpper.includes("PER KILL");
+    const dateOk = (current.category === "BR" && isPerKill) ? (f_matchDate.value.trim().length > 0) : true;
 
+    const payOk = paymentVerified && !!(f_paymentToken.value || "").trim();
     const rulesOk = rulesCheck.checked;
 
     let csOk = true;
     if(current.category === "CS"){
       const hs = getRadioValue("hs_only");
       const ammo = getRadioValue("limited_ammo");
-      csOk = !!hs && !!ammo;
+      const gun = getRadioValue("gun_rule");
+      csOk = !!hs && !!ammo && !!gun;
     }
 
-    const ok = mainOk && secondOk && contactOk && slotOk && payOk && utrOk && rulesOk && csOk;
+    const ok = mainOk && secondOk && contactOk && slotOk && dateOk && payOk && rulesOk && csOk;
     submitBtn.disabled = !ok;
     return ok;
   }
@@ -1601,10 +1750,10 @@
   });
 
   /**********************
-   * Open form from buttons
+   * Open form
    **********************/
   document.querySelectorAll(".open-reg").forEach(btn => {
-    btn.addEventListener("click", () => {
+    btn.addEventListener("click", async () => {
       current = {
         category: btn.dataset.category,
         entry: btn.dataset.entry,
@@ -1621,50 +1770,173 @@
 
       formMsg.textContent = "";
       regForm.reset();
-      resetPaymentState();
-      applyModeRules();
 
-      openModal();
+      // default per kill date
+      if(String(current.mode || "").toUpperCase().includes("PER KILL")){
+        f_matchDate.value = todayISO();
+        pkDateSelect.value = f_matchDate.value;
+      } else {
+        f_matchDate.value = "";
+        pkDateSelect.value = "";
+      }
+
+      // payment reset on new open
+      resetPaymentState();
+
+      openModal(true);
+      applyModeRules();
       saveIntent();
     });
   });
 
-  payNowBtn.addEventListener("click", () => {
+  /**********************
+   * Razorpay Flow (Create Order -> Checkout -> Verify -> Unlock)
+   **********************/
+  async function createOrderOnServer(amount){
+    const fd = new FormData();
+    fd.append("action", "create_order");
+    fd.append("amount", String(amount));      // rupees (server converts to paise)
+    fd.append("currency", "INR");
+
+    // metadata (helps in logs)
+    fd.append("category", current?.category || "");
+    fd.append("entry", current?.entry || "");
+    fd.append("mode", current?.mode || "");
+    fd.append("stream", current?.stream || "");
+    fd.append("selected_display", current?.display || "");
+
+    const res = await fetch(WEB_APP_URL, { method:"POST", body: fd });
+    const out = await res.json().catch(()=>null);
+    if(!out || !out.ok) throw new Error(out?.error || "Order create failed");
+    return out; // expects: {ok:true, key_id, order_id, amount_paise, currency, name}
+  }
+
+  async function verifyPaymentOnServer(payload){
+    const fd = new FormData();
+    fd.append("action", "verify_payment");
+    fd.append("razorpay_order_id", payload.razorpay_order_id);
+    fd.append("razorpay_payment_id", payload.razorpay_payment_id);
+    fd.append("razorpay_signature", payload.razorpay_signature);
+
+    // optional: attach current selection
+    fd.append("category", current?.category || "");
+    fd.append("entry", current?.entry || "");
+    fd.append("mode", current?.mode || "");
+    fd.append("selected_display", current?.display || "");
+
+    const res = await fetch(WEB_APP_URL, { method:"POST", body: fd });
+    const out = await res.json().catch(()=>null);
+    if(!out || !out.ok) throw new Error(out?.error || "Verify failed");
+    return out; // expects: {ok:true, payment_token:"..."}
+  }
+
+  payNowBtn.addEventListener("click", async () => {
+    if(!current){
+      formMsg.textContent = "❌ Please select a match first.";
+      return;
+    }
+    const amount = Number(current.entry);
+    if(!Number.isFinite(amount) || amount <= 0){
+      formMsg.textContent = "❌ Invalid amount.";
+      return;
+    }
+
     saveIntent();
-    payStatePill.textContent = "Payment in progress...";
+    payStatePill.textContent = "Creating order...";
     payStatePill.className = "pill warn";
-    formMsg.textContent = "✅ Payment page open ho raha hai. Payment complete hone ke baad yahan aake UTR fill karo.";
-    validateAll();
+    formMsg.textContent = "⏳ Payment start ho raha hai...";
+
+    try{
+      const order = await createOrderOnServer(amount);
+
+      // Keep for restore
+      razorpayMeta.order_id = order.order_id || "";
+
+      const options = {
+        key: order.key_id,                 // from server (test/live)
+        amount: order.amount_paise,        // paise
+        currency: order.currency || "INR",
+        name: order.name || "TRPS Champions League",
+        description: current.display || "Tournament Entry",
+        order_id: order.order_id,
+        notes: {
+          category: current.category,
+          entry: String(current.entry),
+          mode: current.mode,
+          stream: String(current.stream)
+        },
+        handler: async function (response){
+          // response: {razorpay_payment_id, razorpay_order_id, razorpay_signature}
+          try{
+            payStatePill.textContent = "Verifying...";
+            payStatePill.className = "pill warn";
+            formMsg.textContent = "⏳ Payment verify ho raha hai...";
+
+            razorpayMeta.payment_id = response.razorpay_payment_id || "";
+            razorpayMeta.order_id = response.razorpay_order_id || "";
+            razorpayMeta.signature = response.razorpay_signature || "";
+
+            const verified = await verifyPaymentOnServer(response);
+            const token = verified.payment_token || "";
+
+            markPaid(token);
+            formMsg.textContent = "✅ Payment Successful & Verified. Ab rules tick karke Submit karo.";
+            saveIntent();
+            validateAll();
+          }catch(err){
+            resetPaymentState();
+            formMsg.textContent = "❌ Payment verify failed. Please try again.";
+            saveIntent();
+          }
+        },
+        modal: {
+          ondismiss: function(){
+            // user closed popup
+            if(!paymentVerified){
+              payStatePill.textContent = "Step 1: Pay Now";
+              payStatePill.className = "pill warn";
+              formMsg.textContent = "Payment cancel/close hua. Dobara Pay Now try karo.";
+              saveIntent();
+            }
+          }
+        },
+        theme: { color: "#ffd700" }
+      };
+
+      const rzp = new Razorpay(options);
+      rzp.open();
+    }catch(err){
+      resetPaymentState();
+      formMsg.textContent = "❌ Payment start failed: " + (err?.message || "Try again");
+      saveIntent();
+    }
   });
 
-  (function handleReturn(){
-    const url = new URL(window.location.href);
-    const paid = url.searchParams.get("paid");
-    if(paid !== "1") return;
-
+  /**********************
+   * Restore if user paid and reloads before submit
+   **********************/
+  (function restoreIfAny(){
     const intent = loadIntent();
     if(!intent || !intent.current) return;
 
+    // auto restore only if user had modal open last time (safe behavior)
     current = intent.current;
 
+    // open modal and restore UI
     selectedText.textContent = current.display;
     f_category.value = current.category;
     f_entry.value = current.entry;
     f_mode.value = current.mode;
     f_stream.value = current.stream;
 
-    formMsg.textContent = "✅ Payment complete. Ab UTR/Txn ID fill karo & rules tick karke Submit karo.";
-
-    applyModeRules();
-    restoreDraft(intent.draft);
-
-    unlockUtr();
-    openModal();
-
-    url.searchParams.delete("paid");
-    history.replaceState({}, "", url.toString());
-
-    validateAll();
+    openModal(false);
+    applyModeRules().then(() => {
+      restoreDraft(intent.draft);
+      validateAll();
+      formMsg.textContent = (intent.draft?.payment_verified === "1")
+        ? "✅ Payment already verified. Rules tick karke Submit karo."
+        : "Draft restored. Payment karke Submit karo.";
+    }).catch(()=>{});
   })();
 
   /**********************
@@ -1695,7 +1967,7 @@
   }
 
   /**********************
-   * Submit -> Apps Script
+   * Submit -> Apps Script (register requires payment_token)
    **********************/
   regForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -1706,31 +1978,37 @@
 
     let shotType = "N/A";
     let ammoType = "N/A";
+    let gunRule = "N/A";
+
     if(current && current.category === "CS"){
       const hs = getRadioValue("hs_only");
       const ammo = getRadioValue("limited_ammo");
+      const gun = getRadioValue("gun_rule");
       shotType = (hs === "YES") ? "Head Shot" : "Body Shot";
       ammoType = (ammo === "YES") ? "Limited" : "Unlimited";
+      gunRule = (gun === "ONE_TAP") ? "One Tap" : "All Guns";
     }
 
     const fd = new FormData();
+    fd.append("action", "register");
+
     fd.append("category", f_category.value);
     fd.append("entry", f_entry.value);
     fd.append("mode", f_mode.value);
     fd.append("stream", f_stream.value);
     fd.append("selected_display", current?.display || "");
 
+    fd.append("match_date", f_matchDate.value || "");
+
     fd.append("main_name", mainName.value.trim());
     fd.append("second_name", (fieldSecondName.style.display === "none") ? "" : secondName.value.trim());
     fd.append("contact", contact.value.trim());
     fd.append("slot", slot.value.trim());
 
-    fd.append("paid_flag", f_paidFlag.value);
-    fd.append("utr", utr.value.trim());
-
+    fd.append("payment_token", (f_paymentToken.value || "").trim()); // ✅ required
     fd.append("shot_type", shotType);
     fd.append("ammo_type", ammoType);
-
+    fd.append("gun_rule", gunRule);
     fd.append("rules_accepted", rulesCheck.checked ? "YES" : "NO");
 
     try{
@@ -1750,6 +2028,7 @@
           main: mainName.value.trim(),
           second: (fieldSecondName.style.display === "none") ? "" : secondName.value.trim(),
           slot: slot.value.trim(),
+          matchDate: f_matchDate.value || "",
           ts: new Date().toISOString()
         });
         setHistoryList(list.slice(0, 50));
@@ -1763,7 +2042,12 @@
               7294898996
            </a>`;
 
+        // ✅ after submit: clear draft + reset for new form
         clearIntent();
+        regForm.reset();
+        resetPaymentState();
+        validateAll();
+
       } else {
         formMsg.textContent = "❌ Failed: " + (out.error || "Try again");
         submitBtn.disabled = false;
@@ -1812,6 +2096,7 @@
       lines.push(`Reg ID: ${r.reg_id}`);
       lines.push(`Status: ${r.status}`);
       lines.push(`Mode: ${r.selected_display || (r.category + " • " + r.mode)}`);
+      if(r.match_date) lines.push(`Date: ${r.match_date}`);
       lines.push(`Slot: ${r.slot_time || "-"}`);
       if(r.match_type === "CS" && r.match_no){
         lines.push(`Match: CS • Match No ${r.match_no}`);
@@ -1849,7 +2134,8 @@
     const lines = [];
     list.forEach((x, idx) => {
       const when = new Date(x.ts).toLocaleString();
-      lines.push(`${idx+1}) ${x.regId} • ${x.display}`);
+      const dline = x.matchDate ? ` • Date: ${x.matchDate}` : "";
+      lines.push(`${idx+1}) ${x.regId} • ${x.display}${dline}`);
       lines.push(`   Slot: ${x.slot} • ${when}`);
     });
     hisOut.textContent = lines.join("\n");
