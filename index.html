@@ -12,9 +12,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
     body { background: radial-gradient(circle at top, #0b1c3d, #020816); color: #ffffff; }
 
-    
-    body.modal-open{ overflow: hidden; }
-/* ===================== TOPBAR + SIDEBAR ===================== */
+    /* ===================== TOPBAR + SIDEBAR ===================== */
     .topbar{
       position: sticky; top: 0; z-index: 10000;
       display:flex; align-items:center; justify-content: space-between;
@@ -356,7 +354,6 @@
       background: rgba(0,0,0,0.65);
       align-items: center; justify-content: center;
       padding: 18px;
-      overflow: hidden;
       z-index: 11000;
     }
     .modal.open{ display: flex; }
@@ -368,6 +365,8 @@
       box-shadow: 0 0 30px rgba(0,0,0,0.45);
       overflow: hidden;
       max-height: 90vh;
+      display: flex;
+      flex-direction: column;
     }
     .modal-head{
       display:flex; justify-content: space-between; align-items: center;
@@ -380,12 +379,7 @@
       background: transparent; color: #cfd9ff; border: 0;
       font-size: 22px; cursor: pointer; padding: 6px 10px;
     }
-    .modal-body{ padding: 16px;
-      max-height: calc(90vh - 60px);
-      overflow-y: auto;
-      overscroll-behavior: contain;
-      -webkit-overflow-scrolling: touch;
-    }
+    .modal-body{ padding: 16px; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
     .selected-box{
       padding: 12px 14px;
       border-radius: 14px;
@@ -1436,7 +1430,7 @@
    * ✅ ONE SWITCH (ONLY CHANGE THIS)
    * "COMING_SOON" | "LIVE_BR" | "LIVE_CS"
    **********************/
-  const MEGA_LEAGUE = "LIVE_CS";
+  const MEGA_LEAGUE = "COMING_SOON";
 
   /**********************
    * CONFIG
@@ -1474,9 +1468,9 @@
       return null;
     }
   }
-  function setAuth(trps_id, role){
+  function setAuth(trps_id, role, session_token){
     const days = (role === "admin") ? ADMIN_SESSION_DAYS : USER_SESSION_DAYS;
-    const payload = { trps_id, role, exp: nowMs() + daysToMs(days) };
+    const payload = { trps_id, role, session_token: session_token || "", exp: nowMs() + daysToMs(days) };
     localStorage.setItem(AUTH_STORE, JSON.stringify(payload));
     refreshAuthUI();
   }
@@ -1486,6 +1480,14 @@
   }
   function isLoggedIn(){ return !!getAuth(); }
   function isAdmin(){ return (getAuth()?.role === "admin"); }
+
+
+  function appendSessionToken(fd){
+    try{
+      const a = getAuth();
+      if(a && a.session_token) fd.append("session_token", a.session_token);
+    }catch(_){ }
+  }
 
   function refreshAuthUI(){
     const a = getAuth();
@@ -1510,6 +1512,9 @@
     const fd = new FormData();
     fd.append("action", action);
     Object.keys(payload || {}).forEach(k => fd.append(k, payload[k]));
+    if(action !== "login" && action !== "create_user" && action !== "forgot_pin" && action !== "reset_pin"){
+      appendSessionToken(fd);
+    }
     const res = await fetch(WEB_APP_URL, { method:"POST", body: fd });
     const out = await res.json().catch(()=>null);
     if(!out || !out.ok) throw new Error(out?.error || "Auth failed");
@@ -1523,6 +1528,7 @@
       const a = getAuth();
       const fd = new FormData();
       fd.append("action", "get_updates");
+      appendSessionToken(fd);
       fd.append("trps_id", a?.trps_id || "");
       fd.append("category", current?.category || "");
       fd.append("mode", current?.mode || "");
@@ -1545,6 +1551,7 @@
       const a = getAuth();
       const fd = new FormData();
       fd.append("action", "get_leaderboard");
+      appendSessionToken(fd);
       fd.append("trps_id", a?.trps_id || "");
       fd.append("category", current?.category || "");
       fd.append("mode", current?.mode || "");
@@ -1795,14 +1802,12 @@
 
   function openModal(push=true){
     regModal.classList.add("open");
-    document.body.classList.add("modal-open");
     regModal.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
     if(push) pushOverlayState("modal");
   }
   function closeModal(goBack=true){
     regModal.classList.remove("open");
-    document.body.classList.remove("modal-open");
     regModal.setAttribute("aria-hidden", "true");
     document.body.style.overflow = "";
     if(goBack){
@@ -1917,7 +1922,6 @@
   function openAuthModal(push=true, tab="login"){
     if(regModal && regModal.classList.contains("open")) closeModal(false);
     authModal.classList.add("open");
-    document.body.classList.add("modal-open");
     authModal.setAttribute("aria-hidden","false");
     document.body.style.overflow = "hidden";
     if(push) pushOverlayState("auth");
@@ -1925,7 +1929,6 @@
   }
   function closeAuthModal(goBack=true){
     authModal.classList.remove("open");
-    document.body.classList.remove("modal-open");
     authModal.setAttribute("aria-hidden","true");
     document.body.style.overflow = "";
     if(goBack){
@@ -1978,7 +1981,7 @@
         authLoginBtn.disabled = true;
         if(authMsg) authMsg.textContent = "Logging in...";
         const out = await authServer("login", { trps_id: id, pin });
-        setAuth(out.trps_id || id, out.role || "user");
+        setAuth(out.trps_id || id, out.role || "user", (out.session_token || out.sessionToken || out.token || ""));
         closeAuthModal(true);
         if(typeof pendingAfterLogin === "function"){
           const fn = pendingAfterLogin;
@@ -2529,6 +2532,7 @@
   async function createOrderOnServer(amount){
     const fd = new FormData();
     fd.append("action", "create_order");
+    appendSessionToken(fd);
     fd.append("amount", String(amount));
     fd.append("currency", "INR");
 
@@ -2547,6 +2551,7 @@
   async function verifyPaymentOnServer(payload, paymentToken){
     const fd = new FormData();
     fd.append("action", "verify_payment");
+    appendSessionToken(fd);
     fd.append("payment_token", paymentToken || "");
 
     fd.append("razorpay_order_id", payload.razorpay_order_id);
@@ -2720,6 +2725,7 @@
 
     const fd = new FormData();
     fd.append("action", "register");
+    appendSessionToken(fd);
 
     // Auth
     const a = getAuth();
