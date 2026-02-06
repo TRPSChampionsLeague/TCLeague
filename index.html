@@ -12,7 +12,9 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
     body { background: radial-gradient(circle at top, #0b1c3d, #020816); color: #ffffff; }
 
-    /* ===================== TOPBAR + SIDEBAR ===================== */
+    
+    body.modal-open{ overflow: hidden; }
+/* ===================== TOPBAR + SIDEBAR ===================== */
     .topbar{
       position: sticky; top: 0; z-index: 10000;
       display:flex; align-items:center; justify-content: space-between;
@@ -348,16 +350,14 @@
     }
     .pk-rules b{ color:#ffb3b3; }
 
-    /* ✅ Modal Form + Scroll Fix */
-    body.modal-open{ overflow: hidden; }
-
+    /* ✅ Modal Form */
     .modal{
       position: fixed; inset: 0; display: none;
       background: rgba(0,0,0,0.65);
       align-items: center; justify-content: center;
       padding: 18px;
+      overflow: hidden;
       z-index: 11000;
-      overflow: hidden; /* lock background */
     }
     .modal.open{ display: flex; }
     .modal-card{
@@ -367,10 +367,6 @@
       border-radius: 18px;
       box-shadow: 0 0 30px rgba(0,0,0,0.45);
       overflow: hidden;
-
-      /* ✅ make header fixed + body scroll */
-      display: flex;
-      flex-direction: column;
       max-height: 90vh;
     }
     .modal-head{
@@ -378,24 +374,67 @@
       padding: 14px 16px;
       background: rgba(0,0,0,0.35);
       border-bottom: 1px solid rgba(255,255,255,0.10);
-
-      flex: 0 0 auto;
     }
     .modal-head h4{ font-size: 18px; margin:0; }
     .close-btn{
       background: transparent; color: #cfd9ff; border: 0;
       font-size: 22px; cursor: pointer; padding: 6px 10px;
     }
-    .modal-body{
-      padding: 16px;
-
-      /* ✅ ONLY scroll inside modal body */
-      flex: 1 1 auto;
+    .modal-body{ padding: 16px;
+      max-height: calc(90vh - 60px);
       overflow-y: auto;
       overscroll-behavior: contain;
       -webkit-overflow-scrolling: touch;
     }
+    .selected-box{
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(77,163,255,0.22);
+      background: rgba(255,255,255,0.04);
+      color: #cfd9ff;
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+    .grid{ display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .field{ display: flex; flex-direction: column; gap: 6px; }
+    .field label{ font-size: 12px; color:#cfd9ff; font-weight: 800; letter-spacing: .3px; }
+    .field select{
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background: rgba(255,255,255,0.08);
+      color: #ffffff;
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+    .field select option{ background: #0b1c3d; color: #ffffff; }
+    .field input, .field select, .field textarea{
+      padding: 12px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: #fff;
+      outline: none;
+    }
+    .field input:disabled, .field select:disabled, .field textarea:disabled{ opacity: 0.65; cursor: not-allowed; }
 
+    .help{ font-size: 12px; color: #cfd9ff; line-height: 1.5; opacity: 0.95; }
+    .pay-row{ display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 6px; }
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 6px 10px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: #cfd9ff; font-weight: 900; font-size: 12px;
+    }
+    .warn{ border-color: rgba(255,215,0,0.35); background: rgba(255,215,0,0.10); color: #ffeaa0; }
+    .ok{ border-color: rgba(59,255,147,0.25); background: rgba(59,255,147,0.08); color: #b9ffd7; }
+
+    .actions{ display:flex; gap: 10px; justify-content: flex-end; margin-top: 14px; flex-wrap: wrap; }
+    .btn-ghost{ background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #fff; }
+    .btn:disabled{ opacity: .55; cursor: not-allowed; }
+    .divider{ height: 1px; background: rgba(255,255,255,0.10); margin: 14px 0; }
+    .checkbox{ display:flex; gap:10px; align-items:flex-start; color:#dbe3ff; font-size: 13px; line-height: 1.45; margin-top: 4px; }
+    .checkbox input{ margin-top: 3px; }
 
     /* Status/History cards */
     .mini-card{
@@ -1397,7 +1436,7 @@
    * ✅ ONE SWITCH (ONLY CHANGE THIS)
    * "COMING_SOON" | "LIVE_BR" | "LIVE_CS"
    **********************/
-  const MEGA_LEAGUE = "COMING_SOON";
+  const MEGA_LEAGUE = "LIVE_CS";
 
   /**********************
    * CONFIG
@@ -1605,7 +1644,6 @@
     sidebar.classList.add("open");
     backdrop.classList.add("open");
     sidebar.setAttribute("aria-hidden","false");
-    document.body.classList.add("modal-open");
     document.body.style.overflow = "hidden";
     if(push) pushOverlayState("sidebar");
   }
@@ -1613,7 +1651,6 @@
     sidebar.classList.remove("open");
     backdrop.classList.remove("open");
     sidebar.setAttribute("aria-hidden","true");
-    document.body.classList.remove("modal-open");
     document.body.style.overflow = "";
     if(goBack){
       const s = history.state || {};
@@ -1758,15 +1795,15 @@
 
   function openModal(push=true){
     regModal.classList.add("open");
-    regModal.setAttribute("aria-hidden", "false");
     document.body.classList.add("modal-open");
+    regModal.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
     if(push) pushOverlayState("modal");
   }
   function closeModal(goBack=true){
     regModal.classList.remove("open");
-    regModal.setAttribute("aria-hidden", "true");
     document.body.classList.remove("modal-open");
+    regModal.setAttribute("aria-hidden", "true");
     document.body.style.overflow = "";
     if(goBack){
       const s = history.state || {};
@@ -1880,16 +1917,16 @@
   function openAuthModal(push=true, tab="login"){
     if(regModal && regModal.classList.contains("open")) closeModal(false);
     authModal.classList.add("open");
-    authModal.setAttribute("aria-hidden","false");
     document.body.classList.add("modal-open");
+    authModal.setAttribute("aria-hidden","false");
     document.body.style.overflow = "hidden";
     if(push) pushOverlayState("auth");
     setAuthTab(tab);
   }
   function closeAuthModal(goBack=true){
     authModal.classList.remove("open");
-    authModal.setAttribute("aria-hidden","true");
     document.body.classList.remove("modal-open");
+    authModal.setAttribute("aria-hidden","true");
     document.body.style.overflow = "";
     if(goBack){
       const s = history.state || {};
