@@ -159,7 +159,7 @@
     .slide::after{
       content:"";
       position:absolute; inset:0;
-      background: linear-gradient(90deg, rgba(0,0,0,0.70), rgba(0,0,0,0.20) 55%, rgba(0,0,0,0.35));
+      background: linear-gradient(90deg, rgba(0,0,0,0.72), rgba(0,0,0,0.18) 55%, rgba(0,0,0,0.34));
       pointer-events:none;
     }
     .slide-caption{
@@ -191,6 +191,7 @@
       width: 9px; height: 9px; border-radius: 999px;
       background: rgba(255,255,255,0.35);
       border: 1px solid rgba(255,255,255,0.25);
+      cursor:pointer;
     }
     .dot.active{ background: #ffd700; border-color: rgba(255,215,0,0.55); }
 
@@ -203,12 +204,9 @@
     .price-head{ display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
     .price-head h4{ font-size: 20px; margin: 0; }
     .price-meta{ font-size: 14px; color: #cfd9ff; line-height: 1.4; }
-    .live-tag{ color: #ff3b3b; font-weight: 900; margin-left: 6px; }
 
     .mode-row{ display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 12px; margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.08); }
     .mode-name{ font-size: 16px; font-weight: 800; color: #ffffff; white-space: nowrap; display: flex; align-items: center; gap: 10px; }
-    .mini-pill{ font-size: 11px; font-weight: 900; letter-spacing: .4px; padding: 4px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.06); color: #ffffff; white-space: nowrap; }
-    .mini-pill-live{ border-color: rgba(255,59,59,0.35); background: rgba(255,59,59,0.10); color: #ffb3b3; }
 
     .btn{ text-decoration: none; font-weight: 900; padding: 10px 16px; border-radius: 30px; display: inline-block; white-space: nowrap; border: 0; cursor: pointer; }
     .btn-gold{ background: linear-gradient(135deg,#ffd700,#ff9f00); color:#000; }
@@ -235,6 +233,41 @@
       content: ""; position: absolute; inset: -2px;
       background: radial-gradient(circle at top, rgba(255,215,0,0.20), transparent 60%);
       pointer-events: none; opacity: 0.95;
+    }
+
+    /* ✅ LIVE NOW styling (more attractive) */
+    .mega-live-card{
+      border: 1px solid rgba(255,59,59,0.45);
+      box-shadow: 0 0 28px rgba(255,59,59,0.18), 0 0 18px rgba(255,215,0,0.12);
+    }
+    .mega-live-card::before{
+      content:""; position:absolute; inset:-2px;
+      background: radial-gradient(circle at top, rgba(255,59,59,0.22), transparent 60%);
+      pointer-events:none;
+    }
+    .tag-live-now{
+      border-color: rgba(255,59,59,0.55);
+      background: rgba(255,59,59,0.14);
+      color: #ffd6d6;
+      box-shadow: 0 0 18px rgba(255,59,59,0.22);
+      position: relative;
+      overflow:hidden;
+    }
+    .tag-live-now::after{
+      content:"";
+      position:absolute; top:-35%; left:-50%;
+      width: 60%; height: 180%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+      transform: rotate(18deg);
+      animation: liveSweep 2.4s ease-in-out infinite;
+      opacity: .65;
+    }
+    @keyframes liveSweep{
+      0% { left:-60%; opacity:0; }
+      15%{ opacity:.55; }
+      50%{ left:120%; opacity:.75; }
+      65%{ opacity:0; }
+      100%{ left:120%; opacity:0; }
     }
 
     .coming-glow{
@@ -375,49 +408,6 @@
     }
     .field input:disabled, .field select:disabled, .field textarea:disabled{ opacity: 0.65; cursor: not-allowed; }
 
-    .yn-wrap{
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.04);
-      border-radius: 14px;
-      padding: 10px;
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-    .yn-wrap input{ display:none; }
-    .yn-btn{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.06);
-      color: #dbe3ff;
-      font-weight: 900;
-      cursor: pointer;
-      user-select: none;
-      transition: transform .06s ease, background .12s ease, border-color .12s ease;
-    }
-    .yn-btn:active{ transform: scale(0.98); }
-    .yn-wrap input:checked + .yn-btn{
-      border-color: rgba(77,163,255,0.40);
-      background: rgba(77,163,255,0.16);
-      color: #ffffff;
-      box-shadow: 0 0 16px rgba(77,163,255,0.10);
-    }
-    .yn-wrap input.yn-yes:checked + .yn-btn{
-      border-color: rgba(59,255,147,0.35);
-      background: rgba(59,255,147,0.10);
-      box-shadow: 0 0 16px rgba(59,255,147,0.08);
-    }
-    .yn-wrap input.yn-no:checked + .yn-btn{
-      border-color: rgba(255,59,59,0.35);
-      background: rgba(255,59,59,0.10);
-      box-shadow: 0 0 16px rgba(255,59,59,0.08);
-    }
-
     .help{ font-size: 12px; color: #cfd9ff; line-height: 1.5; opacity: 0.95; }
     .pay-row{ display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 6px; }
     .pill{
@@ -491,6 +481,73 @@
       .cap-title{ font-size: 26px; }
     }
 
+
+    /* ===================== AUTH + TABS ===================== */
+    .top-right{ display:flex; align-items:center; gap: 10px; }
+    .badge-admin{
+      display:none;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-weight: 1000;
+      letter-spacing: .6px;
+      font-size: 12px;
+      border: 1px solid rgba(255,59,59,0.45);
+      background: rgba(255,59,59,0.14);
+      color: #ffd6d6;
+      box-shadow: 0 0 18px rgba(255,59,59,0.18);
+      user-select:none;
+      white-space: nowrap;
+    }
+    .auth-btn{
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: #fff;
+      font-weight: 1000;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .auth-btn:hover{ border-color: rgba(77,163,255,0.35); background: rgba(77,163,255,0.12); }
+
+    .tabbar{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .tabbtn{
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: #dbe3ff;
+      font-weight: 1000;
+      cursor: pointer;
+      user-select:none;
+    }
+    .tabbtn.active{
+      border-color: rgba(255,215,0,0.50);
+      background: rgba(255,215,0,0.14);
+      color: #ffeaa0;
+      box-shadow: 0 0 18px rgba(255,215,0,0.16);
+    }
+    .tabpanel{ display:none; }
+    .tabpanel.active{ display:block; }
+
+    .notice{
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,215,0,0.35);
+      background: rgba(255,215,0,0.10);
+      color: #ffeaa0;
+      font-weight: 900;
+      line-height: 1.55;
+    }
+
+    .auth-grid{ display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    @media (max-width: 700px){ .auth-grid{ grid-template-columns: 1fr; } }
+
     footer { text-align: center; padding: 25px; background: #020816; color: #8fa6ff; font-size: 14px; }
     footer img { width: 50px; opacity: 0.2; margin-top: 10px; }
   </style>
@@ -517,6 +574,7 @@
 
   <nav class="side-links">
     <a href="#home" data-scroll><i class="fa-solid fa-house"></i> Home</a>
+    <a href="#tournaments" data-scroll><i class="fa-solid fa-trophy"></i> Tournaments</a>
     <a href="#battleroyale" data-scroll><i class="fa-solid fa-crosshairs"></i> Battle Royale</a>
     <a href="#clashsquad" data-scroll><i class="fa-solid fa-users"></i> Clash Squad</a>
     <a href="#checkstatus" data-scroll><i class="fa-solid fa-circle-check"></i> Check Status</a>
@@ -536,6 +594,11 @@
       <div class="brand-title">TRPS Champions League</div>
     </div>
   </div>
+
+  <div class="top-right">
+    <span class="badge-admin" id="adminBadge">ADMIN</span>
+    <button class="auth-btn" id="authBtn">Login</button>
+  </div>
 </header>
 
 <!-- ===================== HOME ===================== -->
@@ -550,58 +613,47 @@
       </div>
 
       <div class="timing-box">
-        <b>Slot Timings (IST)</b>
-        <div class="tline">CS: 10:00 AM – 9:00 PM</div>
-        <div class="tline">BR (Normal Lobby): 7:00 PM / 9:30 PM</div>
-        <div class="tline">BR (Competitive Lobby): 9:00 PM / 11:30 PM</div>
+        <b>Slot Availability</b>
+        <div class="tline">Slots are shown inside the registration form (real-time).</div>
+        <div class="tline">Past slots are automatically hidden.</div>
         <div class="timing-muted">
-          Note: If you open the form after timings, today’s slots may be unavailable. Try again tomorrow.
+          Note: If you open the form late, today’s slots may be unavailable. Try again tomorrow.
         </div>
       </div>
     </div>
 
-    <!-- ✅ Branding Slider -->
+    <!-- ✅ Branding Slider (6 slides) -->
     <div class="slider-card">
       <div class="slider" id="slider">
 
         <div class="slide active">
           <img src="slide1.png" alt="TRPS Slide 1">
-          <div class="slide-caption">
-            <div class="cap-title">TRPS • Free Fire MAX</div>
-            <div class="cap-sub">Official tournament experience with clean, fast registration and real-time slots.</div>
-          </div>
+          <div class="slide-caption"><div class="cap-title">TRPS • Free Fire MAX</div></div>
         </div>
 
         <div class="slide">
-          <img src="slide2.png" alt="TRPS Slide 2">
-          <div class="slide-caption">
-            <div class="cap-title">Clash Squad • Battle Royale</div>
-            <div class="cap-sub">Choose your mode, pick your slot, and get ready to compete with skilled players.</div>
-          </div>
+          <img src="MG1.png" alt="TRPS Slide 2">
+          <div class="slide-caption"><div class="cap-title">Mega League • Championship Vibes</div></div>
         </div>
 
         <div class="slide">
-          <img src="slide3.png" alt="TRPS Slide 3">
-          <div class="slide-caption">
-            <div class="cap-title">Presented by TRPS Champions League</div>
-            <div class="cap-sub">Professional branding, clear rules, and organized match flow for a smooth experience.</div>
-          </div>
+          <img src="MG2.png" alt="TRPS Slide 3">
+          <div class="slide-caption"><div class="cap-title">Clash Squad • Battle Royale</div></div>
         </div>
 
         <div class="slide">
-          <img src="slide4.png" alt="TRPS Slide 4">
-          <div class="slide-caption">
-            <div class="cap-title">Tournament Updates</div>
-            <div class="cap-sub">After registration, keep your Reg ID safe to check status and updates anytime.</div>
-          </div>
+          <img src="slide3.png" alt="TRPS Slide 4">
+          <div class="slide-caption"><div class="cap-title">Presented by TRPS Champions League</div></div>
         </div>
 
         <div class="slide">
-          <img src="slide5.png" alt="TRPS Slide 5">
-          <div class="slide-caption">
-            <div class="cap-title">Championship Vibes</div>
-            <div class="cap-sub">Fair play, strong competition, and rewards — built for serious players.</div>
-          </div>
+          <img src="slide4.png" alt="TRPS Slide 5">
+          <div class="slide-caption"><div class="cap-title">Tournament Updates</div></div>
+        </div>
+
+        <div class="slide">
+          <img src="slide5.png" alt="TRPS Slide 6">
+          <div class="slide-caption"><div class="cap-title">Play Fair • Win Big</div></div>
         </div>
 
         <div class="dots" id="dots"></div>
@@ -610,18 +662,22 @@
   </div>
 </section>
 
-<!-- ✅ Battle Royale -->
-<section id="battleroyale">
-  <h3>Battle Royale</h3>
+<!-- ✅ NEW: TOURNAMENTS -->
+<section id="tournaments">
+  <h3>Tournaments</h3>
 
-  <div class="br-grid">
+  <div class="subhead">
+    <h4>Battle Royale Tournaments</h4>
+    <p>Normal Lobby • Competitive Lobby • Mega League</p>
+  </div>
+
+  <div class="br-grid" style="margin-top:18px;">
     <div class="br-card">
       <div class="br-head">
         <h4>Normal Lobby</h4>
-        <span class="tag">OPEN</span>
       </div>
 
-      <div class="br-meta">Entry: ₹25 • Prize Pool: ₹250</div>
+      <div class="br-meta">Entry: ₹25 • Prize Pool: ₹250<br><b>Slots:</b> 7:00 PM, 9:30 PM</div>
 
       <div class="prize-box">
         <div class="prize-title">Prize Distribution</div>
@@ -644,10 +700,9 @@
     <div class="br-card">
       <div class="br-head">
         <h4>Competitive Lobby</h4>
-        <span class="tag tag-live">ON STREAM</span>
       </div>
 
-      <div class="br-meta">Entry: ₹35 • Prize Pool: ₹335</div>
+      <div class="br-meta">Entry: ₹35 • Prize Pool: ₹335<br><b>Slots:</b> 9:30 PM, 11:00 PM <span style="color:#ffb3b3; font-weight:1000;">(11:00 PM ON STREAM)</span></div>
 
       <div class="prize-box">
         <div class="prize-title">Prize Distribution</div>
@@ -667,45 +722,190 @@
       </div>
     </div>
 
-    <div class="br-card mega-featured">
+    <!-- ✅ BR MEGA (toggleable) -->
+    <div class="br-card mega-featured" id="mega-br-card">
       <div class="br-head">
         <h4>Mega League</h4>
-        <span class="tag tag-mega">COMING SOON</span>
+        <span class="tag tag-mega mega-soon">COMING SOON</span>
+        <span class="tag tag-live-now mega-live-badge" style="display:none;">
+          <span class="blink-dot" style="width:8px;height:8px;"></span> LIVE NOW
+        </span>
       </div>
 
-      <div class="br-meta">Big Prize Pool • VIP Matches</div>
-
-      <div class="br-body">
-        Get ready for the biggest BR event of TRPS Champions League.
-        <div class="mega-teaser"><b>Coming Soon</b> • <b>Big Prize Pool</b></div>
+      <!-- COMING SOON -->
+      <div class="mega-soon">
+        <div class="br-meta">Big Prize Pool • VIP Matches</div>
+        <div class="br-body">
+          Get ready for the biggest BR event of TRPS Champions League.
+          <div class="mega-teaser"><b>Coming Soon</b> • <b>Big Prize Pool</b></div>
+        </div>
+        <div class="br-cta">
+          <a class="btn btn-disabled" href="#" aria-disabled="true">Register Here</a>
+        </div>
+        <div class="coming-glow">
+          <span class="blink-dot"></span>
+          COMING SOON ✨
+        </div>
       </div>
 
-      <div class="br-cta">
-        <a class="btn btn-disabled" href="#" aria-disabled="true">Register Here</a>
-      </div>
+      <!-- LIVE -->
+      <div class="mega-live-content" style="display:none;">
+        <div class="br-meta">Entry: ₹150 • Total Prize Pool: ₹11000</div>
 
-      <div class="coming-glow">
-        <span class="blink-dot"></span>
-        COMING SOON ✨
+        <div class="prize-box">
+          <div class="prize-title">Prize Distribution</div>
+          🥇 1st Place: ₹5500
+          🥈 2nd Place: ₹3500
+          🥉 3rd Place: ₹2000
+        </div>
+
+        <div class="br-body">
+          <b>Stages:</b> Qualifier → Semi Final → Grand Final
+        </div>
+
+        <div class="br-cta">
+          <button class="btn btn-live open-reg"
+            data-category="BR"
+            data-entry="150"
+            data-mode="Mega League"
+            data-stream="1"
+            data-display="BR • Mega League • Entry ₹150 (Live)"
+          >Register Here</button>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- ✅ Per Kill Matches -->
   <div class="subhead">
-    <h4>Per Kill Matches</h4>
-    <p>Slots: 10:00 AM – 9:00 PM (IST) • Every 30 minutes • (Seats shown live)</p>
+    <h4>Clash Squad Tournaments</h4>
+    <p>Normal Lobby • Competitive Lobby • Mega League</p>
   </div>
 
   <div class="br-grid" style="margin-top:18px;">
     <div class="br-card">
       <div class="br-head">
-        <h4>SOLO ₹25</h4>
-        <span class="tag tag-live">PER KILL</span>
+        <h4>Normal Lobby</h4>
       </div>
 
-      <div class="br-meta">Entry: ₹25 • Per Kill: ₹10 • Winner: ₹120</div>
+      <div class="br-meta">Entry: ₹100 • Total Prize Pool: ₹700<br><b>Slot:</b> 7:00 PM</div>
 
+      <div class="prize-box">
+        <div class="prize-title">Prize Distribution</div>
+        🥇 Winner: ₹450
+        🥈 Runner-up: ₹250
+      </div>
+
+      <div class="br-body">
+        <b>Format:</b> BO3 • <b>8 Teams only</b><br>
+        <b>Event may take up to 3 days</b> (Qualifier / Semi / Final)
+      </div>
+
+      <div class="br-cta">
+        <button class="btn btn-gold open-reg"
+          data-category="CS"
+          data-entry="100"
+          data-mode="Normal Lobby"
+          data-stream="0"
+          data-display="CS Tournament • Normal Lobby • Entry ₹100"
+        >Register Here</button>
+      </div>
+    </div>
+
+    <div class="br-card">
+      <div class="br-head">
+        <h4>Competitive Lobby</h4>
+      </div>
+
+      <div class="br-meta">Entry: ₹150 • Total Prize Pool: ₹1100<br><b>Slot:</b> 7:00 PM</div>
+
+      <div class="prize-box">
+        <div class="prize-title">Prize Distribution</div>
+        🥇 Winner: ₹700
+        🥈 Runner-up: ₹400
+      </div>
+
+      <div class="br-body">
+        <b>Final will be <span style="color:#ff3b3b;">ON STREAM.</span></b><br>
+        <b>Format:</b> BO3 • <b>8 Teams only</b><br>
+        <b>Event may take up to 3 days</b> (Qualifier / Semi / Final)
+      </div>
+
+      <div class="br-cta">
+        <button class="btn btn-live open-reg"
+          data-category="CS"
+          data-entry="150"
+          data-mode="Competitive Lobby"
+          data-stream="1"
+          data-display="CS Tournament • Competitive Lobby • Entry ₹150 (On Stream)"
+        >Register Here</button>
+      </div>
+    </div>
+
+    <!-- ✅ CS MEGA (toggleable) -->
+    <div class="br-card mega-featured" id="mega-cs-card">
+      <div class="br-head">
+        <h4>Mega League</h4>
+        <span class="tag tag-mega mega-soon">COMING SOON</span>
+        <span class="tag tag-live-now mega-live-badge" style="display:none;">
+          <span class="blink-dot" style="width:8px;height:8px;"></span> LIVE NOW
+        </span>
+      </div>
+
+      <!-- COMING SOON -->
+      <div class="mega-soon">
+        <div class="br-meta">Qualifier → Semi Final → Final</div>
+        <div class="br-body">
+          Get ready for the biggest Clash Squad event of TRPS Champions League.
+          <div class="mega-teaser"><b>Coming Soon</b> • <b>Big Prize Pool</b></div>
+          <div class="mega-teaser"><b>Stages:</b> Qualifier → Semi Final → Final</div>
+          <div class="mega-teaser"><b>Format:</b> BO3</div>
+        </div>
+        <div class="br-cta">
+          <a class="btn btn-disabled" href="#" aria-disabled="true">Register Here</a>
+        </div>
+        <div class="coming-glow">
+          <span class="blink-dot"></span>
+          COMING SOON ✨
+        </div>
+      </div>
+
+      <!-- LIVE -->
+      <div class="mega-live-content" style="display:none;">
+        <div class="br-meta">Entry: ₹200 • Total Prize Pool: ₹6000</div>
+
+        <div class="prize-box">
+          <div class="prize-title">Prize Distribution</div>
+          🥇 Winner: ₹4000
+          🥈 Runner-up: ₹2000
+        </div>
+
+        <div class="br-body">
+          <b>Stages:</b> Qualifier → Semi Final → Final<br>
+          <b>Format:</b> BO3
+        </div>
+
+        <div class="br-cta">
+          <button class="btn btn-live open-reg"
+            data-category="CS"
+            data-entry="200"
+            data-mode="Mega League"
+            data-stream="1"
+            data-display="CS • Mega League • Entry ₹200 (Live)"
+          >Register Here</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ✅ Battle Royale -->
+<section id="battleroyale">
+  <h3>Battle Royale</h3>
+
+  <div class="br-grid" style="margin-top:18px;">
+    <div class="br-card">
+      <div class="br-head"><h4>SOLO ₹25</h4></div>
+      <div class="br-meta">Entry: ₹25 • Per Kill: ₹10 • Winner: ₹120</div>
       <div class="pk-rules">
         <b>Strict Rules (Per Kill):</b><br>
         • Minimum <b>2 Kills</b> required<br>
@@ -714,7 +914,6 @@
         • No Team-Up<br>
         • No Glitch / Exploit
       </div>
-
       <div class="br-cta">
         <button class="btn btn-gold open-reg"
           data-category="BR"
@@ -727,13 +926,8 @@
     </div>
 
     <div class="br-card">
-      <div class="br-head">
-        <h4>SOLO ₹35</h4>
-        <span class="tag tag-live">PER KILL</span>
-      </div>
-
+      <div class="br-head"><h4>SOLO ₹35</h4></div>
       <div class="br-meta">Entry: ₹35 • Per Kill: ₹15 • Winner: ₹150</div>
-
       <div class="pk-rules">
         <b>Strict Rules (Per Kill):</b><br>
         • Minimum <b>2 Kills</b> required<br>
@@ -742,9 +936,8 @@
         • No Team-Up<br>
         • No Glitch / Exploit
       </div>
-
       <div class="br-cta">
-        <button class="btn btn-live open-reg"
+        <button class="btn btn-gold open-reg"
           data-category="BR"
           data-entry="35"
           data-mode="SOLO (Per Kill)"
@@ -755,13 +948,8 @@
     </div>
 
     <div class="br-card">
-      <div class="br-head">
-        <h4>DUO ₹50</h4>
-        <span class="tag">24 TEAMS</span>
-      </div>
-
-      <div class="br-meta">Entry: ₹50 / team • Per Kill: ₹20 (team) • Winner: ₹150</div>
-
+      <div class="br-head"><h4>SOLO ₹50</h4></div>
+      <div class="br-meta">Entry: ₹50 • Per Kill: ₹20 • Winner: ₹200</div>
       <div class="pk-rules">
         <b>Strict Rules (Per Kill):</b><br>
         • Minimum <b>2 Kills</b> required<br>
@@ -770,14 +958,13 @@
         • No Team-Up<br>
         • No Glitch / Exploit
       </div>
-
       <div class="br-cta">
         <button class="btn btn-gold open-reg"
           data-category="BR"
           data-entry="50"
-          data-mode="DUO (Per Kill)"
+          data-mode="SOLO (Per Kill)"
           data-stream="0"
-          data-display="BR • DUO ₹50 • Per Kill"
+          data-display="BR • SOLO ₹50 • Per Kill"
         >Register Here</button>
       </div>
     </div>
@@ -790,98 +977,34 @@
 
   <div class="cs-grid">
     <div class="price-card">
-      <div class="price-head">
-        <h4>Entry ₹15</h4>
-        <div class="price-meta">Winning ₹25</div>
-      </div>
-
-      <div class="mode-row">
-        <div class="mode-name">1v1</div>
-        <button class="btn btn-gold open-reg" data-category="CS" data-entry="15" data-mode="1v1" data-stream="0" data-display="CS • 1v1 • Entry ₹15">Register Here</button>
-      </div>
-      <div class="mode-row">
-        <div class="mode-name">2v2</div>
-        <button class="btn btn-gold open-reg" data-category="CS" data-entry="15" data-mode="2v2" data-stream="0" data-display="CS • 2v2 • Entry ₹15">Register Here</button>
-      </div>
-      <div class="mode-row">
-        <div class="mode-name">4v4</div>
-        <button class="btn btn-gold open-reg" data-category="CS" data-entry="15" data-mode="4v4" data-stream="0" data-display="CS • 4v4 • Entry ₹15">Register Here</button>
-      </div>
-    </div>
-
-    <div class="price-card">
-      <div class="price-head">
-        <h4>Entry ₹25</h4>
-        <div class="price-meta">Winning ₹40</div>
-      </div>
-
+      <div class="price-head"><h4>Entry ₹25</h4><div class="price-meta">Winning ₹40</div></div>
       <div class="mode-row">
         <div class="mode-name">1v1</div>
         <button class="btn btn-gold open-reg" data-category="CS" data-entry="25" data-mode="1v1" data-stream="0" data-display="CS • 1v1 • Entry ₹25">Register Here</button>
       </div>
-      <div class="mode-row">
-        <div class="mode-name">2v2</div>
-        <button class="btn btn-gold open-reg" data-category="CS" data-entry="25" data-mode="2v2" data-stream="0" data-display="CS • 2v2 • Entry ₹25">Register Here</button>
-      </div>
-      <div class="mode-row">
-        <div class="mode-name">4v4</div>
-        <button class="btn btn-gold open-reg" data-category="CS" data-entry="25" data-mode="4v4" data-stream="0" data-display="CS • 4v4 • Entry ₹25">Register Here</button>
-      </div>
     </div>
 
     <div class="price-card">
-      <div class="price-head">
-        <h4>Entry ₹40</h4>
-        <div class="price-meta">Winning ₹60</div>
-      </div>
-
+      <div class="price-head"><h4>Entry ₹40</h4><div class="price-meta">Winning ₹60</div></div>
       <div class="mode-row">
         <div class="mode-name">1v1</div>
         <button class="btn btn-gold open-reg" data-category="CS" data-entry="40" data-mode="1v1" data-stream="0" data-display="CS • 1v1 • Entry ₹40">Register Here</button>
       </div>
-      <div class="mode-row">
-        <div class="mode-name">2v2</div>
-        <button class="btn btn-gold open-reg" data-category="CS" data-entry="40" data-mode="2v2" data-stream="0" data-display="CS • 2v2 • Entry ₹40">Register Here</button>
-      </div>
-      <div class="mode-row">
-        <div class="mode-name">4v4</div>
-        <button class="btn btn-gold open-reg" data-category="CS" data-entry="40" data-mode="4v4" data-stream="0" data-display="CS • 4v4 • Entry ₹40">Register Here</button>
-      </div>
     </div>
 
     <div class="price-card">
-      <div class="price-head">
-        <h4>Entry ₹50</h4>
-        <div class="price-meta">Winning ₹80</div>
-      </div>
-
+      <div class="price-head"><h4>Entry ₹50</h4><div class="price-meta">Winning ₹80</div></div>
       <div class="mode-row">
         <div class="mode-name">1v1</div>
         <button class="btn btn-gold open-reg" data-category="CS" data-entry="50" data-mode="1v1" data-stream="0" data-display="CS • 1v1 • Entry ₹50">Register Here</button>
       </div>
-      <div class="mode-row">
-        <div class="mode-name">2v2</div>
-        <button class="btn btn-gold open-reg" data-category="CS" data-entry="50" data-mode="2v2" data-stream="0" data-display="CS • 2v2 • Entry ₹50">Register Here</button>
-      </div>
-      <div class="mode-row">
-        <div class="mode-name">4v4</div>
-        <button class="btn btn-gold open-reg" data-category="CS" data-entry="50" data-mode="4v4" data-stream="0" data-display="CS • 4v4 • Entry ₹50">Register Here</button>
-      </div>
     </div>
 
     <div class="price-card">
-      <div class="price-head">
-        <h4>Entry ₹100</h4>
-        <div class="price-meta">Winning ₹180</div>
-      </div>
-
+      <div class="price-head"><h4>Entry ₹100</h4><div class="price-meta">Winning ₹160</div></div>
       <div class="mode-row">
         <div class="mode-name">1v1</div>
         <button class="btn btn-gold open-reg" data-category="CS" data-entry="100" data-mode="1v1" data-stream="0" data-display="CS • 1v1 • Entry ₹100">Register Here</button>
-      </div>
-      <div class="mode-row">
-        <div class="mode-name">2v2</div>
-        <button class="btn btn-gold open-reg" data-category="CS" data-entry="100" data-mode="2v2" data-stream="0" data-display="CS • 2v2 • Entry ₹100">Register Here</button>
       </div>
       <div class="mode-row">
         <div class="mode-name">4v4</div>
@@ -890,29 +1013,51 @@
     </div>
 
     <div class="price-card">
-      <div class="price-head">
-        <h4>Entry ₹150 <span class="live-tag">(On Stream)</span></h4>
-        <div class="price-meta">Winning ₹250</div>
-      </div>
-
+      <div class="price-head"><h4>Entry ₹150</h4><div class="price-meta">Winning ₹240</div></div>
       <div class="mode-row">
         <div class="mode-name">1v1</div>
         <button class="btn btn-gold open-reg" data-category="CS" data-entry="150" data-mode="1v1" data-stream="0" data-display="CS • 1v1 • Entry ₹150">Register Here</button>
       </div>
-
       <div class="mode-row">
-        <div class="mode-name">2v2</div>
-        <button class="btn btn-gold open-reg" data-category="CS" data-entry="150" data-mode="2v2" data-stream="0" data-display="CS • 2v2 • Entry ₹150">Register Here</button>
+        <div class="mode-name">4v4</div>
+        <button class="btn btn-gold open-reg" data-category="CS" data-entry="150" data-mode="4v4" data-stream="0" data-display="CS • 4v4 • Entry ₹150">Register Here</button>
       </div>
+    </div>
 
+    <div class="price-card">
+      <div class="price-head"><h4>Entry ₹200</h4><div class="price-meta">Winning ₹320</div></div>
       <div class="mode-row">
-        <div class="mode-name">4v4 <span class="mini-pill mini-pill-live">ON STREAM 🔴</span></div>
-        <button class="btn btn-live open-reg" data-category="CS" data-entry="150" data-mode="4v4" data-stream="1" data-display="CS • 4v4 • Entry ₹150 (On Stream)">Register Here</button>
+        <div class="mode-name">1v1</div>
+        <button class="btn btn-gold open-reg" data-category="CS" data-entry="200" data-mode="1v1" data-stream="0" data-display="CS • 1v1 • Entry ₹200">Register Here</button>
       </div>
+      <div class="mode-row">
+        <div class="mode-name">4v4</div>
+        <button class="btn btn-gold open-reg" data-category="CS" data-entry="200" data-mode="4v4" data-stream="0" data-display="CS • 4v4 • Entry ₹200">Register Here</button>
+      </div>
+    </div>
 
-      <p style="margin-top:12px; color:#cfd9ff; font-size:13px;">
-        Note: Only <b>4v4</b> will be <b>On Stream</b> 🔴 (1v1/2v2 normal matches).
-      </p>
+    <div class="price-card">
+      <div class="price-head"><h4>Entry ₹250</h4><div class="price-meta">Winning ₹400</div></div>
+      <div class="mode-row">
+        <div class="mode-name">1v1</div>
+        <button class="btn btn-gold open-reg" data-category="CS" data-entry="250" data-mode="1v1" data-stream="0" data-display="CS • 1v1 • Entry ₹250">Register Here</button>
+      </div>
+      <div class="mode-row">
+        <div class="mode-name">4v4</div>
+        <button class="btn btn-gold open-reg" data-category="CS" data-entry="250" data-mode="4v4" data-stream="0" data-display="CS • 4v4 • Entry ₹250">Register Here</button>
+      </div>
+    </div>
+
+    <div class="price-card">
+      <div class="price-head"><h4>Entry ₹300</h4><div class="price-meta">Winning ₹480</div></div>
+      <div class="mode-row">
+        <div class="mode-name">1v1</div>
+        <button class="btn btn-gold open-reg" data-category="CS" data-entry="300" data-mode="1v1" data-stream="0" data-display="CS • 1v1 • Entry ₹300">Register Here</button>
+      </div>
+      <div class="mode-row">
+        <div class="mode-name">4v4</div>
+        <button class="btn btn-gold open-reg" data-category="CS" data-entry="300" data-mode="4v4" data-stream="0" data-display="CS • 4v4 • Entry ₹300">Register Here</button>
+      </div>
     </div>
   </div>
 </section>
@@ -921,9 +1066,7 @@
 <section id="checkstatus">
   <h3>Check Status</h3>
   <div class="mini-card">
-    <p>
-      Enter your <b>Reg ID</b> and your phone <b>last 4 digits</b> to view current status.
-    </p>
+    <p>Enter your <b>Reg ID</b> and your phone <b>last 4 digits</b> to view current status.</p>
 
     <div class="mini-form">
       <input id="st_reg" placeholder="Reg ID (e.g., TRPS-0001)" />
@@ -960,7 +1103,7 @@
     <li>
       After registering, players must DM on
       <a class="wa-link" target="_blank" rel="noopener noreferrer"
-         href="https://wa.me/917294898996?text=Hi%20TRPS%20Champions%20League%2C%20I%20have%20registered.%20Please%20confirm%20my%20entry.">
+         href="https://wa.me/?text=Hi%20TRPS%20Champions%20League%2C%20I%20have%20registered.%20Please%20confirm%20my%20entry.">
         7294898996 (WhatsApp)
       </a>
       for confirmation.
@@ -1029,7 +1172,7 @@
 <div class="modal" id="regModal" aria-hidden="true">
   <div class="modal-card">
     <div class="modal-head">
-      <h4>Registration Form</h4>
+      <h4>TRPS Portal</h4>
       <button class="close-btn" id="closeModal" aria-label="Close">×</button>
     </div>
 
@@ -1046,22 +1189,71 @@
         • Gun Attributes OFF<br>
         • No Team-Up<br>
         • No Glitch / Exploit<br>
-        <span style="font-size:12px; color:#ffb3b3;">
-          Rule break = Direct Disqualification (No Refund)
-        </span>
+        <span style="font-size:12px; color:#ffb3b3;">Rule break = Direct Disqualification (No Refund)</span>
       </div>
 
-      <form id="regForm">
+      <div class="tabbar" id="mainTabbar">
+        <button type="button" class="tabbtn active" data-tab="register" id="tabRegisterBtn">Register</button>
+        <button type="button" class="tabbtn" data-tab="updates" id="tabUpdatesBtn">Updates</button>
+        <button type="button" class="tabbtn" data-tab="leaderboard" id="tabLeaderboardBtn">Leaderboard</button>
+      </div>
+
+      <div class="tabpanel active" id="panelRegister">
+      <form id="regForm" enctype="multipart/form-data">
         <input type="hidden" name="category" id="f_category">
         <input type="hidden" name="entry" id="f_entry">
         <input type="hidden" name="mode" id="f_mode">
         <input type="hidden" name="stream" id="f_stream">
         <input type="hidden" name="match_date" id="f_matchDate" value="">
-
-        <!-- Razorpay verified token (frontend keeps; backend verifies) -->
         <input type="hidden" name="payment_token" id="f_paymentToken" value="">
+        <input type="hidden" name="trps_id" id="f_trpsId" value="">
 
-        <div class="grid">
+        <!-- ✅ SQUAD FIELDS (hidden by default) -->
+        <div id="squadBox" style="display:none; margin-bottom:14px;">
+          <div class="grid">
+            <div class="field" style="grid-column: 1 / -1;">
+              <label>Team Name *</label>
+              <input id="teamName" name="team_name" placeholder="Enter team name">
+            </div>
+
+            <div class="field" style="grid-column: 1 / -1;">
+              <label>Contact Number (10-digit) *</label>
+              <input id="teamContact" name="contact" inputmode="numeric" placeholder="Enter WhatsApp number" maxlength="10">
+            </div>
+
+            <div class="field">
+              <label>Player 1 Name *</label>
+              <input id="p1" name="player1" placeholder="Player 1">
+            </div>
+            <div class="field">
+              <label>Player 2 Name *</label>
+              <input id="p2" name="player2" placeholder="Player 2">
+            </div>
+            <div class="field">
+              <label>Player 3 Name *</label>
+              <input id="p3" name="player3" placeholder="Player 3">
+            </div>
+            <div class="field">
+              <label>Player 4 Name *</label>
+              <input id="p4" name="player4" placeholder="Player 4">
+            </div>
+            <div class="field" style="grid-column: 1 / -1;">
+              <label>Substitute Player (5th) Name (Optional)</label>
+              <input id="p5" name="player5" placeholder="Substitute player (backup)">
+            </div>
+
+            <div class="field" style="grid-column: 1 / -1;">
+              <label>Team Logo (Optional • 2MB–5MB)</label>
+              <input type="file" id="teamLogo" name="team_logo" accept="image/*">
+              <div class="help" id="logoHelp">Optional. Logo size 2MB–5MB allowed.</div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+        </div>
+
+        <!-- ✅ NORMAL (single/duo) FIELDS -->
+        <div class="grid" id="normalBox">
           <div class="field">
             <label id="labelMainName">In-Game Name *</label>
             <input name="main_name" id="mainName" placeholder="Enter name" required>
@@ -1074,10 +1266,9 @@
 
           <div class="field">
             <label>Contact Number (10-digit) *</label>
-            <input name="contact" id="contact" inputmode="numeric" placeholder="Enter WhatsApp number" maxlength="10" required>
+            <input id="contact" name="contact_single" inputmode="numeric" placeholder="Enter WhatsApp number" maxlength="10" required>
           </div>
 
-          <!-- ✅ Date selector ONLY for BR Per Kill -->
           <div class="field" id="fieldPkDate" style="display:none;">
             <label>Match Date *</label>
             <select id="pkDateSelect">
@@ -1095,48 +1286,8 @@
           </div>
         </div>
 
-        <!-- ✅ CS options -->
-        <div class="grid" id="csOptions" style="margin-top:12px; display:none;">
-          <div class="field">
-            <label>Head Shot Only *</label>
-            <div class="yn-wrap">
-              <input class="yn-yes" type="radio" name="hs_only" id="hs_yes" value="YES">
-              <label class="yn-btn" for="hs_yes"><i class="fa-solid fa-check"></i> Yes</label>
-
-              <input class="yn-no" type="radio" name="hs_only" id="hs_no" value="NO">
-              <label class="yn-btn" for="hs_no"><i class="fa-solid fa-xmark"></i> No</label>
-            </div>
-            <div class="help">Select Yes = Head Shot mode, No = Normal (Body Shot).</div>
-          </div>
-
-          <div class="field">
-            <label>Limited Ammo *</label>
-            <div class="yn-wrap">
-              <input class="yn-yes" type="radio" name="limited_ammo" id="ammo_yes" value="YES">
-              <label class="yn-btn" for="ammo_yes"><i class="fa-solid fa-check"></i> Yes</label>
-
-              <input class="yn-no" type="radio" name="limited_ammo" id="ammo_no" value="NO">
-              <label class="yn-btn" for="ammo_no"><i class="fa-solid fa-xmark"></i> No</label>
-            </div>
-            <div class="help">Yes = Limited Ammo, No = Unlimited Ammo.</div>
-          </div>
-
-          <div class="field">
-            <label>Gun Rule *</label>
-            <div class="yn-wrap">
-              <input class="yn-yes" type="radio" name="gun_rule" id="gun_onetap" value="ONE_TAP">
-              <label class="yn-btn" for="gun_onetap"><i class="fa-solid fa-bolt"></i> One Tap</label>
-
-              <input class="yn-no" type="radio" name="gun_rule" id="gun_allguns" value="ALL_GUNS">
-              <label class="yn-btn" for="gun_allguns"><i class="fa-solid fa-gun"></i> All Guns</label>
-            </div>
-            <div class="help">Match rules ke hisaab se select karo (One Tap / All Guns).</div>
-          </div>
-        </div>
-
         <div class="divider"></div>
 
-        <!-- ✅ Razorpay payment -->
         <div class="field">
           <label>Payment *</label>
           <div class="pay-row">
@@ -1155,16 +1306,15 @@
             <div class="help">
               Submit ke baad WhatsApp pe DM karke confirmation le lo:
               <a class="wa-link" target="_blank" rel="noopener noreferrer"
-                 href="https://wa.me/917294898996?text=Hi%20TRPS%20Champions%20League%2C%20I%20have%20registered.%20Please%20confirm%20my%20entry.">
+                 href="https://wa.me/?text=Hi%20TRPS%20Champions%20League%2C%20I%20have%20registered.%20Please%20confirm%20my%20entry.">
                 7294898996
               </a>
             </div>
+
             <div class="checkbox">
               <input type="checkbox" id="rulesCheck">
-              <label for="rulesCheck">
-                I agree to all Tournament Rules. For <b>Per Kill matches</b>:
-                Minimum 2 kills required, Revive OFF, Gun Attributes OFF, No Team-Up & No Glitch usage.
-                Violation = Disqualification (No Refund).
+              <label for="rulesCheck" id="rulesLabel">
+                I agree to all Free Fire MAX tournament rules presented by TRPS Champions League.
               </label>
             </div>
           </div>
@@ -1176,20 +1326,278 @@
 
         <div class="help" id="formMsg" style="margin-top:10px;"></div>
       </form>
+      </div>
+
+      <div class="tabpanel" id="panelUpdates">
+        <div class="notice" style="margin-bottom:12px;">Login required for Updates & Leaderboard.</div>
+        <div class="mini-card">
+          <p style="margin:0 0 10px; color:#cfd9ff; line-height:1.6;">Daily match-wise updates/instructions yahan show honge.</p>
+          <button type="button" class="btn btn-gold" id="refreshUpdatesBtn">Refresh Updates</button>
+          <div class="out-box" id="updatesOut" style="margin-top:12px;">No updates loaded.</div>
+        </div>
+      </div>
+
+      <div class="tabpanel" id="panelLeaderboard">
+        <div class="notice" style="margin-bottom:12px;">Login required for Updates & Leaderboard.</div>
+        <div class="mini-card">
+          <p style="margin:0 0 10px; color:#cfd9ff; line-height:1.6;">Top 9 public + aapka own result (login ke baad).</p>
+          <button type="button" class="btn btn-gold" id="refreshLbBtn">Refresh Leaderboard</button>
+          <div class="out-box" id="lbOut" style="margin-top:12px;">No leaderboard loaded.</div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
+
+<!-- ✅ Login Modal (Admin + User) -->
+<div class="modal" id="authModal" aria-hidden="true">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h4>Login</h4>
+      <button class="close-btn" id="closeAuth" aria-label="Close">×</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="tabbar" id="authTabbar">
+        <button type="button" class="tabbtn active" data-auth-tab="login" id="authLoginTab">Login</button>
+        <button type="button" class="tabbtn" data-auth-tab="create" id="authCreateTab">Create</button>
+        <button type="button" class="tabbtn" data-auth-tab="forgot" id="authForgotTab">Forgot PIN</button>
+      </div>
+
+      <div class="tabpanel active" id="authPanelLogin">
+        <div class="auth-grid">
+          <div class="field">
+            <label>TRPS ID *</label>
+            <input id="auth_trps_id" placeholder="TRPS-XXXX" />
+          </div>
+          <div class="field">
+            <label>PIN (6-digit) *</label>
+            <input id="auth_pin" inputmode="numeric" maxlength="6" placeholder="******" />
+          </div>
+        </div>
+
+        <div class="actions" style="justify-content:flex-end; margin-top:14px;">
+          <button type="button" class="btn btn-live" id="authLoginBtn">Login</button>
+        </div>
+        <div class="help" id="authMsg" style="margin-top:10px;"></div>
+      </div>
+
+      <div class="tabpanel" id="authPanelCreate">
+        <div class="notice" style="margin-bottom:12px;">
+          New user ke liye <b>6-digit PIN</b> set karo. TRPS ID server auto-generate karega.
+        </div>
+        <div class="auth-grid">
+          <div class="field" style="grid-column: 1 / -1;">
+            <label>Set New PIN (6-digit) *</label>
+            <input id="create_pin" inputmode="numeric" maxlength="6" placeholder="******" />
+          </div>
+        </div>
+        <div class="actions" style="justify-content:flex-end; margin-top:14px;">
+          <button type="button" class="btn btn-gold" id="authCreateBtn">Create TRPS ID</button>
+        </div>
+        <div class="out-box" id="createOut" style="margin-top:12px;">TRPS ID will appear here.</div>
+      </div>
+
+      <div class="tabpanel" id="authPanelForgot">
+        <div class="notice" style="margin-bottom:12px;">
+          Option 1: WhatsApp open hoga with message: <b>“Please reset my PIN. TRPS ID: ____”</b><br>
+          Reset admin approve karega (sheet me RESET toggle YES).
+        </div>
+
+        <div class="auth-grid">
+          <div class="field" style="grid-column: 1 / -1;">
+            <label>Your TRPS ID *</label>
+            <input id="forgot_trps_id" placeholder="TRPS-XXXX" />
+          </div>
+        </div>
+
+        <div class="actions" style="justify-content:flex-end; margin-top:14px;">
+          <button type="button" class="btn btn-live" id="openWaResetBtn">Request Reset on WhatsApp</button>
+        </div>
+        <div class="help" style="margin-top:10px;">Note: Reset approve hone ke baad aap new PIN set karke login kar sakte ho.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <script>
+  /**********************
+   * ✅ ONE SWITCH (ONLY CHANGE THIS)
+   * "COMING_SOON" | "LIVE_BR" | "LIVE_CS"
+   **********************/
+  const MEGA_LEAGUE = "LIVE_CS";
+
   /**********************
    * CONFIG
    **********************/
   const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxFeuZ3owpiuNafgGXdcSPnsslBCYRk560LZ1Am2qDvlABOmW4EFP6wFrDoTixgEAo/exec"; // ✅ change this only
-  const STORAGE_KEY = "trps_reg_intent_v3";              // upgraded due to new payment flow
+  const STORAGE_KEY = "trps_reg_intent_v4";
   const HISTORY_STORE = "trps_history_v1";
 
   /**********************
-   * OVERLAY HISTORY (Back button closes modal/sidebar first)
+   * ✅ AUTH (Admin + User)
+   * - User session: 1 day
+   * - Admin session: 7 days
+   **********************/
+  const AUTH_STORE = "trps_auth_v1";
+  const USER_SESSION_DAYS = 1;
+  const ADMIN_SESSION_DAYS = 7;
+
+  let pendingAfterLogin = null;
+
+  function nowMs(){ return Date.now(); }
+  function daysToMs(d){ return d * 24 * 60 * 60 * 1000; }
+
+  function getAuth(){
+    try{
+      const raw = localStorage.getItem(AUTH_STORE);
+      if(!raw) return null;
+      const obj = JSON.parse(raw);
+      if(!obj || !obj.trps_id || !obj.role || !obj.exp) return null;
+      if(nowMs() > Number(obj.exp)){
+        localStorage.removeItem(AUTH_STORE);
+        return null;
+      }
+      return obj;
+    }catch(_){
+      return null;
+    }
+  }
+  function setAuth(trps_id, role){
+    const days = (role === "admin") ? ADMIN_SESSION_DAYS : USER_SESSION_DAYS;
+    const payload = { trps_id, role, exp: nowMs() + daysToMs(days) };
+    localStorage.setItem(AUTH_STORE, JSON.stringify(payload));
+    refreshAuthUI();
+  }
+  function clearAuth(){
+    localStorage.removeItem(AUTH_STORE);
+    refreshAuthUI();
+  }
+  function isLoggedIn(){ return !!getAuth(); }
+  function isAdmin(){ return (getAuth()?.role === "admin"); }
+
+  function refreshAuthUI(){
+    const a = getAuth();
+    const badge = document.getElementById("adminBadge");
+    const btn = document.getElementById("authBtn");
+    if(badge) badge.style.display = (a && a.role === "admin") ? "inline-flex" : "none";
+    if(btn) btn.textContent = a ? "Logout" : "Login";
+    if(f_trpsId) f_trpsId.value = a?.trps_id || "";
+  }
+
+  function requireLogin(nextFn){
+    if(isLoggedIn()){
+      if(typeof nextFn === "function") nextFn();
+      return true;
+    }
+    pendingAfterLogin = (typeof nextFn === "function") ? nextFn : null;
+    openAuthModal(true, "login");
+    return false;
+  }
+
+  async function authServer(action, payload){
+    const fd = new FormData();
+    fd.append("action", action);
+    Object.keys(payload || {}).forEach(k => fd.append(k, payload[k]));
+    const res = await fetch(WEB_APP_URL, { method:"POST", body: fd });
+    const out = await res.json().catch(()=>null);
+    if(!out || !out.ok) throw new Error(out?.error || "Auth failed");
+    return out;
+  }
+
+  async function loadUpdates(){
+    try{
+      if(!updatesOut) return;
+      updatesOut.textContent = "Loading...";
+      const a = getAuth();
+      const fd = new FormData();
+      fd.append("action", "get_updates");
+      fd.append("trps_id", a?.trps_id || "");
+      fd.append("category", current?.category || "");
+      fd.append("mode", current?.mode || "");
+      const res = await fetch(WEB_APP_URL, { method:"POST", body: fd });
+      const out = await res.json().catch(()=>null);
+      if(!out || !out.ok){
+        updatesOut.textContent = out?.error || "No updates available yet.";
+        return;
+      }
+      updatesOut.textContent = out.text || JSON.stringify(out, null, 2);
+    }catch(err){
+      if(updatesOut) updatesOut.textContent = err?.message || "Updates load failed";
+    }
+  }
+
+  async function loadLeaderboard(){
+    try{
+      if(!lbOut) return;
+      lbOut.textContent = "Loading...";
+      const a = getAuth();
+      const fd = new FormData();
+      fd.append("action", "get_leaderboard");
+      fd.append("trps_id", a?.trps_id || "");
+      fd.append("category", current?.category || "");
+      fd.append("mode", current?.mode || "");
+      const res = await fetch(WEB_APP_URL, { method:"POST", body: fd });
+      const out = await res.json().catch(()=>null);
+      if(!out || !out.ok){
+        lbOut.textContent = out?.error || "Leaderboard not available yet.";
+        return;
+      }
+      if(Array.isArray(out.top)){
+        const lines = [];
+        lines.push("TOP 9");
+        out.top.slice(0,9).forEach((r,i) => {
+          lines.push(`${i+1}. ${r.name || r.team || "-"} — ${r.score ?? r.points ?? ""}`);
+        });
+        if(out.me){
+          lines.push("\nYOUR RESULT");
+          lines.push(`${out.me.rank ?? "-"}. ${out.me.name || out.me.team || "-"} — ${out.me.score ?? out.me.points ?? ""}`);
+        }
+        lbOut.textContent = lines.join("\n");
+      } else {
+        lbOut.textContent = out.text || JSON.stringify(out, null, 2);
+      }
+    }catch(err){
+      if(lbOut) lbOut.textContent = err?.message || "Leaderboard load failed";
+    }
+  }
+
+  /**********************
+   * ✅ MEGA TOGGLE (LIVE / COMING SOON)
+   **********************/
+  document.addEventListener("DOMContentLoaded", () => {
+    const brCard = document.getElementById("mega-br-card");
+    const csCard = document.getElementById("mega-cs-card");
+
+    function setComingSoon(card){
+      if(!card) return;
+      card.classList.remove("mega-live-card");
+      const liveBadge = card.querySelector(".mega-live-badge");
+      if(liveBadge) liveBadge.style.display = "none";
+      card.querySelectorAll(".mega-live-content").forEach(el => el.style.display = "none");
+      card.querySelectorAll(".mega-soon").forEach(el => el.style.display = "block");
+    }
+
+    function setLive(card){
+      if(!card) return;
+      card.classList.add("mega-live-card");
+      const liveBadge = card.querySelector(".mega-live-badge");
+      if(liveBadge) liveBadge.style.display = "inline-flex";
+      card.querySelectorAll(".mega-live-content").forEach(el => el.style.display = "block");
+      card.querySelectorAll(".mega-soon").forEach(el => el.style.display = "none");
+    }
+
+    setComingSoon(brCard);
+    setComingSoon(csCard);
+
+    if (MEGA_LEAGUE === "LIVE_BR") setLive(brCard);
+    if (MEGA_LEAGUE === "LIVE_CS") setLive(csCard);
+  });
+
+  /**********************
+   * OVERLAY HISTORY
    **********************/
   function pushOverlayState(type){
     try{
@@ -1199,6 +1607,10 @@
     }catch(_){}
   }
   window.addEventListener("popstate", () => {
+    if(authModal && authModal.classList.contains("open")){
+      closeAuthModal(false);
+      return;
+    }
     if(regModal.classList.contains("open")){
       closeModal(false);
       return;
@@ -1295,18 +1707,6 @@
     let hh = h % 12; if(hh === 0) hh = 12;
     return `${hh}:${pad(m)} ${ampm}`;
   }
-  function buildHalfHourSlots(startH, startM, endH, endM){
-    const out = [];
-    let h = startH, m = startM;
-    while(true){
-      out.push(to12h(h, m));
-      if(h === endH && m === endM) break;
-      m += 30;
-      if(m >= 60){ m = 0; h += 1; }
-      if(h > 23) break;
-    }
-    return out;
-  }
   function parse12hToMinutes(t){
     const m = String(t).trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
     if(!m) return null;
@@ -1348,11 +1748,21 @@
 
   function setSlotOptionsWithSeats(slotObjs, helpText){
     if(!Array.isArray(slotObjs) || slotObjs.length === 0){
-      const msg = helpText || "Slots closed. Please try again tomorrow.";
+      const msg = "Slots closed. Please try again tomorrow.";
       slot.innerHTML = `<option value="" selected disabled>${msg}</option>`;
       slotHelp.textContent = msg;
       return;
     }
+
+    // If ALL slots full => show Teams Full message
+    const allFull = slotObjs.every(s => !!s.full);
+    if(allFull){
+      const msg = "Teams Full — registrations closed";
+      slot.innerHTML = `<option value="" selected disabled>${msg}</option>`;
+      slotHelp.textContent = msg;
+      return;
+    }
+
     const optHtml = slotObjs.map(s => {
       const label = s.full ? `${s.time} (FULL)` : `${s.time} (${s.left} left)`;
       const disabled = s.full ? "disabled" : "";
@@ -1363,25 +1773,16 @@
   }
   function setSlotOptions(list, helpText){
     if(!Array.isArray(list) || list.length === 0){
-      const msg = helpText || "Slots closed. Please try again tomorrow.";
+      const msg = "Slots closed. Please try again tomorrow.";
       slot.innerHTML = `<option value="" selected disabled>${msg}</option>`;
       slotHelp.textContent = msg;
       return;
     }
-    slot.innerHTML =
-      `<option value="">Select slot</option>` +
-      list.map(t => `<option value="${t}">${t}</option>`).join("");
+    slot.innerHTML = `<option value="">Select slot</option>` + list.map(t => `<option value="${t}">${t}</option>`).join("");
     slotHelp.textContent = helpText || "";
   }
 
   function is10DigitNumber(v){ return /^[0-9]{10}$/.test(v); }
-  function getRadioValue(name){
-    const el = document.querySelector(`input[name="${name}"]:checked`);
-    return el ? el.value : "";
-  }
-  function clearRadio(name){
-    document.querySelectorAll(`input[name="${name}"]`).forEach(x => x.checked = false);
-  }
 
   function openModal(push=true){
     regModal.classList.add("open");
@@ -1410,7 +1811,6 @@
   const amtPill = document.getElementById("amtPill");
   const payStatePill = document.getElementById("payStatePill");
   const payNowBtn = document.getElementById("payNowBtn");
-  const csOptions = document.getElementById("csOptions");
   const perKillRulesBox = document.getElementById("perKillRulesBox");
 
   const f_category = document.getElementById("f_category");
@@ -1424,18 +1824,202 @@
   const pkDateSelect = document.getElementById("pkDateSelect");
   const dateHelp = document.getElementById("dateHelp");
 
+  const rulesLabel = document.getElementById("rulesLabel");
+
   const labelMainName = document.getElementById("labelMainName");
   const labelSecondName = document.getElementById("labelSecondName");
   const fieldSecondName = document.getElementById("fieldSecondName");
   const mainName = document.getElementById("mainName");
   const secondName = document.getElementById("secondName");
   const contact = document.getElementById("contact");
+  const teamContact = document.getElementById("teamContact");
   const slot = document.getElementById("slot");
   const slotHelp = document.getElementById("slotHelp");
   const rulesCheck = document.getElementById("rulesCheck");
   const regForm = document.getElementById("regForm");
   const submitBtn = document.getElementById("submitBtn");
   const formMsg = document.getElementById("formMsg");
+
+  /**********************
+   * ✅ MAIN MODAL TABS (Register / Updates / Leaderboard)
+   **********************/
+  const tabRegisterBtn = document.getElementById("tabRegisterBtn");
+  const tabUpdatesBtn = document.getElementById("tabUpdatesBtn");
+  const tabLeaderboardBtn = document.getElementById("tabLeaderboardBtn");
+  const panelRegister = document.getElementById("panelRegister");
+  const panelUpdates = document.getElementById("panelUpdates");
+  const panelLeaderboard = document.getElementById("panelLeaderboard");
+  const refreshUpdatesBtn = document.getElementById("refreshUpdatesBtn");
+  const refreshLbBtn = document.getElementById("refreshLbBtn");
+  const updatesOut = document.getElementById("updatesOut");
+  const lbOut = document.getElementById("lbOut");
+
+  function setMainTab(tab){
+    const tabMap = { register: [tabRegisterBtn, panelRegister], updates: [tabUpdatesBtn, panelUpdates], leaderboard: [tabLeaderboardBtn, panelLeaderboard] };
+    Object.keys(tabMap).forEach(k => {
+      const [btn, panel] = tabMap[k];
+      if(btn) btn.classList.toggle("active", k === tab);
+      if(panel) panel.classList.toggle("active", k === tab);
+    });
+    // gate updates/leaderboard
+    if(tab === "updates" || tab === "leaderboard"){
+      if(!requireLogin(() => { openModal(true); setMainTab(tab); })){
+        // If not logged in, revert to register view while modal stays consistent
+        setMainTab("register");
+        return;
+      }
+      if(tab === "updates") loadUpdates();
+      if(tab === "leaderboard") loadLeaderboard();
+    }
+  }
+  if(tabRegisterBtn) tabRegisterBtn.addEventListener("click", () => setMainTab("register"));
+  if(tabUpdatesBtn) tabUpdatesBtn.addEventListener("click", () => setMainTab("updates"));
+  if(tabLeaderboardBtn) tabLeaderboardBtn.addEventListener("click", () => setMainTab("leaderboard"));
+
+  /**********************
+   * ✅ AUTH MODAL
+   **********************/
+  const authModal = document.getElementById("authModal");
+  const closeAuth = document.getElementById("closeAuth");
+  const authBtn = document.getElementById("authBtn");
+
+  const authLoginTab = document.getElementById("authLoginTab");
+  const authCreateTab = document.getElementById("authCreateTab");
+  const authForgotTab = document.getElementById("authForgotTab");
+
+  const authPanelLogin = document.getElementById("authPanelLogin");
+  const authPanelCreate = document.getElementById("authPanelCreate");
+  const authPanelForgot = document.getElementById("authPanelForgot");
+
+  const auth_trps_id = document.getElementById("auth_trps_id");
+  const auth_pin = document.getElementById("auth_pin");
+  const authLoginBtn = document.getElementById("authLoginBtn");
+  const authMsg = document.getElementById("authMsg");
+
+  const create_pin = document.getElementById("create_pin");
+  const authCreateBtn = document.getElementById("authCreateBtn");
+  const createOut = document.getElementById("createOut");
+
+  const forgot_trps_id = document.getElementById("forgot_trps_id");
+  const openWaResetBtn = document.getElementById("openWaResetBtn");
+
+  function openAuthModal(push=true, tab="login"){
+    if(regModal && regModal.classList.contains("open")) closeModal(false);
+    authModal.classList.add("open");
+    authModal.setAttribute("aria-hidden","false");
+    document.body.style.overflow = "hidden";
+    if(push) pushOverlayState("auth");
+    setAuthTab(tab);
+  }
+  function closeAuthModal(goBack=true){
+    authModal.classList.remove("open");
+    authModal.setAttribute("aria-hidden","true");
+    document.body.style.overflow = "";
+    if(goBack){
+      const s = history.state || {};
+      if(s && s.__overlay === "auth"){ history.back(); }
+    }
+  }
+  if(closeAuth) closeAuth.addEventListener("click", () => closeAuthModal(true));
+  if(authBtn) authBtn.addEventListener("click", () => {
+    if(isLoggedIn()) clearAuth();
+    else openAuthModal(true, "login");
+  });
+
+  function setAuthTab(tab){
+    const map = {
+      login: [authLoginTab, authPanelLogin],
+      create: [authCreateTab, authPanelCreate],
+      forgot: [authForgotTab, authPanelForgot],
+    };
+    Object.keys(map).forEach(k => {
+      const [btn, panel] = map[k];
+      if(btn) btn.classList.toggle("active", k === tab);
+      if(panel) panel.classList.toggle("active", k === tab);
+    });
+    if(authMsg) authMsg.textContent = "";
+    if(createOut && tab !== "create") createOut.textContent = "TRPS ID will appear here.";
+  }
+  if(authLoginTab) authLoginTab.addEventListener("click", () => setAuthTab("login"));
+  if(authCreateTab) authCreateTab.addEventListener("click", () => setAuthTab("create"));
+  if(authForgotTab) authForgotTab.addEventListener("click", () => setAuthTab("forgot"));
+
+  if(openWaResetBtn){
+    openWaResetBtn.addEventListener("click", () => {
+      const id = String(forgot_trps_id?.value || "").trim();
+      if(!id){
+        alert("Please enter your TRPS ID");
+        return;
+      }
+      const msg = encodeURIComponent(`Please reset my PIN. TRPS ID: ${id}`);
+      window.open(`https://wa.me/?text=${msg}`, "_blank");
+    });
+  }
+
+  if(authLoginBtn){
+    authLoginBtn.addEventListener("click", async () => {
+      try{
+        const id = String(auth_trps_id?.value || "").trim();
+        const pin = String(auth_pin?.value || "").trim();
+        if(!id || !pin || pin.length !== 6) throw new Error("Enter TRPS ID + 6-digit PIN");
+        authLoginBtn.disabled = true;
+        if(authMsg) authMsg.textContent = "Logging in...";
+        const out = await authServer("login", { trps_id: id, pin });
+        setAuth(out.trps_id || id, out.role || "user");
+        closeAuthModal(true);
+        if(typeof pendingAfterLogin === "function"){
+          const fn = pendingAfterLogin;
+          pendingAfterLogin = null;
+          fn();
+        }
+      }catch(err){
+        if(authMsg) authMsg.textContent = err?.message || "Login failed";
+      }finally{
+        if(authLoginBtn) authLoginBtn.disabled = false;
+      }
+    });
+  }
+
+  if(authCreateBtn){
+    authCreateBtn.addEventListener("click", async () => {
+      try{
+        const pin = String(create_pin?.value || "").trim();
+        if(!pin || pin.length !== 6) throw new Error("6-digit PIN required");
+        authCreateBtn.disabled = true;
+        if(createOut) createOut.textContent = "Creating...";
+        const out = await authServer("create_user", { pin });
+        const id = out.trps_id || out.id || "";
+        if(!id) throw new Error("TRPS ID not returned by server");
+        if(createOut) createOut.textContent = `Your TRPS ID: ${id}\nNow login with this TRPS ID + your PIN.`;
+        setAuthTab("login");
+        if(auth_trps_id) auth_trps_id.value = id;
+      }catch(err){
+        if(createOut) createOut.textContent = err?.message || "Create failed";
+      }finally{
+        if(authCreateBtn) authCreateBtn.disabled = false;
+      }
+    });
+  }
+
+  // close auth on backdrop click
+  if(authModal){
+    authModal.addEventListener("click", (e) => {
+      if(e.target === authModal) closeAuthModal(true);
+    });
+  }
+
+
+  // squad fields
+  const squadBox = document.getElementById("squadBox");
+  const normalBox = document.getElementById("normalBox");
+  const teamName = document.getElementById("teamName");
+  const p1 = document.getElementById("p1");
+  const p2 = document.getElementById("p2");
+  const p3 = document.getElementById("p3");
+  const p4 = document.getElementById("p4");
+  const p5 = document.getElementById("p5");
+  const teamLogo = document.getElementById("teamLogo");
+  const logoHelp = document.getElementById("logoHelp");
 
   closeModalBtn.addEventListener("click", () => closeModal(true));
   regModal.addEventListener("click", (e) => { if(e.target === regModal) closeModal(true); });
@@ -1444,13 +2028,15 @@
    * State
    **********************/
   let current = null;
-  let paymentVerified = false;   // ✅ key state
+  let paymentVerified = false;
   let razorpayMeta = { order_id:"", payment_id:"", signature:"" };
+  let currentPaymentTokenFromOrder = "";
 
   function resetPaymentState(){
     paymentVerified = false;
     razorpayMeta = { order_id:"", payment_id:"", signature:"" };
     f_paymentToken.value = "";
+    currentPaymentTokenFromOrder = "";
     payStatePill.textContent = "Step 1: Pay Now";
     payStatePill.className = "pill warn";
     validateAll();
@@ -1463,26 +2049,115 @@
     validateAll();
   }
 
+  function isSquadMode(){
+    if(!current) return false;
+    const mode = String(current.mode||"");
+    // Squad tournaments: BR/CS Mega League + BR tournament modes + CS tournament modes
+    if(mode === "Mega League") return true;
+    if(current.category === "BR" && (mode === "Normal Lobby" || mode === "Competitive Lobby")) return true;
+    if(current.category === "CS" && (mode === "Normal Lobby" || mode === "Competitive Lobby")) return true;
+    return false;
+  }
+
+  function clearSquadInputs(){
+    teamName.value = "";
+    p1.value=""; p2.value=""; p3.value=""; p4.value=""; p5.value="";
+    if(teamLogo) teamLogo.value = "";
+    if(logoHelp) logoHelp.textContent = "Optional. Logo size 2MB–5MB allowed.";
+  }
+
+  // Logo size rule: allow 2–5MB only if user uploads
+  function validateLogoSize(){
+    if(!teamLogo || !teamLogo.files || !teamLogo.files[0]) return true;
+    const f = teamLogo.files[0];
+    const min = 2 * 1024 * 1024;
+    const max = 5 * 1024 * 1024;
+    const ok = (f.size >= min && f.size <= max);
+    if(!ok){
+      logoHelp.textContent = "❌ Logo must be between 2MB and 5MB. Please choose another file.";
+    } else {
+      logoHelp.textContent = "✅ Logo selected. Size OK.";
+    }
+    return ok;
+  }
+  if(teamLogo){
+    teamLogo.addEventListener("change", () => {
+      validateLogoSize();
+      validateAll();
+    });
+  }
+
   /**********************
-   * Draft Save/Restore (includes payment)
+   * Mode-wise Terms
+   **********************/
+  function updateRulesText(){
+    const base = `I agree to all Free Fire MAX tournament rules presented by TRPS Champions League.`;
+    if(!current){
+      rulesLabel.innerHTML = base;
+      return;
+    }
+
+    if(isSquadMode()){
+      rulesLabel.innerHTML =
+        `${base} <br><span style="color:#cfd9ff; font-size:12px;">
+          Squad Tournament: Team name & players must be correct. No hacks/mods, no abuse/glitch, organizer decision final.
+        </span>`;
+      return;
+    }
+
+    const modeUpper = String(current.mode || "").toUpperCase();
+    const isPerKill = modeUpper.includes("PER KILL");
+
+    if(current.category === "CS"){
+      rulesLabel.innerHTML =
+        `${base} <br><span style="color:#cfd9ff; font-size:12px;">
+          CS Match: Fair play, no abuse/glitch, follow room instructions, organizer decision final.
+        </span>`;
+      return;
+    }
+
+    if(current.category === "BR" && isPerKill){
+      rulesLabel.innerHTML =
+        `${base} <br><span style="color:#ffd6d6; font-size:12px;">
+          Per Kill: Minimum 2 kills required, Revive OFF, Gun Attributes OFF, No Team-Up, No Glitch/Exploit. Violation = Disqualification (No Refund).
+        </span>`;
+      return;
+    }
+
+    rulesLabel.innerHTML =
+      `${base} <br><span style="color:#cfd9ff; font-size:12px;">
+        Tournament: Join on time, follow room rules, no hacks/mods, organizer decision final.
+      </span>`;
+  }
+
+  /**********************
+   * Draft Save/Restore
    **********************/
   function saveIntent(){
     if(!current) return;
+
     const draft = {
       main_name: mainName.value || "",
       second_name: secondName.value || "",
       contact: contact.value || "",
       slot: slot.value || "",
       rules: rulesCheck.checked ? "1" : "0",
-      hs_only: getRadioValue("hs_only"),
-      limited_ammo: getRadioValue("limited_ammo"),
-      gun_rule: getRadioValue("gun_rule"),
       match_date: f_matchDate.value || "",
       payment_verified: paymentVerified ? "1" : "0",
       payment_token: f_paymentToken.value || "",
+      order_token: currentPaymentTokenFromOrder || "",
       rzp_order_id: razorpayMeta.order_id || "",
-      rzp_payment_id: razorpayMeta.payment_id || ""
+      rzp_payment_id: razorpayMeta.payment_id || "",
+
+      // squad
+      team_name: teamName.value || "",
+      p1: p1.value || "",
+      p2: p2.value || "",
+      p3: p3.value || "",
+      p4: p4.value || "",
+      p5: p5.value || ""
     };
+
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ current, draft, ts: Date.now() }));
   }
   function loadIntent(){
@@ -1500,6 +2175,13 @@
     secondName.value = draft.second_name || "";
     contact.value = draft.contact || "";
 
+    teamName.value = draft.team_name || "";
+    p1.value = draft.p1 || "";
+    p2.value = draft.p2 || "";
+    p3.value = draft.p3 || "";
+    p4.value = draft.p4 || "";
+    p5.value = draft.p5 || "";
+
     if(draft.match_date){
       f_matchDate.value = draft.match_date;
       if(pkDateSelect && [...pkDateSelect.options].some(o => o.value === draft.match_date)){
@@ -1513,16 +2195,10 @@
     } else {
       slot.value = "";
     }
+
     rulesCheck.checked = (draft.rules === "1");
 
-    ["hs_only","limited_ammo","gun_rule"].forEach(name => {
-      if(draft[name]){
-        const el = document.querySelector(`input[name="${name}"][value="${draft[name]}"]`);
-        if(el) el.checked = true;
-      }
-    });
-
-    // payment restore
+    currentPaymentTokenFromOrder = draft.order_token || "";
     if(draft.payment_verified === "1" && draft.payment_token){
       markPaid(draft.payment_token);
     }
@@ -1548,9 +2224,6 @@
     validateAll();
   });
 
-  /**********************
-   * Sheet-based slots fetch (BR Per Kill only)
-   **********************/
   async function fetchPkSlotsFromSheet(dateIso){
     try{
       const url = `${WEB_APP_URL}?action=slots&category=${encodeURIComponent(current.category)}&mode=${encodeURIComponent(current.mode)}&entry=${encodeURIComponent(current.entry)}&date=${encodeURIComponent(dateIso)}`;
@@ -1563,49 +2236,67 @@
     }
   }
 
+  function isCsTournamentMode(mode){
+    return mode === "Normal Lobby" || mode === "Competitive Lobby" || mode === "Mega League";
+  }
+
   /**********************
    * Mode -> Fields + Slots
    **********************/
   async function applyModeRules(){
     if(!current) return;
 
+    updateRulesText();
+
+    // reset duo
     fieldSecondName.style.display = "none";
     secondName.required = false;
     secondName.value = "";
 
-    if(current.category === "CS"){
-      csOptions.style.display = "grid";
+    // squad toggle
+    const squad = isSquadMode();
+    if(squad){
+      squadBox.style.display = "block";
+      normalBox.style.display = "none";
+
+      // make squad required
+      teamName.required = true;
+      p1.required = true; p2.required = true; p3.required = true; p4.required = true; p5.required = false;
+
+      // normal fields not required
+      mainName.required = false;
+      contact.required = false;
+      teamContact.required = true; // contact always required (squad)
     } else {
-      csOptions.style.display = "none";
-      clearRadio("hs_only");
-      clearRadio("limited_ammo");
-      clearRadio("gun_rule");
+      squadBox.style.display = "none";
+      normalBox.style.display = "grid";
+
+      teamName.required = false;
+      p1.required = false; p2.required = false; p3.required = false; p4.required = false; p5.required = false;
+
+      mainName.required = true;
+      contact.required = true;
+      if(teamContact) teamContact.required = false;
     }
 
-    if(current.category === "CS"){
-      if(current.mode === "1v1"){
+    // labels
+    if(!squad){
+      if(current.category === "CS"){
         labelMainName.textContent = "In-Game Name *";
-      } else if(current.mode === "2v2"){
-        labelMainName.textContent = "Player 1 Name *";
-        labelSecondName.textContent = "Player 2 Name *";
-        fieldSecondName.style.display = "flex";
-        secondName.required = true;
-      } else if(current.mode === "4v4"){
-        labelMainName.textContent = "Team Name *";
-      }
-    } else if(current.category === "BR"){
-      if(String(current.mode).toUpperCase().includes("DUO")){
-        labelMainName.textContent = "Player 1 Name *";
-        labelSecondName.textContent = "Player 2 Name *";
-        fieldSecondName.style.display = "flex";
-        secondName.required = true;
-      } else {
-        labelMainName.textContent = "In-Game Name *";
+      } else if(current.category === "BR"){
+        const modeUpper = String(current.mode || "").toUpperCase();
+        if(modeUpper.includes("DUO")){
+          labelMainName.textContent = "Player 1 Name *";
+          labelSecondName.textContent = "Player 2 Name *";
+          fieldSecondName.style.display = "flex";
+          secondName.required = true;
+        } else {
+          labelMainName.textContent = "In-Game Name *";
+        }
       }
     }
 
     const entry = Number(current.entry);
-    const isStream = String(current.stream) === "1";
     const modeUpper = String(current.mode || "").toUpperCase();
     const isPerKill = modeUpper.includes("PER KILL");
 
@@ -1627,82 +2318,92 @@
       dateHelp.textContent = "";
     }
 
-    if(current.category === "CS" && !(current.mode === "4v4" && isStream)){
-      let list = buildHalfHourSlots(10,0,21,0);
-      list = filterFutureSlots(list, 0);
-
-      if(list.length === 0){
-        setSlotOptions([], "Slots closed (CS: 10:00 AM – 9:00 PM IST). Please try again tomorrow.");
-      } else {
-        setSlotOptions(list, "CS timing: 10:00 AM – 9:00 PM (IST) • Past slots auto-hidden");
+    // ✅ CS Tournament slots
+    if(current.category === "CS" && isCsTournamentMode(current.mode)){
+      if(current.mode === "Mega League"){
+        setSlotOptions([], "");
+      } else if(current.mode === "Normal Lobby"){
+        let list = ["7:00 PM"];
+        list = filterFutureSlots(list, 0);
+        if(list.length === 0) setSlotOptions([], "");
+        else setSlotOptions(list, "");
+      } else if(current.mode === "Competitive Lobby"){
+        let list = ["7:00 PM"];
+        list = filterFutureSlots(list, 0);
+        if(list.length === 0) setSlotOptions([], "");
+        else setSlotOptions(list, "");
       }
     }
 
-    if(current.category === "CS" && current.mode === "4v4" && isStream){
-      let list = ["7:00 PM","7:30 PM","8:00 PM","8:30 PM"];
-      list = filterFutureSlots(list, 0);
-
-      if(list.length === 0){
-        setSlotOptions([], "ON STREAM slots closed for today. Please try again tomorrow.");
-      } else {
-        setSlotOptions(list, "ON STREAM slots (IST) • Past slots auto-hidden");
+    // ✅ CS (existing section) slots
+    if(current.category === "CS" && !isCsTournamentMode(current.mode)){
+      let list = [];
+      const start = parse12hToMinutes("10:00 AM");
+      const end = parse12hToMinutes("9:00 PM");
+      for(let m = start; m <= end; m += 30){
+        const h24 = Math.floor(m/60);
+        const mm = m % 60;
+        list.push(to12h(h24, mm));
       }
+      list = filterFutureSlots(list, 0);
+      if(list.length === 0) setSlotOptions([], "");
+      else setSlotOptions(list, "");
     }
 
+    // ✅ BR Per Kill fixed slots
     if(current.category === "BR" && isPerKill){
       const dateIso = f_matchDate.value || todayISO();
-      let baseSlots = buildHalfHourSlots(10,0,21,0);
+      let baseSlots = [];
+      if(entry === 25) baseSlots = ["10:00 AM"];
+      else if(entry === 35) baseSlots = ["2:00 PM"];
+      else if(entry === 50) baseSlots = ["9:00 PM"];
+      else baseSlots = [];
 
       if(dateIso === todayISO()){
         baseSlots = filterFutureSlots(baseSlots, 0);
       }
 
-      slotHelp.textContent = "Loading seats...";
+      slotHelp.textContent = "Loading...";
       const sheetOut = await fetchPkSlotsFromSheet(dateIso);
+      const slotsAreObjects = !!(sheetOut && Array.isArray(sheetOut.slots) && sheetOut.slots.length && typeof sheetOut.slots[0] === "object");
 
-      if(sheetOut && Array.isArray(sheetOut.slots)){
+      if(sheetOut && slotsAreObjects){
         const map = new Map(sheetOut.slots.map(s => [String(s.time).trim(), s]));
         const merged = baseSlots.map(t => {
           const s = map.get(t) || null;
-          const left = (s && typeof s.left === "number") ? s.left : (sheetOut.capacity ? sheetOut.capacity : 0);
+          const left = (s && typeof s.left === "number") ? s.left : 999;
           const full = (s && !!s.full) || (left <= 0);
           return { time: t, left: Math.max(0, left), full };
         });
-
-        if(merged.length === 0){
-          setSlotOptions([], "Slots closed (10:00 AM – 9:00 PM IST). Please try again tomorrow.");
-        } else {
-          setSlotOptionsWithSeats(merged, "Per Kill slots (IST) • Seats live from sheet • Past slots auto-hidden");
-        }
+        if(merged.length === 0) setSlotOptions([], "");
+        else setSlotOptionsWithSeats(merged, "");
       } else {
-        if(baseSlots.length === 0){
-          setSlotOptions([], "Slots closed (10:00 AM – 9:00 PM IST). Please try again tomorrow.");
-        } else {
-          setSlotOptions(baseSlots, "Slots (IST) • Past slots auto-hidden (Seat check unavailable)");
-        }
+        if(baseSlots.length === 0) setSlotOptions([], "");
+        else setSlotOptions(baseSlots, "");
       }
     }
 
+    // BR tournament slots
     if(current.category === "BR" && !isPerKill && entry === 25){
       let list = ["7:00 PM","9:30 PM"];
       list = filterFutureSlots(list, 0);
-
-      if(list.length === 0){
-        setSlotOptions([], "Slots closed (BR Normal Lobby: 7:00 PM / 9:30 PM IST). Please try again tomorrow.");
-      } else {
-        setSlotOptions(list, "BR Normal Lobby timing: 7:00 PM / 9:30 PM (IST)");
-      }
+      if(list.length === 0) setSlotOptions([], "");
+      else setSlotOptions(list, "");
     }
 
     if(current.category === "BR" && !isPerKill && entry === 35){
-      let list = ["9:00 PM","11:30 PM"];
+      let list = ["9:30 PM","11:00 PM"];
       list = filterFutureSlots(list, 0);
+      if(list.length === 0) setSlotOptions([], "");
+      else setSlotOptions(list, "");
+    }
 
-      if(list.length === 0){
-        setSlotOptions([], "Slots closed (BR Competitive Lobby: 9:00 PM / 11:30 PM IST). Please try again tomorrow.");
-      } else {
-        setSlotOptions(list, "BR Competitive Lobby timing: 9:00 PM / 11:30 PM (IST)");
-      }
+    // Mega League (live) slots - you can adjust anytime
+    if(current.mode === "Mega League" && (current.category === "BR" || current.category === "CS")){
+      let list = ["9:00 PM"];
+      list = filterFutureSlots(list, 0);
+      if(list.length === 0) setSlotOptions([], "");
+      else setSlotOptions(list, "");
     }
 
     amtPill.textContent = `Amount: ₹${entry}`;
@@ -1710,17 +2411,17 @@
   }
 
   /**********************
-   * Validation (payment must be verified)
+   * Validation
    **********************/
   function validateAll(){
     if(!current){
       submitBtn.disabled = true;
       return;
     }
-    const mainOk = mainName.value.trim().length > 0;
-    const secondOk = (fieldSecondName.style.display === "none") ? true : (secondName.value.trim().length > 0);
-    const contactOk = is10DigitNumber(contact.value.trim());
+
     const slotOk = slot.value.trim().length > 0;
+    const contactValue = (isSquadMode() ? (teamContact?.value || "") : (contact?.value || ""));
+    const contactOk = is10DigitNumber(String(contactValue).trim());
 
     const modeUpper = String(current.mode || "").toUpperCase();
     const isPerKill = modeUpper.includes("PER KILL");
@@ -1729,15 +2430,28 @@
     const payOk = paymentVerified && !!(f_paymentToken.value || "").trim();
     const rulesOk = rulesCheck.checked;
 
-    let csOk = true;
-    if(current.category === "CS"){
-      const hs = getRadioValue("hs_only");
-      const ammo = getRadioValue("limited_ammo");
-      const gun = getRadioValue("gun_rule");
-      csOk = !!hs && !!ammo && !!gun;
+    const squad = isSquadMode();
+
+    let squadOk = true;
+    if(squad){
+      squadOk =
+        teamName.value.trim().length > 0 &&
+        p1.value.trim().length > 0 &&
+        p2.value.trim().length > 0 &&
+        p3.value.trim().length > 0 &&
+        p4.value.trim().length > 0 &&
+        p5.value.trim().length > 0 &&
+        validateLogoSize();
     }
 
-    const ok = mainOk && secondOk && contactOk && slotOk && dateOk && payOk && rulesOk && csOk;
+    let normalOk = true;
+    if(!squad){
+      const mainOk = mainName.value.trim().length > 0;
+      const secondOk = (fieldSecondName.style.display === "none") ? true : (secondName.value.trim().length > 0);
+      normalOk = mainOk && secondOk;
+    }
+
+    const ok = (squad ? squadOk : normalOk) && contactOk && slotOk && dateOk && payOk && rulesOk;
     submitBtn.disabled = !ok;
     return ok;
   }
@@ -1770,8 +2484,8 @@
 
       formMsg.textContent = "";
       regForm.reset();
+      clearSquadInputs();
 
-      // default per kill date
       if(String(current.mode || "").toUpperCase().includes("PER KILL")){
         f_matchDate.value = todayISO();
         pkDateSelect.value = f_matchDate.value;
@@ -1780,25 +2494,31 @@
         pkDateSelect.value = "";
       }
 
-      // payment reset on new open
       resetPaymentState();
+      updateRulesText();
+
+      // ✅ Login gating
+      if(!requireLogin(() => {
+        openModal(true);
+        setMainTab("register");
+      })) return;
 
       openModal(true);
-      applyModeRules();
+      setMainTab("register");
+      await applyModeRules();
       saveIntent();
     });
   });
 
   /**********************
-   * Razorpay Flow (Create Order -> Checkout -> Verify -> Unlock)
+   * Razorpay Flow
    **********************/
   async function createOrderOnServer(amount){
     const fd = new FormData();
     fd.append("action", "create_order");
-    fd.append("amount", String(amount));      // rupees (server converts to paise)
+    fd.append("amount", String(amount));
     fd.append("currency", "INR");
 
-    // metadata (helps in logs)
     fd.append("category", current?.category || "");
     fd.append("entry", current?.entry || "");
     fd.append("mode", current?.mode || "");
@@ -1808,17 +2528,18 @@
     const res = await fetch(WEB_APP_URL, { method:"POST", body: fd });
     const out = await res.json().catch(()=>null);
     if(!out || !out.ok) throw new Error(out?.error || "Order create failed");
-    return out; // expects: {ok:true, key_id, order_id, amount_paise, currency, name}
+    return out;
   }
 
-  async function verifyPaymentOnServer(payload){
+  async function verifyPaymentOnServer(payload, paymentToken){
     const fd = new FormData();
     fd.append("action", "verify_payment");
+    fd.append("payment_token", paymentToken || "");
+
     fd.append("razorpay_order_id", payload.razorpay_order_id);
     fd.append("razorpay_payment_id", payload.razorpay_payment_id);
     fd.append("razorpay_signature", payload.razorpay_signature);
 
-    // optional: attach current selection
     fd.append("category", current?.category || "");
     fd.append("entry", current?.entry || "");
     fd.append("mode", current?.mode || "");
@@ -1827,7 +2548,7 @@
     const res = await fetch(WEB_APP_URL, { method:"POST", body: fd });
     const out = await res.json().catch(()=>null);
     if(!out || !out.ok) throw new Error(out?.error || "Verify failed");
-    return out; // expects: {ok:true, payment_token:"..."}
+    return out;
   }
 
   payNowBtn.addEventListener("click", async () => {
@@ -1849,12 +2570,16 @@
     try{
       const order = await createOrderOnServer(amount);
 
-      // Keep for restore
       razorpayMeta.order_id = order.order_id || "";
+      currentPaymentTokenFromOrder = order.payment_token || "";
+
+      if(!currentPaymentTokenFromOrder){
+        throw new Error("Payment token missing from order");
+      }
 
       const options = {
-        key: order.key_id,                 // from server (test/live)
-        amount: order.amount_paise,        // paise
+        key: order.key_id,
+        amount: order.amount_paise,
         currency: order.currency || "INR",
         name: order.name || "TRPS Champions League",
         description: current.display || "Tournament Entry",
@@ -1866,7 +2591,6 @@
           stream: String(current.stream)
         },
         handler: async function (response){
-          // response: {razorpay_payment_id, razorpay_order_id, razorpay_signature}
           try{
             payStatePill.textContent = "Verifying...";
             payStatePill.className = "pill warn";
@@ -1876,10 +2600,9 @@
             razorpayMeta.order_id = response.razorpay_order_id || "";
             razorpayMeta.signature = response.razorpay_signature || "";
 
-            const verified = await verifyPaymentOnServer(response);
-            const token = verified.payment_token || "";
+            await verifyPaymentOnServer(response, currentPaymentTokenFromOrder);
+            markPaid(currentPaymentTokenFromOrder);
 
-            markPaid(token);
             formMsg.textContent = "✅ Payment Successful & Verified. Ab rules tick karke Submit karo.";
             saveIntent();
             validateAll();
@@ -1891,7 +2614,6 @@
         },
         modal: {
           ondismiss: function(){
-            // user closed popup
             if(!paymentVerified){
               payStatePill.textContent = "Step 1: Pay Now";
               payStatePill.className = "pill warn";
@@ -1913,16 +2635,22 @@
   });
 
   /**********************
-   * Restore if user paid and reloads before submit
+   * Restore ONLY if PAID and reloads
    **********************/
   (function restoreIfAny(){
     const intent = loadIntent();
     if(!intent || !intent.current) return;
 
-    // auto restore only if user had modal open last time (safe behavior)
+    const draft = intent.draft || {};
+    const paid = String(draft.payment_verified || "") === "1";
+    const token = String(draft.payment_token || "").trim();
+
+    if(!paid || !token){
+      return;
+    }
+
     current = intent.current;
 
-    // open modal and restore UI
     selectedText.textContent = current.display;
     f_category.value = current.category;
     f_entry.value = current.entry;
@@ -1930,17 +2658,17 @@
     f_stream.value = current.stream;
 
     openModal(false);
+
     applyModeRules().then(() => {
-      restoreDraft(intent.draft);
+      restoreDraft(draft);
+      updateRulesText();
       validateAll();
-      formMsg.textContent = (intent.draft?.payment_verified === "1")
-        ? "✅ Payment already verified. Rules tick karke Submit karo."
-        : "Draft restored. Payment karke Submit karo.";
-    }).catch(()=>{});
+      formMsg.textContent = "✅ Payment already verified. Rules tick karke Submit karo.";
+    });
   })();
 
   /**********************
-   * HISTORY helpers (device-only)
+   * HISTORY helpers
    **********************/
   function safeJsonParse(x){ try{ return JSON.parse(x); }catch(_){ return null; } }
   function getHistoryList(){
@@ -1967,48 +2695,54 @@
   }
 
   /**********************
-   * Submit -> Apps Script (register requires payment_token)
+   * Submit -> Apps Script
    **********************/
   regForm.addEventListener("submit", async (e) => {
     e.preventDefault();
+    if(!requireLogin(() => {})) return;
     if(!validateAll()) return;
 
     submitBtn.disabled = true;
     formMsg.textContent = "Submitting...";
 
-    let shotType = "N/A";
-    let ammoType = "N/A";
-    let gunRule = "N/A";
-
-    if(current && current.category === "CS"){
-      const hs = getRadioValue("hs_only");
-      const ammo = getRadioValue("limited_ammo");
-      const gun = getRadioValue("gun_rule");
-      shotType = (hs === "YES") ? "Head Shot" : "Body Shot";
-      ammoType = (ammo === "YES") ? "Limited" : "Unlimited";
-      gunRule = (gun === "ONE_TAP") ? "One Tap" : "All Guns";
-    }
-
     const fd = new FormData();
     fd.append("action", "register");
+
+    // Auth
+    const a = getAuth();
+    fd.append("trps_id", a?.trps_id || "");
+
+    // Contact mapping (single vs squad)
+    const contactValue = (isSquadMode() ? (teamContact?.value || "") : (contact?.value || ""));
+    fd.append("contact", String(contactValue).trim());
 
     fd.append("category", f_category.value);
     fd.append("entry", f_entry.value);
     fd.append("mode", f_mode.value);
     fd.append("stream", f_stream.value);
     fd.append("selected_display", current?.display || "");
-
     fd.append("match_date", f_matchDate.value || "");
 
+    // normal fields
     fd.append("main_name", mainName.value.trim());
     fd.append("second_name", (fieldSecondName.style.display === "none") ? "" : secondName.value.trim());
+
+    // squad fields
+    fd.append("team_name", (teamName.value || "").trim());
+    fd.append("player1", (p1.value || "").trim());
+    fd.append("player2", (p2.value || "").trim());
+    fd.append("player3", (p3.value || "").trim());
+    fd.append("player4", (p4.value || "").trim());
+    fd.append("player5", (p5.value || "").trim());
+
+    // optional logo
+    if(teamLogo && teamLogo.files && teamLogo.files[0]){
+      fd.append("team_logo", teamLogo.files[0]);
+    }
+
     fd.append("contact", contact.value.trim());
     fd.append("slot", slot.value.trim());
-
-    fd.append("payment_token", (f_paymentToken.value || "").trim()); // ✅ required
-    fd.append("shot_type", shotType);
-    fd.append("ammo_type", ammoType);
-    fd.append("gun_rule", gunRule);
+    fd.append("payment_token", (f_paymentToken.value || "").trim());
     fd.append("rules_accepted", rulesCheck.checked ? "YES" : "NO");
 
     try{
@@ -2018,7 +2752,7 @@
       try{ out = JSON.parse(text); } catch(_){ out = { ok:false, error:"Bad response", raw:text }; }
 
       if(out.ok){
-        const hk = makeHistoryKey(contact.value.trim(), mainName.value.trim());
+        const hk = makeHistoryKey(contact.value.trim(), (mainName.value || teamName.value || "").trim());
 
         const list = getHistoryList();
         list.unshift({
@@ -2026,7 +2760,7 @@
           regId: out.regId,
           display: current?.display || "",
           main: mainName.value.trim(),
-          second: (fieldSecondName.style.display === "none") ? "" : secondName.value.trim(),
+          team: teamName.value.trim(),
           slot: slot.value.trim(),
           matchDate: f_matchDate.value || "",
           ts: new Date().toISOString()
@@ -2038,14 +2772,15 @@
            🔐 Your History Key: <b style="color:#ffd700">${hk}</b> (save it)<br/>
            WhatsApp pe DM karke confirmation le lo:
            <a class="wa-link" target="_blank" rel="noopener noreferrer"
-              href="https://wa.me/917294898996?text=Hi%20TRPS%20Champions%20League%2C%20I%20have%20registered.%20Reg%20ID%20${encodeURIComponent(out.regId)}%20Please%20confirm%20my%20entry.">
+              href="https://wa.me/?text=Hi%20TRPS%20Champions%20League%2C%20I%20have%20registered.%20Reg%20ID%20${encodeURIComponent(out.regId)}%20Please%20confirm%20my%20entry.">
               7294898996
            </a>`;
 
-        // ✅ after submit: clear draft + reset for new form
         clearIntent();
         regForm.reset();
+        clearSquadInputs();
         resetPaymentState();
+        updateRulesText();
         validateAll();
 
       } else {
@@ -2098,13 +2833,6 @@
       lines.push(`Mode: ${r.selected_display || (r.category + " • " + r.mode)}`);
       if(r.match_date) lines.push(`Date: ${r.match_date}`);
       lines.push(`Slot: ${r.slot_time || "-"}`);
-      if(r.match_type === "CS" && r.match_no){
-        lines.push(`Match: CS • Match No ${r.match_no}`);
-        if(r.opponent_reg_ids) lines.push(`Opponent: ${r.opponent_reg_ids}`);
-      }
-      if(r.match_type === "BR" && r.room_no){
-        lines.push(`Room: ${r.room_no} • Slot: ${r.slot_no || "-"}`);
-      }
       if(r.notes) lines.push(`Note: ${r.notes}`);
       stOut.textContent = lines.join("\n");
     }catch(_){
